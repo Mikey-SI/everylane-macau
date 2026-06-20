@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>街知巷聞 · EveryLane Macau — 澳門深度遊 AI 智能體</title>
+<meta name="description" content="阿濠 · 澳門深度遊 AI 智能體：將遊客從擠爆的熱點，智能導流到舊區老街與本地小店。" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23C0473B'/%3E%3Cpath d='M16 5l8 7v15h-5v-8h-6v8H5V12z' fill='%23F8EFDD'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<!-- ===== Top nav ===== -->
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" width="34" height="34">
+          <rect width="40" height="40" rx="10" fill="var(--terracotta)"/>
+          <path d="M20 7l11 9v17h-7V22h-8v11H9V16z" fill="#F8EFDD"/>
+          <circle cx="20" cy="17" r="2.4" fill="var(--terracotta)"/>
+        </svg>
+      </span>
+      <span class="brand-txt">
+        <strong>街知巷聞</strong>
+        <em>EveryLane&nbsp;Macau</em>
+      </span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="#planner">規劃行程</a>
+      <a href="#how">點樣運作</a>
+      <a href="#value">商業價值</a>
+    </nav>
+
+    <div class="nav-right">
+      <span id="engineBadge" class="badge badge-engine" title="當前推理引擎">· 連接中 ·</span>
+      <label class="lang-select">
+        <select id="lang" aria-label="語言">
+          <option value="zh-HK">粵語</option>
+          <option value="zh">简体中文</option>
+          <option value="en">English</option>
+          <option value="pt">Português</option>
+          <option value="ja">日本語</option>
+        </select>
+      </label>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-in">
+    <p class="eyebrow">澳門文旅 × 舊區活化 · 千問 Qwen / QwenPaw 智能體</p>
+    <h1>唔止大三巴，<br><span class="hl">阿濠帶你行勻澳門每一條老街</span></h1>
+    <p class="lede">
+      一個識得「做任務」嘅 AI 智能體 —— 自動<b>查天氣、搜景點、核對開放時間、預測人流</b>，
+      仲會將你由逼爆嘅熱點，<b>智能導流到舊區老街同本地小店</b>，輸出一份可驗證嘅深度遊行程。
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#planner">開始規劃我的澳門深度遊 →</a>
+      <a class="btn btn-ghost" href="#how">睇下個 AI 點樣諗</a>
+    </div>
+    <div class="hero-stats" id="heroStats">
+      <div><strong id="hsPoi">—</strong><span>個真實澳門景點</span></div>
+      <div><strong id="hsOld">—</strong><span>條舊區老街</span></div>
+      <div><strong id="hsLocal">—</strong><span>間本地老字號</span></div>
+      <div><strong>7</strong><span>項可調用工具</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Planner ===== -->
+<main>
+<section id="planner" class="planner">
+  <div class="section-head">
+    <h2>同阿濠講一句，佢就同你計掂成日行程</h2>
+    <p>用自然語言講低你嘅需求即可，例如日期、人數、興趣、預算、想唔想行多路。</p>
+  </div>
+
+  <div class="planner-card">
+    <textarea id="prompt" rows="3" placeholder="例如：我下星期三想帶爸媽嚟澳門玩一日，鍾意歷史文化同地道美食，預算唔想太貴，又唔想行太多路…"></textarea>
+    <div class="chips" id="sampleChips"></div>
+    <div class="planner-actions">
+      <div class="hint">⌘/Ctrl + Enter 快速出發</div>
+      <button id="planBtn" class="btn btn-primary btn-go">出發 · 規劃行程</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Workspace (trace + result) ===== -->
+<section id="workspace" class="workspace hidden">
+  <div class="ws-grid">
+    <!-- live agent trace -->
+    <aside class="trace-col">
+      <div class="trace-head">
+        <span class="dot-pulse" id="tracePulse"></span>
+        <h3>阿濠 · 智能體工作過程</h3>
+        <button id="traceToggle" class="mini-btn" title="收合/展開">⤢</button>
+      </div>
+      <p class="trace-sub" id="traceParams"></p>
+      <ol class="trace" id="trace"></ol>
+    </aside>
+
+    <!-- itinerary result -->
+    <div class="result-col">
+      <div id="resultEmpty" class="result-empty">
+        <div class="spinner"></div>
+        <p>阿濠正在落手規劃，行程即將喺度生成…</p>
+      </div>
+      <div id="result" class="result hidden"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== How it works ===== -->
+<section id="how" class="how">
+  <div class="section-head">
+    <h2>點樣運作：一個真正識得「做任務」嘅智能體</h2>
+    <p>對標 QwenPaw 的 ReAct 架構 —— 規劃、調用工具、多步執行、失敗自動恢復。</p>
+  </div>
+  <div class="how-grid">
+    <div class="how-card"><span class="how-no">01</span><h4>理解 & 規劃</h4><p>解析自然語言需求，拆解成日期、人數、興趣、預算、步行偏好，並制定行動計劃。</p></div>
+    <div class="how-card"><span class="how-no">02</span><h4>調用工具</h4><p>天氣、景點檢索、開放時間核實、人流預測、導流、路線計算、預算估算 —— 7 大工具。</p></div>
+    <div class="how-card"><span class="how-no">03</span><h4>多步執行</h4><p>逐一核實每個景點，動態整合天氣、人流、地理片區，組裝出可步行嘅順路行程。</p></div>
+    <div class="how-card"><span class="how-no">04</span><h4>失敗恢復</h4><p>遇到景點當日休息、預算超支、行得太遠，會自動改線、替換、縮減，唔會卡住。</p></div>
+  </div>
+  <div class="tools-strip" id="toolsStrip"></div>
+</section>
+
+<!-- ===== Value ===== -->
+<section id="value" class="value">
+  <div class="section-head"><h2>商業價值：一個導流引擎，三方共贏</h2></div>
+  <div class="value-grid">
+    <div class="value-card">
+      <div class="vc-ic">🧳</div><h4>遊客</h4>
+      <p>避開人潮、慳錢慳腳骨力，體驗到真正地道、有故事嘅澳門，滿意度與停留時間提升。</p>
+    </div>
+    <div class="value-card hot">
+      <div class="vc-ic">🏮</div><h4>舊區小店</h4>
+      <p>把集中在大三巴／威尼斯人的客流，導入十月初五街、福隆新街等老街與街坊老字號，<b>帶來真實新客流</b>。可按引流量收費或推「精選商戶」訂閱。</p>
+    </div>
+    <div class="value-card">
+      <div class="vc-ic">🏛️</div><h4>城市 / 政府</h4>
+      <p>平衡旅遊承載、緩解過度集中、活化舊區與保育文化遺產，契合澳門「世界旅遊休閒中心」定位。</p>
+    </div>
+  </div>
+  <p class="value-foot">變現路徑：商戶精選訂閱／引流分成 · 酒店與旅行社 API 授權 · 文旅局數據儀表板 · 多語言客群（內地、葡語系、日韓）擴展。</p>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div>
+      <strong>街知巷聞 · EveryLane Macau</strong>
+      <p>「千模百煉」AI 開發者系列之學生競賽 · 參賽方向：澳門文旅 × 舊區活化</p>
+    </div>
+    <div class="foot-meta">
+      <p>參賽者：SITINIEK（學號 dc227126）</p>
+      <p>技術：Qwen / QwenPaw · FastAPI · ReAct Agent</p>
+      <p id="ethics" class="ethics">AI 倫理：行程由 AI 生成，人流為估算值，請以現場為準；數據來源公開資料。</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/vendor/leaflet/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
