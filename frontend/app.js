@@ -363,8 +363,9 @@
       days: multi ? days : undefined,
       totals: summarize(all),
       constraints: [
-        { label: z ? "GitHub Pages 可直接打開" : "Runs on GitHub Pages", ok: true, detail: z ? "無需後端即可展示完整網站與示例行程" : "Shows the full site and sample itinerary without a backend" },
-        { label: z ? "保留本地完整 AI 版本" : "Full AI version preserved locally", ok: true, detail: z ? "本地 run.bat 可啟動 FastAPI/Qwen 工具版" : "Use run.bat locally for the FastAPI/Qwen tool version" },
+        { label: z ? "路線分區合理" : "Coherent district routing", ok: true, detail: z ? "每日集中一個可步行片區，避免跨島亂跑" : "Each day focuses on one walkable district instead of crossing islands randomly" },
+        { label: z ? "避開人潮熱點" : "Crowd-aware timing", ok: true, detail: z ? "熱門點安排較早到達，並加入附近舊區導流" : "Popular stops are timed earlier, with nearby old-lane diversions added" },
+        { label: z ? "帶旺舊區・本地小店" : "Supports old districts and local shops", ok: true, detail: z ? "行程包含舊區老街與本地老字號，不只停留在熱門景點" : "The trip includes old lanes and local shops, not only famous hotspots" },
       ],
       diversions: [{ from: z ? "大三巴牌坊" : "Ruins of St. Paul's", to: z ? "草堆街與爛鬼樓" : "Rua das Estalagens", reason: staticCopy(lang).diversion }],
       notes: [z ? "GitHub Pages 版為靜態演示；完整 ReAct 工具調用請本地運行。" : "GitHub Pages is a static demo; run locally for full ReAct tool calling."],
