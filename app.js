@@ -285,26 +285,27 @@
   }
 
   function runStaticPlan(q, lang) {
-    const L = staticCopy(lang);
-    const multi = /2|3|兩|两|三|day|days|dias|泊|日|天/i.test(q);
-    handle({ type: "params", params: { language: lang, language_name: I18N[lang]?.htmlLang || lang, date: today, people: 2, interests: L.interests, days: multi ? 3 : 1 } });
+    const scenario = staticScenario(q);
+    const L = staticTraceCopy(lang, scenario);
+    const multi = scenario.days > 1;
+    handle({ type: "params", params: { language: lang, language_name: I18N[lang]?.htmlLang || lang, date: today, people: scenario.people, interests: L.interests, days: scenario.days } });
     handle({ type: "status", text: L.status });
     handle({ type: "plan", steps: L.steps });
     [
       ["get_weather", { date: today }, L.weather],
       ["search_attractions", { prefer_local: true, limit: 12 }, L.search],
-      ["check_opening", { poi_id: "ruins_st_paul", date: today }, L.open],
-      ["predict_crowd", { poi_id: "ruins_st_paul", datetime: today + " 13:00" }, L.crowd],
-      ["find_local_gem", { near_poi_id: "ruins_st_paul" }, L.gem],
+      ["check_opening", { poi_id: scenario.checkId, date: today }, L.open],
+      ["predict_crowd", { poi_id: scenario.anchorId, datetime: today + " 13:00" }, L.crowd],
+      ["find_local_gem", { near_poi_id: scenario.anchorId }, L.gem],
       ["compute_route", { optimize: true }, L.route],
-      ["estimate_budget", { people: 2 }, L.budget],
+      ["estimate_budget", { people: scenario.people }, L.budget],
     ].forEach(([name, args, summary], i) => {
       setTimeout(() => { handle({ type: "tool_call", name, args }); handle({ type: "tool_result", name, summary }); }, 250 + i * 180);
     });
     setTimeout(() => {
       handle({ type: "recovery", reason: L.recovery });
       handle({ type: "diversion", reason: L.diversion });
-      handle({ type: "result", itinerary: staticItinerary(lang, multi) });
+      handle({ type: "result", itinerary: staticItineraryForScenario(lang, scenario, multi) });
       handle({ type: "done" });
     }, 1750);
   }
@@ -384,6 +385,135 @@
 
   function summarize(stops) {
     return { stops: stops.length, cost_mop: stops.reduce((a, s) => a + (s.cost_mop || 0), 0), walk_min: Math.max(0, stops.length - 1) * 8, walk_km: +(Math.max(0, stops.length - 1) * 0.45).toFixed(2), old_district: stops.filter(s => s.old_district).length, local_business: stops.filter(s => s.local_business).length };
+  }
+
+  function staticScenario(q) {
+    const s = (q || "").toLowerCase();
+    if (/鄭家|郑家|mandarin/.test(s)) return scenarioMandarin();
+    if (/三日|三天|三日兩夜|三天两夜|3\s*(days?|dias)|兩日|两日|2\s*(days?|dias)|multi/.test(s)) return scenarioMulti();
+    if (/氹仔|凼仔|taipa/.test(s) && /半日|半天|half|美食|food/.test(s)) return scenarioTaipa();
+    if (/情侶|情侣|拍拖|couple|影|拍照|photo/.test(s)) return scenarioCouple();
+    if (/first time|weekend|第一次|首次/.test(s)) return scenarioFirstTime();
+    return scenarioFamily();
+  }
+
+  function staticTraceCopy(lang, scenario) {
+    const z = lang.startsWith("zh");
+    return {
+      status: z ? "阿濠開始規劃：先理解你嘅日期、人數、興趣同片區，再逐步核實路線。" : "Ah-Hou starts planning: first understand your date, group, interests and district, then verify the route step by step.",
+      steps: z ? ["理解需求：日期、人數、興趣、預算與步行偏好", "鎖定可步行片區，避免跨島亂跑", "核實開放時間、人流與導流替代點", "計算路線與預算，輸出可驗證行程"] : ["Understand date, group size, interests, budget and walking preference", "Keep the route within walkable districts", "Verify opening hours, crowds and diversion alternatives", "Compute route and budget, then output a verifiable itinerary"],
+      interests: scenario.interests,
+      weather: z ? "晴朗舒適・適合步行" : "Comfortable sunshine・good for walking",
+      search: z ? `找到 ${scenario.searchLabelZh} 候選景點` : `Found candidate stops for ${scenario.searchLabelEn}`,
+      open: scenario.key === "mandarin" ? (z ? "鄭家大屋：逢週三休息" : "Mandarin's House: closed on Wednesday") : (z ? `${scenario.anchorNameZh}：開放` : `${scenario.anchorNameEn}: open`),
+      crowd: z ? `${scenario.anchorNameZh} 正午人流：${scenario.crowdLabelZh}` : `${scenario.anchorNameEn} at noon: ${scenario.crowdLabelEn}`,
+      gem: z ? `建議導流至 ${scenario.diversionToZh}` : `Suggest diverting to ${scenario.diversionToEn}`,
+      route: z ? "已排好順路步行路線" : "Walkable route computed",
+      budget: z ? `預算合計 MOP ${scenario.budget}` : `Estimated total MOP ${scenario.budget}`,
+      recovery: z ? scenario.recoveryZh : scenario.recoveryEn,
+      diversion: z ? scenario.diversionZh : scenario.diversionEn,
+    };
+  }
+
+  function staticItineraryForScenario(lang, scenario, multi) {
+    const z = lang.startsWith("zh");
+    const days = scenario.daysData.map((d, i) => makeDay(i + 1, d.title, d.stops));
+    const all = days.flatMap(d => d.stops.map(s => ({ ...s, day_no: d.day_no, map_order: `${d.day_no}-${s.order}` })));
+    return {
+      title: z ? scenario.titleZh : scenario.titleEn,
+      summary: z ? scenario.summaryZh : scenario.summaryEn,
+      language: lang, language_name: I18N[lang]?.htmlLang || lang,
+      date: multi ? `${today} → ${scenario.endDate}` : today,
+      weekday: multi ? `${scenario.days} 日行程` : "一日行程",
+      weather: { condition: z ? "晴朗舒適" : "Comfortable", temp_c: 28 },
+      days: multi ? days : undefined,
+      totals: summarize(all),
+      constraints: [
+        { label: z ? "路線分區合理" : "Coherent district routing", ok: true, detail: z ? "每日集中一個可步行片區，避免跨島亂跑" : "Each day focuses on one walkable district instead of crossing islands randomly" },
+        { label: z ? "避開人潮熱點" : "Crowd-aware timing", ok: true, detail: z ? "熱門點安排較早到達，並加入附近舊區導流" : "Popular stops are timed earlier, with nearby old-lane diversions added" },
+        { label: z ? "帶旺舊區・本地小店" : "Supports old districts and local shops", ok: true, detail: z ? "行程包含舊區老街與本地老字號，不只停留在熱門景點" : "The trip includes old lanes and local shops, not only famous hotspots" },
+      ],
+      diversions: [{ from: z ? scenario.diversionFromZh : scenario.diversionFromEn, to: z ? scenario.diversionToZh : scenario.diversionToEn, reason: z ? scenario.diversionZh : scenario.diversionEn }],
+      notes: [z ? "建議熱門景點盡量早到；人流與天氣請以現場為準。" : "Arrive early at popular stops; crowd and weather conditions should be checked on site."],
+      stops: all,
+    };
+  }
+
+  function scenarioBase(key, overrides) {
+    return {
+      key, days: 1, people: 2, checkId: "ruins_st_paul", anchorId: "ruins_st_paul",
+      anchorNameZh: "大三巴牌坊", anchorNameEn: "Ruins of St. Paul's",
+      crowdLabelZh: "極擁擠", crowdLabelEn: "packed",
+      searchLabelZh: "半島歷史城區", searchLabelEn: "Macau Peninsula heritage",
+      interests: ["歷史", "老街", "美食"], budget: 260, endDate: "Day 1",
+      recoveryZh: "已根據人流與距離微調停留順序。", recoveryEn: "Stop order adjusted based on crowds and walking distance.",
+      diversionFromZh: "大三巴牌坊", diversionFromEn: "Ruins of St. Paul's",
+      diversionToZh: "草堆街與爛鬼樓", diversionToEn: "Rua das Estalagens",
+      diversionZh: "大三巴正午人多，改以草堆街與爛鬼樓分流，步行近、人少又地道。",
+      diversionEn: "St. Paul's gets crowded at noon, so the route diverts into Rua das Estalagens, nearby and more local.",
+      ...overrides,
+    };
+  }
+
+  function scenarioFamily() {
+    const stops = [
+      poi("ruins_st_paul", 1, "大三巴牌坊", "Ruins of St. Paul's", "Ruínas de São Paulo", "heritage", 22.19755, 113.54086, "assets/poi/ruins_st_paul.jpg", true, false, false, "10:00", "10:45", 0, "packed", "世界遺產地標，最適合早上避開人潮。"),
+      poi("rua_estalagens", 2, "草堆街與爛鬼樓", "Rua das Estalagens", "Rua das Estalagens", "street", 22.19488, 113.53868, "assets/poi/rua_estalagens.jpg", false, true, true, "10:53", "11:18", 0, "quiet", "舊區老街，人少地道，適合帶爸媽慢慢行。"),
+      poi("rua_felicidade", 3, "福隆新街", "Rua da Felicidade", "Rua da Felicidade", "street", 22.19283, 113.53894, "assets/poi/rua_felicidade.jpg", false, true, true, "11:26", "11:56", 0, "moderate", "紅窗門老街，既有故事亦有手信小店。"),
+      poi("wong_chi_kei", 4, "黃枝記粥麵", "Wong Chi Kei Noodles", "Wong Chi Kei", "food", 22.19360, 113.53980, "assets/poi/wong_chi_kei.jpg", false, true, true, "12:05", "12:50", 210, "busy", "本地老字號，午餐兼支持街坊小店。"),
+    ];
+    return scenarioBase("family", { people: 3, budget: 210, titleZh: "爸媽輕鬆歷史美食一日遊", titleEn: "Easy Heritage & Local Food Day with Parents", summaryZh: "行程集中半島歷史城區，先到大三巴，再導流到草堆街、福隆新街與本地老字號，少跨區、少走冤枉路。", summaryEn: "A compact peninsula route: start at St. Paul's, then divert into old lanes and a local noodle shop, keeping walking light.", daysData: [{ title: "Day 1 · 半島歷史城區", stops }] });
+  }
+
+  function scenarioMulti() {
+    const day1 = scenarioFamily().daysData[0].stops;
+    const day2 = scenarioTaipa().daysData[0].stops;
+    const day3 = [
+      poi("st_francis_coloane", 1, "路環聖方濟各聖堂", "Chapel of St. Francis Xavier", "Capela de São Francisco Xavier", "temple", 22.11649, 113.55560, "assets/poi/st_francis_coloane.jpg", false, true, false, "10:30", "10:55", 0, "quiet", "路環海邊小教堂，節奏慢、拍照舒服。"),
+      poi("lord_stow", 2, "安德魯餅店（路環總店）", "Lord Stow's Bakery", "Lord Stow's Bakery", "food", 22.11760, 113.55480, "assets/poi/lord_stow.jpg", false, true, true, "11:03", "11:28", 80, "busy", "葡撻創始店，路環慢活線的代表本地小店。"),
+      poi("coloane_village", 3, "路環市區", "Coloane Village", "Vila de Coloane", "street", 22.11680, 113.55540, "", false, true, true, "11:35", "12:20", 0, "moderate", "海邊小村保留彩色平房與街坊節奏。"),
+    ];
+    return scenarioBase("multi", { days: 3, people: 2, budget: 380, endDate: "Day 3", searchLabelZh: "半島、氹仔、路環", searchLabelEn: "Peninsula, Taipa and Coloane", titleZh: "澳門三日兩夜深度遊", titleEn: "Three-Day Macau Deep Trip", summaryZh: "三日分區：第一日半島世遺與舊區，第二日氹仔美食與葡式建築，第三日路環慢活與本地小店。", summaryEn: "Three coherent days: peninsula heritage and old lanes, Taipa food and Portuguese houses, then Coloane slow living and local shops.", daysData: [{ title: "Day 1 · 半島世遺與舊區", stops: day1 }, { title: "Day 2 · 氹仔美食舊城", stops: day2 }, { title: "Day 3 · 路環慢活", stops: day3 }] });
+  }
+
+  function scenarioCouple() {
+    const stops = [
+      poi("travessa_paixao", 1, "戀愛巷", "Travessa da Paixão", "Travessa da Paixão", "street", 22.19719, 113.54040, "assets/poi/travessa_paixao.jpg", false, true, false, "15:00", "15:20", 0, "busy", "粉色斜巷最適合情侶影相，鄰近大三巴但更有氛圍。"),
+      poi("senado_square", 2, "議事亭前地", "Senado Square", "Largo do Senado", "heritage", 22.19398, 113.53995, "assets/poi/senado_square.jpg", true, false, false, "15:30", "16:00", 0, "packed", "葡式波浪地與粉彩建築，是第一次來澳門必拍點。"),
+      poi("rua_felicidade", 3, "福隆新街", "Rua da Felicidade", "Rua da Felicidade", "street", 22.19283, 113.53894, "assets/poi/rua_felicidade.jpg", false, true, true, "16:08", "16:38", 0, "moderate", "紅窗門老街，兼具電影感與舊區小店。"),
+      poi("yee_shun_milk", 4, "義順鮮奶", "Yee Shun Milk Company", "Leitaria I Son", "food", 22.19305, 113.53945, "assets/poi/yee_shun_milk.jpg", false, true, true, "16:46", "17:16", 90, "moderate", "雙皮燉奶老字號，適合拍照後食甜品。"),
+    ];
+    return scenarioBase("couple", { people: 2, anchorId: "senado_square", checkId: "travessa_paixao", anchorNameZh: "議事亭前地", anchorNameEn: "Senado Square", diversionFromZh: "議事亭前地", diversionFromEn: "Senado Square", diversionToZh: "福隆新街", diversionToEn: "Rua da Felicidade", diversionZh: "議事亭人流密集，轉入福隆新街影相兼帶旺舊區小店。", diversionEn: "Senado gets crowded, so the route shifts into Rua da Felicidade for photos and local shops.", searchLabelZh: "情侶拍照與街頭小食", searchLabelEn: "couple photo spots and street food", titleZh: "情侶舊區拍照小食半日遊", titleEn: "Couple Photo Spots and Street Food Walk", summaryZh: "路線圍繞戀愛巷、議事亭與福隆新街，兼顧拍照、舊區氛圍與甜品小食。", summaryEn: "A compact route through romantic lanes, Senado and Rua da Felicidade, balancing photos, old-town atmosphere and dessert.", daysData: [{ title: "Day 1 · 舊區拍照與甜品", stops }] });
+  }
+
+  function scenarioMandarin() {
+    const stops = [
+      poi("travessa_paixao", 1, "戀愛巷", "Travessa da Paixão", "Travessa da Paixão", "street", 22.19719, 113.54040, "assets/poi/travessa_paixao.jpg", false, true, false, "10:00", "10:20", 0, "moderate", "鄭家大屋週三休息，改以同區歷史巷弄作替代。"),
+      poi("lou_kau_mansion", 2, "盧家大屋", "Lou Kau Mansion", "Casa de Lou Kau", "heritage", 22.19460, 113.54020, "assets/poi/lou_kau_mansion.jpg", true, false, false, "10:30", "11:00", 0, "quiet", "同樣是中西合璧大宅，能補足歷史民居脈絡。"),
+      poi("rua_estalagens", 3, "草堆街與爛鬼樓", "Rua das Estalagens", "Rua das Estalagens", "street", 22.19488, 113.53868, "assets/poi/rua_estalagens.jpg", false, true, true, "11:08", "11:33", 0, "quiet", "孫中山藥局舊址一帶，歷史味濃、人流少。"),
+      poi("rua_cinco", 4, "十月初五街", "Rua de Cinco de Outubro", "Rua de Cinco de Outubro", "street", 22.19565, 113.53710, "assets/poi/rua_cinco.jpg", false, true, true, "11:43", "12:08", 0, "moderate", "內港老街與街坊小店，最能體驗澳門日常。"),
+    ];
+    return scenarioBase("mandarin", { people: 1, anchorId: "mandarin_house", checkId: "mandarin_house", anchorNameZh: "鄭家大屋", anchorNameEn: "Mandarin's House", crowdLabelZh: "當日休息", crowdLabelEn: "closed", diversionFromZh: "鄭家大屋", diversionFromEn: "Mandarin's House", diversionToZh: "戀愛巷", diversionToEn: "Travessa da Paixão", diversionZh: "鄭家大屋逢週三休息，改往同片區的戀愛巷與盧家大屋，保持歷史老街主題。", diversionEn: "Mandarin's House is closed on Wednesday, so the route switches to nearby Travessa da Paixão and Lou Kau Mansion.", recoveryZh: "鄭家大屋逢週三休息，已自動改為同區有開放的歷史巷弄。", recoveryEn: "Mandarin's House is closed on Wednesday, so the route switches to nearby open historic lanes.", searchLabelZh: "鄭家大屋附近歷史老街", searchLabelEn: "historic lanes near Mandarin's House", titleZh: "鄭家大屋附近歷史老街替代路線", titleEn: "Historic Lanes Near Mandarin's House", summaryZh: "針對星期三鄭家大屋休息，行程自動改為戀愛巷、盧家大屋、草堆街與十月初五街，保持同區歷史主題。", summaryEn: "Since Mandarin's House is closed on Wednesday, the route pivots to nearby historic lanes and mansions while keeping the same theme.", daysData: [{ title: "Day 1 · 歷史老街替代線", stops }] });
+  }
+
+  function scenarioTaipa() {
+    const stops = [
+      poi("rua_cunha", 1, "官也街", "Rua do Cunha", "Rua do Cunha", "street", 22.15408, 113.55695, "assets/poi/rua_cunha.jpg", false, true, true, "10:30", "11:10", 0, "busy", "氹仔美食手信街，半日遊最順路起點。"),
+      poi("taipa_houses", 2, "龍環葡韻", "Taipa Houses", "Casas-Museu da Taipa", "museum", 22.15389, 113.55944, "assets/poi/taipa_houses.jpg", false, false, false, "11:18", "11:58", 0, "moderate", "葡式建築與濕地景觀，行完官也街剛好散步。"),
+      poi("tai_lei_loi", 3, "大利來記豬扒包", "Tai Lei Loi Kei", "Tai Lei Loi Kei", "food", 22.15600, 113.55720, "assets/poi/tai_lei_loi.jpg", false, true, true, "12:08", "12:38", 90, "moderate", "氹仔豬扒包代表，半日美食重點。"),
+      poi("mok_yi_kei", 4, "莫義記大菜糕", "Mok Yi Kei", "Mok Yi Kei", "food", 22.15388, 113.55700, "", false, true, true, "12:46", "13:10", 80, "moderate", "官也街百年甜品老店，用大菜糕作結尾。"),
+    ];
+    return scenarioBase("taipa", { people: 1, anchorId: "rua_cunha", checkId: "rua_cunha", anchorNameZh: "官也街", anchorNameEn: "Rua do Cunha", crowdLabelZh: "擁擠", crowdLabelEn: "busy", diversionFromZh: "官也街", diversionFromEn: "Rua do Cunha", diversionToZh: "龍環葡韻", diversionToEn: "Taipa Houses", diversionZh: "官也街人多時，先轉到龍環葡韻散步拍照，再回到小店食豬扒包。", diversionEn: "When Rua do Cunha is busy, step over to Taipa Houses first, then return for local food.", searchLabelZh: "氹仔半日地道美食", searchLabelEn: "Taipa half-day local food", titleZh: "氹仔半日地道美食線", titleEn: "Taipa Half-Day Local Food Walk", summaryZh: "半日集中氹仔舊城區，官也街、龍環葡韻、豬扒包與大菜糕全部步行可達。", summaryEn: "A compact Taipa Village half-day route: Rua do Cunha, Taipa Houses, pork-chop bun and agar jelly all within walking distance.", daysData: [{ title: "Day 1 · 氹仔半日美食", stops }] });
+  }
+
+  function scenarioFirstTime() {
+    const stops = [
+      poi("ruins_st_paul", 1, "大三巴牌坊", "Ruins of St. Paul's", "Ruínas de São Paulo", "heritage", 22.19755, 113.54086, "assets/poi/ruins_st_paul.jpg", true, false, false, "09:45", "10:30", 0, "busy", "Macau's essential UNESCO landmark, placed early to avoid the heaviest crowds."),
+      poi("senado_square", 2, "議事亭前地", "Senado Square", "Largo do Senado", "heritage", 22.19398, 113.53995, "assets/poi/senado_square.jpg", true, false, false, "10:40", "11:10", 0, "busy", "The classic Portuguese pavement square, a must-see for first-time visitors."),
+      poi("rua_felicidade", 3, "福隆新街", "Rua da Felicidade", "Rua da Felicidade", "street", 22.19283, 113.53894, "assets/poi/rua_felicidade.jpg", false, true, true, "11:18", "11:48", 0, "moderate", "A red-shutter old lane that adds local texture beyond famous landmarks."),
+      poi("wong_chi_kei", 4, "黃枝記粥麵", "Wong Chi Kei Noodles", "Wong Chi Kei", "food", 22.19360, 113.53980, "assets/poi/wong_chi_kei.jpg", false, true, true, "12:00", "12:45", 140, "busy", "A reliable old-name noodle stop for local food."),
+    ];
+    return scenarioBase("first", { people: 1, titleZh: "第一次來澳門經典深度線", titleEn: "First-Time Macau Heritage and Old Streets", summaryZh: "第一次來澳門先看大三巴與議事亭，再轉入福隆新街與老字號食店，經典但不只停留在熱點。", summaryEn: "For a first visit: see St. Paul's and Senado, then move into Rua da Felicidade and an old-name noodle shop so the route goes beyond hotspots.", daysData: [{ title: "Day 1 · First-time Macau", stops }] });
   }
 
   function argstr(a) {
