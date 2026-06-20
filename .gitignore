@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.env
+.venv/
+venv/
+_shots/
+_test_output.txt
+backend/_test_output.txt
+backend/data/raw_scraped.json
+.DS_Store

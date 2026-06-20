@@ -1,0 +1,676 @@
+# -*- coding: utf-8 -*-
+"""
+Build the curated Macau POI knowledge base (pois.json) used by the agent.
+Merges real scraped coordinates/images (raw_scraped.json) with hand-authored,
+verifiable metadata: bilingual names, opening hours, costs, crowd popularity,
+old-district / local-business flags, tags, blurbs and Cantonese stories.
+"""
+import json
+import os
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+raw = json.load(open(os.path.join(HERE, "raw_scraped.json"), encoding="utf-8"))
+
+
+def hm(h, m=0):
+    return h * 60 + m
+
+
+# Hand-authored metadata. Coordinates/images come from raw_scraped.json when present.
+# `crowd` = baseline popularity 0..1 (how crowded at peak). hotspot=True -> midday peak shape.
+# open/close in minutes; closed = weekday indices closed (0=Mon ... 6=Sun). [] = open daily.
+META = {
+    # ---------------- UNESCO heritage hotspots (real wiki data) ----------------
+    "ruins_st_paul": dict(
+        zh="大三巴牌坊", en="Ruins of St. Paul's", pt="Ruínas de São Paulo",
+        cat="heritage", district="central", zone="澳門歷史城區", unesco=True, hotspot=True,
+        crowd=0.98, visit=45, cost=0, price=0, open=hm(0), close=hm(24), closed=[],
+        tags=["世界遺產", "地標", "拍照", "必去"],
+        blurb_zh="澳門最具代表性的地標，聖保祿教堂遺留的前壁，融合東西方雕刻。",
+        blurb_en="Macau's iconic landmark — the surviving façade of St. Paul's, blending East-West carvings.",
+        tip_zh="人潮極多，建議清晨或黃昏前往；旁邊戀愛巷更好拍。",
+        story_zh="呢座『三巴』其實係聖保祿學院教堂嘅前壁，1835年一場大火燒淨剩塊石牌坊。你抬頭望，最頂係銅鴿代表聖神，再落啲有耶穌、聖母，仲有牡丹同菊花——係當年中國工匠落嘅手影，中西合璧，全世界獨一無二。"),
+    "monte_fort": dict(
+        zh="大炮台", en="Mount Fortress", pt="Fortaleza do Monte",
+        cat="heritage", district="central", zone="澳門歷史城區", unesco=True, hotspot=True,
+        crowd=0.8, visit=35, cost=0, price=0, open=hm(7), close=hm(19), closed=[],
+        tags=["世界遺產", "古炮台", "城市全景", "免費"],
+        blurb_zh="緊鄰大三巴的17世紀軍事要塞，居高臨下俯瞰澳門半島全景。",
+        blurb_en="A 17th-century fortress next to the Ruins, offering panoramic views of the peninsula.",
+        tip_zh="同大三巴一齊行最順路，上面有澳門博物館。"),
+    "senado_square": dict(
+        zh="議事亭前地", en="Senado Square", pt="Largo do Senado",
+        cat="heritage", district="central", zone="澳門歷史城區", unesco=True, hotspot=True,
+        crowd=0.95, visit=30, cost=0, price=0, open=hm(0), close=hm(24), closed=[],
+        tags=["世界遺產", "波浪石地", "購物", "必去"],
+        blurb_zh="鋪滿葡式碎石波浪紋的城市客廳，四周是粉彩色歐式建築。",
+        blurb_en="The city's living room paved with Portuguese wave-pattern stones, ringed by pastel colonial buildings.",
+        tip_zh="周末同假期人山人海，平日上午較舒服。"),
+    "leal_senado": dict(
+        zh="民政總署大樓", en="Leal Senado Building", pt="Edifício do Leal Senado",
+        cat="heritage", district="central", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.6, visit=25, cost=0, price=0, open=hm(9), close=hm(21), closed=[],
+        tags=["世界遺產", "葡式建築", "花園", "免費"],
+        blurb_zh="議事亭前地對面的新古典葡式建築，內有寧靜的葡式花園與圖書館。",
+        blurb_en="A neoclassical Portuguese building facing the square, with a tranquil garden and library."),
+    "st_dominic": dict(
+        zh="玫瑰堂", en="St. Dominic's Church", pt="Igreja de São Domingos",
+        cat="temple", district="central", zone="澳門歷史城區", unesco=True, hotspot=True,
+        crowd=0.85, visit=20, cost=0, price=0, open=hm(10), close=hm(18), closed=[],
+        tags=["世界遺產", "巴洛克", "鵝黃色", "拍照"],
+        blurb_zh="鵝黃色巴洛克教堂，內設聖物寶庫，是議事亭前地的視覺焦點。",
+        blurb_en="A butter-yellow Baroque church with a sacred art treasury, a focal point off Senado Square."),
+    "lou_kau_mansion": dict(
+        zh="盧家大屋", en="Lou Kau Mansion", pt="Casa de Lou Kau",
+        cat="heritage", district="central", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.4, visit=30, cost=0, price=0, open=hm(9), close=hm(19), closed=[0],
+        tags=["世界遺產", "嶺南民居", "中西合璧", "免費", "冷門靚位"],
+        blurb_zh="隱身鬧市的青磚大宅，嶺南風格融合西式裝飾，遊客稀少卻極具韻味。",
+        blurb_en="A grey-brick Cantonese mansion hidden downtown — Lingnan style with Western touches, rarely crowded.",
+        tip_zh="逢星期一休息；就喺大三巴落山幾步，好多人錯過。"),
+    "sam_kai_vui_kun": dict(
+        zh="三街會館（關帝廟）", en="Sam Kai Vui Kun", pt="Templo Kuan Tai",
+        cat="temple", district="central", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.35, visit=15, cost=0, price=0, open=hm(8), close=hm(18), closed=[],
+        tags=["世界遺產", "關帝廟", "商會舊址", "免費", "冷門"],
+        blurb_zh="昔日華商議事的會館兼關帝廟，藏身營地大街，香火與歷史並存。",
+        blurb_en="A former Chinese merchants' guild hall and Kuan Tai temple tucked in Rua dos Mercadores."),
+    "na_tcha_temple": dict(
+        zh="哪吒廟", en="Na Tcha Temple", pt="Templo de Na Tcha",
+        cat="temple", district="central", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.45, visit=15, cost=0, price=0, open=hm(8), close=hm(17), closed=[],
+        tags=["世界遺產", "小廟", "緊鄰大三巴", "免費"],
+        blurb_zh="緊貼大三巴與舊城牆的迷你廟宇，見證澳門多元宗教共存。",
+        blurb_en="A tiny temple beside the Ruins and old city wall, symbolising Macau's religious diversity."),
+    "dom_pedro_theatre": dict(
+        zh="崗頂劇院", en="Dom Pedro V Theatre", pt="Teatro Dom Pedro V",
+        cat="heritage", district="central", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.4, visit=20, cost=0, price=0, open=hm(10), close=hm(18), closed=[1],
+        tags=["世界遺產", "綠色劇院", "崗頂前地", "免費"],
+        blurb_zh="中國第一座西式劇院，薄荷綠新古典外牆，靜立於崗頂前地。",
+        blurb_en="China's first Western-style theatre, a mint-green neoclassical gem on St. Augustine's Square.",
+        tip_zh="逢星期二休息；崗頂前地一帶遊人少，極適合慢行。"),
+    "ho_tung_library": dict(
+        zh="何東圖書館", en="Sir Robert Ho Tung Library", pt="Biblioteca Sir Robert Ho Tung",
+        cat="heritage", district="central", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.3, visit=25, cost=0, price=0, open=hm(10), close=hm(19), closed=[],
+        tags=["世界遺產", "花園圖書館", "靜謐", "免費", "冷門靚位"],
+        blurb_zh="百年花園洋房改造的圖書館，後院綠意盎然，是鬧市中的綠洲。",
+        blurb_en="A century-old garden villa turned library, with a leafy courtyard — an oasis in the old town."),
+    "st_augustine": dict(
+        zh="聖奧斯定教堂", en="St. Augustine's Church", pt="Igreja de Santo Agostinho",
+        cat="temple", district="central", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.35, visit=15, cost=0, price=0, open=hm(10), close=hm(18), closed=[],
+        tags=["世界遺產", "崗頂前地", "苦難耶穌", "免費"],
+        blurb_zh="崗頂前地上的古老教堂，每年苦難善耶穌聖像出遊由此起行。",
+        blurb_en="An ancient church on St. Augustine's Square, start of the annual Passion procession."),
+    "a_ma_temple": dict(
+        zh="媽閣廟", en="A-Ma Temple", pt="Templo de A-Má",
+        cat="temple", district="inner_harbour", zone="澳門歷史城區", unesco=True, hotspot=True,
+        crowd=0.75, visit=30, cost=0, price=0, open=hm(7), close=hm(18), closed=[],
+        tags=["世界遺產", "媽祖", "澳門起源", "免費"],
+        blurb_zh="澳門最古老的廟宇，『Macau』之名正源於此。依山而建，海香裊裊。",
+        blurb_en="Macau's oldest temple — the very source of the name 'Macau'. Built into the hillside by the sea.",
+        story_zh="話說當年葡萄牙人喺呢度上岸，問本地人呢度叫咩，街坊以為佢問緊間廟，答『媽閣』(Maa-Gok)，葡人聽落變咗『Macau』——成個城市嘅名就係咁嚟。"),
+    "lilau_square": dict(
+        zh="亞婆井前地", en="Lilau Square", pt="Largo do Lilau",
+        cat="heritage", district="inner_harbour", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.3, visit=15, cost=0, price=0, open=hm(0), close=hm(24), closed=[],
+        tags=["世界遺產", "葡人聚居", "老榕樹", "免費", "冷門靚位"],
+        blurb_zh="昔日澳門主要水源地，葡人最早聚居處，老榕樹下保留南歐風情。",
+        blurb_en="Once Macau's main water source and earliest Portuguese settlement, with old banyan trees.",
+        story_zh="有句葡文老話：『飲過亞婆井水，忘唔到澳門』。以前呢度係城裡最重要嘅水井，葡萄牙人就喺周圍起屋定居，所以你會見到好濃嘅南歐味。"),
+    "mandarin_house": dict(
+        zh="鄭家大屋", en="Mandarin's House", pt="Casa do Mandarim",
+        cat="heritage", district="inner_harbour", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.45, visit=40, cost=0, price=0, open=hm(10), close=hm(18), closed=[2],
+        tags=["世界遺產", "嶺南大宅", "鄭觀應", "免費", "必看"],
+        blurb_zh="思想家鄭觀應故居，澳門現存最大的中式宅院，庭院深深、磚雕精美。",
+        blurb_en="Home of reformer Zheng Guanying — Macau's largest surviving Chinese residential compound.",
+        tip_zh="逢星期三休息（公眾假期除外）；最後入場約 17:30。",
+        story_zh="呢度係《盛世危言》作者鄭觀應住過嘅大屋，據講孫中山先生都嚟過。成個大宅有六十幾間房，中式天井加上西式百葉窗，行入去好似穿越返清末。"),
+    "st_lawrence": dict(
+        zh="聖老楞佐教堂（風順堂）", en="St. Lawrence's Church", pt="Igreja de São Lourenço",
+        cat="temple", district="inner_harbour", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.35, visit=20, cost=0, price=0, open=hm(10), close=hm(17), closed=[],
+        tags=["世界遺產", "風順堂", "華麗", "免費"],
+        blurb_zh="澳門三大古教堂之一，俗稱『風順堂』，昔日葡人為出海家人祈求順風。",
+        blurb_en="One of Macau's three oldest churches, where Portuguese families once prayed for fair winds."),
+    "moorish_barracks": dict(
+        zh="港務局大樓（嚤囉兵營）", en="Moorish Barracks", pt="Quartel dos Mouros",
+        cat="heritage", district="inner_harbour", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.3, visit=15, cost=0, price=0, open=hm(9), close=hm(18), closed=[],
+        tags=["世界遺產", "摩爾風格", "拱廊", "免費", "冷門靚位"],
+        blurb_zh="伊斯蘭摩爾風格的黃色拱廊建築，原為印度兵營，臨海而立極具異國情調。",
+        blurb_en="A yellow Moorish-style arcaded building, originally barracks for Indian troops by the sea."),
+    "guia_fortress": dict(
+        zh="東望洋炮台與燈塔", en="Guia Fortress & Lighthouse", pt="Fortaleza da Guia",
+        cat="view", district="guia", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.5, visit=40, cost=0, price=0, open=hm(9), close=hm(18), closed=[],
+        tags=["世界遺產", "燈塔", "全城最高點", "纜車", "免費"],
+        blurb_zh="中國海岸最古老的燈塔，登上松山可俯瞰全澳，內有珍貴壁畫。",
+        blurb_en="The oldest lighthouse on the China coast, atop Guia Hill with sweeping city views and rare frescoes.",
+        tip_zh="可搭松山纜車（全球最短）上山。"),
+    "camoes_garden": dict(
+        zh="白鴿巢公園與東方基金會", en="Camões Garden & Casa Garden", pt="Jardim de Camões",
+        cat="garden", district="central", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.3, visit=30, cost=0, price=0, open=hm(6), close=hm(22), closed=[],
+        tags=["世界遺產", "公園", "老樹", "本地人日常", "免費"],
+        blurb_zh="綠蔭如蓋的老公園，本地長者晨運下棋之地，旁為東方基金會白色別墅。",
+        blurb_en="A leafy old park where locals do tai-chi and play chess, next to the white Casa Garden villa."),
+
+    # ---------------- Old streets — the heart of revitalisation (导流目标) ----------------
+    "rua_felicidade": dict(
+        zh="福隆新街", en="Rua da Felicidade", pt="Rua da Felicidade",
+        cat="street", district="central", zone="舊城區", unesco=False, hotspot=False,
+        crowd=0.55, visit=30, cost=0, price=0, open=hm(0), close=hm(24), closed=[],
+        old_district=True, local_business=True,
+        lat=22.19283, lng=113.53894,
+        tags=["老街", "紅窗門", "手信", "電影取景", "本地小店"],
+        blurb_zh="兩排朱紅木窗的百年青樓老街，今為手信與老字號食肆聚集地，《歲月神偷》取景地。",
+        blurb_en="A century-old street of vermilion shutters, once a pleasure quarter, now lined with old-name eateries and snack shops.",
+        story_zh="福隆新街喺清末民初係澳門最旺嘅『花街』，兩邊全部酒樓茶館。你而家見到嘅紅色木窗花，就係當年青樓嘅痕跡。後尾洗盡鉛華，變咗手信街，但係嗰種舊澳門嘅味道一直都喺度。"),
+    "rua_cinco": dict(
+        zh="十月初五街", en="Rua de Cinco de Outubro", pt="Rua de Cinco de Outubro",
+        cat="street", district="inner_harbour", zone="舊城區", unesco=False, hotspot=False,
+        crowd=0.4, visit=25, cost=0, price=0, open=hm(0), close=hm(24), closed=[],
+        old_district=True, local_business=True,
+        lat=22.19565, lng=113.53710,
+        tags=["老街", "內港", "老字號", "本地生活", "本地小店"],
+        blurb_zh="因 TVB 劇而街知巷聞的內港老街，老餅家、茶莊、海味舖仍在營業，滿載市井氣息。",
+        blurb_en="An Inner Harbour old street famed by a TVB drama — old bakeries, tea houses and dried-seafood shops still trade here.",
+        story_zh="十月初五街個名，係紀念葡萄牙建立共和國嗰日。呢條街以前係內港最旺嘅商業街，𠵇家仲有好多幾十年嘅老舖——梁慶記、成記粥、咸蝦燦……行落去就好似翻返轉頭幾十年前嘅澳門。"),
+    "travessa_paixao": dict(
+        zh="戀愛巷", en="Travessa da Paixão", pt="Travessa da Paixão",
+        cat="street", district="central", zone="舊城區", unesco=False, hotspot=True,
+        crowd=0.65, visit=15, cost=0, price=0, open=hm(0), close=hm(24), closed=[],
+        old_district=True, local_business=False,
+        lat=22.19719, lng=113.54040,
+        tags=["老街", "粉色建築", "拍照熱點", "婚紗", "緊鄰大三巴"],
+        blurb_zh="緊鄰大三巴的粉色與鵝黃斜巷，葡式碎石路面，是澳門最浪漫的打卡點。",
+        blurb_en="A pastel pink-and-yellow lane beside the Ruins — Macau's most romantic photo spot.",
+        tip_zh="名字其實源自葡文『Paixão』(激情/受難)，唔關拍拖事，但勝在靚！"),
+    "rua_estalagens": dict(
+        zh="草堆街與爛鬼樓", en="Rua das Estalagens", pt="Rua das Estalagens",
+        cat="street", district="central", zone="舊城區", unesco=False, hotspot=False,
+        crowd=0.3, visit=25, cost=0, price=0, open=hm(0), close=hm(24), closed=[],
+        old_district=True, local_business=True,
+        lat=22.19488, lng=113.53868,
+        tags=["老街", "中藥老舖", "古玩", "孫中山", "本地小店", "冷門"],
+        blurb_zh="昔日客棧與藥材集散地，草堆街80號為孫中山開設的中西藥局舊址，巷內藏古玩與懷舊小店。",
+        blurb_en="An old inn-and-herb street; No.80 was Sun Yat-sen's pharmacy. Antiques and nostalgic shops hide in its lanes.",
+        story_zh="草堆街80號，係孫中山先生 1892 年喺澳門開嘅『中西藥局』舊址。佢當年一邊行醫一邊講革命。成條街以前係賣藥材同開客棧嘅，𠵇家仲有古玩舖，好多本地人都未必行勻。"),
+    "guan_qian": dict(
+        zh="關前正街", en="Rua de Nossa Senhora do Amparo", pt="Rua de N. S. do Amparo",
+        cat="street", district="central", zone="舊城區", unesco=False, hotspot=False,
+        crowd=0.35, visit=25, cost=0, price=1, open=hm(11), close=hm(20), closed=[],
+        old_district=True, local_business=True,
+        lat=22.19520, lng=113.53930,
+        tags=["文創", "咖啡店", "古著", "年輕主理人", "本地小店"],
+        blurb_zh="近年由年輕主理人活化的文創老街，古著、咖啡、本地設計小店進駐，新舊交融。",
+        blurb_en="A revitalised creative lane — vintage shops, indie cafés and local designers breathing new life into old houses.",
+        tip_zh="舊區活化最佳示範：老建築 + 後生創業，最啱慢慢嘆杯咖啡。"),
+    "penha_church": dict(
+        zh="西望洋聖堂（主教山小堂）", en="Penha Church", pt="Capela de Nossa Senhora da Penha",
+        cat="view", district="inner_harbour", zone="舊城區", unesco=False, hotspot=False,
+        crowd=0.4, visit=25, cost=0, price=0, open=hm(9), close=hm(17, 30), closed=[],
+        old_district=False, local_business=False,
+        lat=22.18693, lng=113.53455,
+        tags=["教堂", "山頂景觀", "婚紗勝地", "免費", "靚景"],
+        blurb_zh="主教山頂的白色聖堂，可俯瞰西灣大橋與南灣夜景，是澳門最美的觀景台之一。",
+        blurb_en="A white chapel atop Penha Hill overlooking the bridges and bay — one of Macau's finest viewpoints."),
+
+    # ---------------- Taipa / Coloane ----------------
+    "rua_cunha": dict(
+        zh="官也街", en="Rua do Cunha", pt="Rua do Cunha",
+        cat="street", district="taipa", zone="氹仔舊城區", unesco=False, hotspot=True,
+        crowd=0.8, visit=40, cost=0, price=1, open=hm(10), close=hm(22), closed=[],
+        old_district=True, local_business=True,
+        tags=["美食街", "手信", "氹仔", "本地小店", "必食"],
+        blurb_zh="氹仔最熱鬧的美食手信街，豬扒包、大菜糕、蛋卷雲集，短短一條卻臥虎藏龍。",
+        blurb_en="Taipa's liveliest food street — pork-chop buns, agar jelly and egg rolls packed into one short lane."),
+    "taipa_houses": dict(
+        zh="龍環葡韻", en="Taipa Houses", pt="Casas-Museu da Taipa",
+        cat="museum", district="taipa", zone="氹仔", unesco=False, hotspot=True,
+        crowd=0.7, visit=40, cost=0, price=0, open=hm(10), close=hm(18), closed=[0],
+        tags=["葡式碧綠屋", "濕地", "拍照", "婚紗", "免費"],
+        blurb_zh="五幢薄荷綠葡式別墅臨湖而立，前身為葡人官邸，現為博物館群。",
+        blurb_en="Five mint-green Portuguese villas by a wetland lake, former officials' residences, now museums.",
+        tip_zh="逢星期一休館；黃昏燈光亮起最靚。"),
+    "st_francis_coloane": dict(
+        zh="路環聖方濟各聖堂", en="Chapel of St. Francis Xavier", pt="Capela de São Francisco Xavier",
+        cat="temple", district="coloane", zone="路環", unesco=False, hotspot=False,
+        crowd=0.4, visit=25, cost=0, price=0, open=hm(9, 30), close=hm(17, 30), closed=[],
+        old_district=True, local_business=False,
+        tags=["鵝黃教堂", "路環village", "寧靜", "免費", "靚景"],
+        blurb_zh="路環村海邊的鵝黃巴洛克小教堂，前方廣場椰影搖曳，是慢活的代名詞。",
+        blurb_en="A cream-yellow Baroque chapel by Coloane village waterfront — the very image of slow living."),
+    "macau_tower": dict(
+        zh="澳門旅遊塔", en="Macau Tower", pt="Torre de Macau",
+        cat="view", district="inner_harbour", zone="南灣", unesco=False, hotspot=True,
+        crowd=0.6, visit=60, cost=195, price=3, open=hm(10), close=hm(21), closed=[],
+        tags=["地標", "笨豬跳", "觀景台", "全景"],
+        blurb_zh="338 米高的觀光塔，可玩世界最高笨豬跳，360 度飽覽珠江口。",
+        blurb_en="A 338m tower with the world's highest bungee jump and 360° views of the Pearl River estuary.",
+        tip_zh="觀光門票約 MOP 195；落日時段最受歡迎。"),
+
+    # ---------------- Local food & old shops (local_business 导流目标) ----------------
+    "wong_chi_kei": dict(
+        zh="黃枝記粥麵（議事亭店）", en="Wong Chi Kei Noodles", pt="Wong Chi Kei",
+        cat="food", district="central", zone="議事亭前地", unesco=False, hotspot=False,
+        crowd=0.55, visit=45, cost=70, price=2, open=hm(8, 30), close=hm(23), closed=[],
+        old_district=True, local_business=True,
+        lat=22.19360, lng=113.53980,
+        tags=["蝦子撈麵", "竹昇麵", "米芝蓮推介", "老字號", "本地小店"],
+        blurb_zh="逾八十年的竹昇打麵老店，招牌蝦子撈麵與鮮蝦雲吞，曾獲米芝蓮推介。",
+        blurb_en="An 80-year-old bamboo-pressed noodle house — signature shrimp-roe noodles and prawn wontons, a Michelin pick."),
+    "yee_shun_milk": dict(
+        zh="義順鮮奶", en="Yee Shun Milk Company", pt="Leitaria I Son",
+        cat="food", district="central", zone="議事亭前地", unesco=False, hotspot=False,
+        crowd=0.5, visit=30, cost=45, price=1, open=hm(10), close=hm(22), closed=[],
+        old_district=True, local_business=True,
+        lat=22.19305, lng=113.53945,
+        tags=["雙皮燉奶", "甜品", "老字號", "本地小店"],
+        blurb_zh="源自順德的燉奶老店，馳名雙皮燉奶與薑汁撞奶，奶香濃滑。",
+        blurb_en="A famed steamed-milk-pudding shop — silky 'double-skin' milk and ginger milk curd."),
+    "hang_yau_fishball": dict(
+        zh="恆友魚蛋（大堂巷）", en="Hang Yau Curry Fishballs", pt="Hang Yau",
+        cat="food", district="central", zone="大堂巷", unesco=False, hotspot=False,
+        crowd=0.6, visit=20, cost=35, price=1, open=hm(11), close=hm(21), closed=[],
+        old_district=True, local_business=True,
+        lat=22.19330, lng=113.54030,
+        tags=["咖喱魚蛋", "街頭小食", "本地排隊", "本地小店"],
+        blurb_zh="大堂巷內長期排隊的咖喱魚蛋車仔檔，自選餸料、咖喱濃郁，本地人至愛。",
+        blurb_en="A perpetually-queued curry fishball stall in Travessa da Sé — pick your skewers, drown in curry."),
+    "tai_lei_loi": dict(
+        zh="大利來記豬扒包", en="Tai Lei Loi Kei Pork Chop Bun", pt="Tai Lei Loi Kei",
+        cat="food", district="taipa", zone="氹仔官也街", unesco=False, hotspot=False,
+        crowd=0.6, visit=30, cost=45, price=1, open=hm(8), close=hm(18), closed=[],
+        old_district=True, local_business=True,
+        lat=22.15600, lng=113.55720,
+        tags=["豬扒包", "氹仔名物", "老字號", "本地小店", "必食"],
+        blurb_zh="氹仔豬扒包的代名詞，現炸厚切豬扒夾脆菠蘿包，每日限量。",
+        blurb_en="The face of Taipa's pork-chop bun — a thick fried chop in a crisp pineapple bun, daily limited."),
+    "lord_stow": dict(
+        zh="安德魯餅店（路環總店）", en="Lord Stow's Bakery", pt="Lord Stow's Bakery",
+        cat="food", district="coloane", zone="路環市區", unesco=False, hotspot=True,
+        crowd=0.7, visit=25, cost=40, price=1, open=hm(7), close=hm(22), closed=[],
+        old_district=True, local_business=True,
+        lat=22.11760, lng=113.55480,
+        tags=["葡撻", "路環", "創始店", "必食"],
+        blurb_zh="葡式蛋撻的鼻祖，1989 年由英國人 Andrew 在路環創立，焦香酥脆。",
+        blurb_en="The birthplace of the Macanese egg tart — created by Englishman Andrew Stow in Coloane, 1989."),
+    "mok_yi_kei": dict(
+        zh="莫義記大菜糕", en="Mok Yi Kei", pt="Mok Yi Kei",
+        cat="food", district="taipa", zone="氹仔官也街", unesco=False, hotspot=False,
+        crowd=0.45, visit=25, cost=40, price=1, open=hm(10), close=hm(21), closed=[],
+        old_district=True, local_business=True,
+        lat=22.15388, lng=113.55700,
+        tags=["大菜糕", "榴槤雪糕", "百年老店", "本地小店"],
+        blurb_zh="官也街百年甜品老店，招牌大菜糕與榴槤雪糕，消暑首選。",
+        blurb_en="A century-old Rua do Cunha dessert shop — signature agar jelly and durian ice cream."),
+
+    # ---------------- Expanded Macau Peninsula POIs (60+ knowledge base) ----------------
+    "macau_museum": dict(
+        zh="澳門博物館", en="Macao Museum", pt="Museu de Macau",
+        cat="museum", district="central", zone="大炮台", unesco=False, hotspot=False,
+        crowd=0.55, visit=60, cost=15, price=1, open=hm(10), close=hm(18), closed=[0],
+        lat=22.19762, lng=113.54084,
+        tags=["博物館", "澳門歷史", "室內", "親子", "雨天備案"],
+        blurb_zh="位於大炮台內，系統展示澳門從漁村、商港到世界旅遊城市的歷史。",
+        blurb_en="A museum inside Mount Fortress telling Macau's story from fishing village to world tourism city.",
+        tip_zh="逢星期一休館；雨天或炎熱天氣非常適合。"),
+    "holy_house_mercy": dict(
+        zh="仁慈堂大樓", en="Holy House of Mercy", pt="Santa Casa da Misericórdia",
+        cat="heritage", district="central", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.35, visit=20, cost=0, price=0, open=hm(10), close=hm(17, 30), closed=[0],
+        lat=22.19373, lng=113.53985,
+        tags=["世界遺產", "白色立面", "慈善歷史", "議事亭"],
+        blurb_zh="議事亭前地旁的白色新古典建築，見證澳門早期慈善與醫療制度。",
+        blurb_en="A white neoclassical landmark by Senado Square, tied to Macau's early charity and healthcare history."),
+    "cathedral_macau": dict(
+        zh="主教座堂", en="Cathedral of the Nativity of Our Lady", pt="Sé Catedral",
+        cat="temple", district="central", zone="大堂前地", unesco=True, hotspot=False,
+        crowd=0.4, visit=20, cost=0, price=0, open=hm(9), close=hm(18), closed=[],
+        lat=22.19373, lng=113.54073,
+        tags=["世界遺產", "教堂", "大堂前地", "寧靜"],
+        blurb_zh="澳門天主教主教座堂，位於大堂前地，外觀樸素而莊重。",
+        blurb_en="Macau's Catholic cathedral on Cathedral Square, modest outside and quietly solemn within."),
+    "old_city_walls": dict(
+        zh="舊城牆遺址", en="Section of the Old City Walls", pt="Troço das Antigas Muralhas",
+        cat="heritage", district="central", zone="澳門歷史城區", unesco=True, hotspot=False,
+        crowd=0.35, visit=15, cost=0, price=0, open=hm(0), close=hm(24), closed=[],
+        lat=22.19733, lng=113.54008,
+        tags=["世界遺產", "防禦遺址", "大三巴旁", "冷門"],
+        blurb_zh="以夯土、砂石與蠔殼灰建成的城牆遺段，緊貼大三巴卻常被忽略。",
+        blurb_en="A surviving rammed-earth city wall beside the Ruins, often missed by hurried visitors."),
+    "st_anthony_church": dict(
+        zh="聖安多尼教堂（花王堂）", en="St. Anthony's Church", pt="Igreja de Santo António",
+        cat="temple", district="central", zone="花王堂區", unesco=True, hotspot=False,
+        crowd=0.3, visit=20, cost=0, price=0, open=hm(9), close=hm(18), closed=[],
+        lat=22.19958, lng=113.53935,
+        tags=["世界遺產", "古教堂", "婚禮", "寧靜"],
+        blurb_zh="澳門最古老教堂之一，因舉行婚禮多而有「花王堂」之稱。",
+        blurb_en="One of Macau's oldest churches, affectionately linked with weddings and local parish life."),
+    "tap_seac_square": dict(
+        zh="塔石廣場", en="Tap Seac Square", pt="Praça do Tap Seac",
+        cat="street", district="central", zone="塔石", unesco=False, hotspot=False,
+        crowd=0.45, visit=25, cost=0, price=0, open=hm(0), close=hm(24), closed=[],
+        old_district=True, local_business=False,
+        lat=22.19786, lng=113.54447,
+        tags=["廣場", "文創活動", "葡式建築", "本地日常"],
+        blurb_zh="紅磚地面的城市廣場，周邊葡式建築整齊，常有書展、文創市集與社區活動。",
+        blurb_en="A red-paved civic square ringed by Portuguese buildings, often hosting book fairs and creative markets."),
+    "tap_seac_gallery": dict(
+        zh="塔石藝文館", en="Tap Seac Gallery", pt="Galeria Tap Seac",
+        cat="museum", district="central", zone="塔石", unesco=False, hotspot=False,
+        crowd=0.3, visit=30, cost=0, price=0, open=hm(10), close=hm(21), closed=[0],
+        lat=22.19821, lng=113.54479,
+        tags=["藝文館", "展覽", "文創", "免費", "室內"],
+        blurb_zh="由歷史建築改造的展覽空間，適合把藝術與老城散步串在一起。",
+        blurb_en="A heritage building turned gallery, pairing contemporary exhibitions with an old-town walk."),
+    "lou_lim_ioc_garden": dict(
+        zh="盧廉若公園", en="Lou Lim Ieoc Garden", pt="Jardim de Lou Lim Ieoc",
+        cat="garden", district="central", zone="荷蘭園", unesco=False, hotspot=False,
+        crowd=0.35, visit=35, cost=0, price=0, open=hm(6), close=hm(21), closed=[],
+        lat=22.19928, lng=113.54644,
+        tags=["蘇州園林", "亭台水榭", "本地人日常", "免費"],
+        blurb_zh="澳門少見的中式園林，曲橋、池塘、亭台相映，是本地人散步歇腳的綠洲。",
+        blurb_en="A rare Suzhou-style garden in Macau with ponds, bridges and pavilions — a local green oasis."),
+    "red_market": dict(
+        zh="紅街市", en="Red Market", pt="Mercado Vermelho",
+        cat="heritage", district="central", zone="高士德", unesco=False, hotspot=False,
+        crowd=0.5, visit=25, cost=0, price=0, open=hm(7), close=hm(19), closed=[],
+        old_district=True, local_business=True,
+        lat=22.20355, lng=113.54430,
+        tags=["街市", "紅磚建築", "本地生活", "舊區"],
+        blurb_zh="1930年代紅磚街市建築，是觀察澳門日常買餸文化的好地方。",
+        blurb_en="A 1930s red-brick market building, ideal for seeing everyday Macau shopping culture."),
+    "three_lamps": dict(
+        zh="三盞燈（嘉路米耶圓形地）", en="Three Lamps District", pt="Rotunda de Carlos da Maia",
+        cat="street", district="central", zone="三盞燈", unesco=False, hotspot=False,
+        crowd=0.45, visit=30, cost=0, price=1, open=hm(0), close=hm(24), closed=[],
+        old_district=True, local_business=True,
+        lat=22.20210, lng=113.54610,
+        tags=["東南亞美食", "街市", "本地生活", "舊區小店"],
+        blurb_zh="緬甸、泰國、印尼風味小店密集的舊區生活圈，最能看到澳門多元社群。",
+        blurb_en="A multicultural neighbourhood of Burmese, Thai and Indonesian eateries around a local roundabout."),
+    "lin_fong_temple": dict(
+        zh="蓮峰廟", en="Lin Fong Temple", pt="Templo de Lin Fong",
+        cat="temple", district="central", zone="關閘附近", unesco=False, hotspot=False,
+        crowd=0.3, visit=25, cost=0, price=0, open=hm(7), close=hm(18), closed=[],
+        lat=22.20920, lng=113.54830,
+        tags=["古廟", "林則徐", "冷門", "免費"],
+        blurb_zh="相傳林則徐曾在此接見葡官，古樹與石刻保留濃厚歷史氣息。",
+        blurb_en="An old temple associated with Lin Zexu, with ancient trees and stone inscriptions."),
+    "kun_iam_temple": dict(
+        zh="普濟禪院（觀音堂）", en="Kun Iam Temple", pt="Templo de Kun Iam Tong",
+        cat="temple", district="guia", zone="望廈/美副將", unesco=False, hotspot=False,
+        crowd=0.35, visit=35, cost=0, price=0, open=hm(7), close=hm(18), closed=[],
+        lat=22.20345, lng=113.55248,
+        tags=["古剎", "觀音", "望廈條約", "寧靜"],
+        blurb_zh="澳門三大古廟之一，與《望廈條約》簽訂地相關，庭院深幽。",
+        blurb_en="One of Macau's great old temples, linked to the Treaty of Wanghia, with peaceful courtyards."),
+    "kun_iam_statue": dict(
+        zh="觀音蓮花苑", en="Kun Iam Ecumenical Centre", pt="Centro Ecuménico Kun Iam",
+        cat="view", district="inner_harbour", zone="新口岸", unesco=False, hotspot=False,
+        crowd=0.4, visit=25, cost=0, price=0, open=hm(10), close=hm(18), closed=[5],
+        lat=22.19080, lng=113.55460,
+        tags=["海濱", "觀音像", "新口岸", "靚景"],
+        blurb_zh="立於海面的現代觀音像，融合佛教與當代雕塑語言，海風開揚。",
+        blurb_en="A modern bronze Kun Iam statue set by the waterfront, blending spirituality and contemporary form."),
+    "fishermans_wharf": dict(
+        zh="澳門漁人碼頭", en="Macau Fisherman's Wharf", pt="Doca dos Pescadores",
+        cat="view", district="guia", zone="外港", unesco=False, hotspot=True,
+        crowd=0.55, visit=45, cost=0, price=1, open=hm(0), close=hm(24), closed=[],
+        lat=22.19290, lng=113.55870,
+        tags=["海濱", "羅馬建築", "拍照", "親子"],
+        blurb_zh="外港旁的主題海濱區，羅馬競技場外觀與海景適合拍照散步。",
+        blurb_en="A themed waterfront beside the ferry terminal with Roman-style façades and harbour views."),
+    "grand_prix_museum": dict(
+        zh="澳門大賽車博物館", en="Macao Grand Prix Museum", pt="Museu do Grande Prémio de Macau",
+        cat="museum", district="guia", zone="新口岸", unesco=False, hotspot=False,
+        crowd=0.5, visit=60, cost=80, price=2, open=hm(10), close=hm(18), closed=[1],
+        lat=22.19060, lng=113.55210,
+        tags=["賽車", "博物館", "互動體驗", "室內"],
+        blurb_zh="展示澳門格蘭披治大賽車歷史，設有賽車、頭盔與互動體驗。",
+        blurb_en="A museum dedicated to the Macau Grand Prix, with race cars, helmets and interactive exhibits."),
+    "science_center": dict(
+        zh="澳門科學館", en="Macao Science Center", pt="Centro de Ciência de Macau",
+        cat="museum", district="guia", zone="新口岸海濱", unesco=False, hotspot=False,
+        crowd=0.45, visit=75, cost=50, price=2, open=hm(10), close=hm(18), closed=[3],
+        lat=22.18690, lng=113.55920,
+        tags=["親子", "科學", "室內", "海濱"],
+        blurb_zh="貝聿銘團隊設計的銀色圓錐建築，展覽互動性高，適合親子與雨天。",
+        blurb_en="A silver cone-shaped science centre designed by Pei Partnership Architects, great for families and rainy days."),
+
+    # ---------------- Expanded Taipa / Cotai POIs ----------------
+    "taipa_village": dict(
+        zh="氹仔舊城區", en="Taipa Village", pt="Vila da Taipa",
+        cat="street", district="taipa", zone="氹仔舊城區", unesco=False, hotspot=False,
+        crowd=0.55, visit=45, cost=0, price=1, open=hm(0), close=hm(24), closed=[],
+        old_district=True, local_business=True,
+        lat=22.15380, lng=113.55660,
+        tags=["氹仔老街", "葡式建築", "美食", "本地小店"],
+        blurb_zh="官也街外圍的氹仔老城肌理仍在，葡式小屋、窄巷與街坊食店交錯。",
+        blurb_en="Beyond Rua do Cunha, Taipa Village keeps its old lanes, Portuguese houses and neighbourhood eateries."),
+    "pak_tai_temple_taipa": dict(
+        zh="氹仔北帝廟", en="Pak Tai Temple, Taipa", pt="Templo de Pak Tai",
+        cat="temple", district="taipa", zone="氹仔舊城區", unesco=False, hotspot=False,
+        crowd=0.3, visit=20, cost=0, price=0, open=hm(8), close=hm(18), closed=[],
+        old_district=True, local_business=False,
+        lat=22.15333, lng=113.55644,
+        tags=["北帝", "氹仔古廟", "冷門", "免費"],
+        blurb_zh="氹仔最重要的傳統廟宇之一，保留漁村時代的民間信仰記憶。",
+        blurb_en="One of Taipa's key traditional temples, preserving memories of its fishing-village past."),
+    "carmel_church": dict(
+        zh="嘉模聖母堂", en="Our Lady of Carmel Church", pt="Igreja de Nossa Senhora do Carmo",
+        cat="temple", district="taipa", zone="龍環葡韻", unesco=False, hotspot=False,
+        crowd=0.45, visit=20, cost=0, price=0, open=hm(9), close=hm(18), closed=[],
+        lat=22.15389, lng=113.55922,
+        tags=["教堂", "婚禮", "龍環葡韻", "拍照"],
+        blurb_zh="立於氹仔小山上的米黃色教堂，可俯瞰龍環葡韻與濕地一帶。",
+        blurb_en="A cream-coloured church on a small hill overlooking Taipa Houses and the wetland."),
+    "taipa_museum": dict(
+        zh="氹仔市政博物館", en="Museum of Taipa and Coloane History", pt="Museu da História da Taipa e Coloane",
+        cat="museum", district="taipa", zone="氹仔舊城區", unesco=False, hotspot=False,
+        crowd=0.25, visit=35, cost=0, price=0, open=hm(10), close=hm(18), closed=[0],
+        old_district=True, local_business=False,
+        lat=22.15350, lng=113.55690,
+        tags=["博物館", "離島歷史", "室內", "免費"],
+        blurb_zh="由舊市政廳改成的小型博物館，補足氹仔與路環的歷史脈絡。",
+        blurb_en="A small museum in the former municipal building, explaining the history of Taipa and Coloane."),
+    "pou_tai_temple": dict(
+        zh="菩提禪院", en="Pou Tai Un Temple", pt="Templo Pou Tai Un",
+        cat="temple", district="taipa", zone="氹仔", unesco=False, hotspot=False,
+        crowd=0.25, visit=30, cost=0, price=0, open=hm(8), close=hm(18), closed=[],
+        lat=22.15890, lng=113.55580,
+        tags=["佛寺", "素食", "寧靜", "冷門"],
+        blurb_zh="氹仔山邊清幽佛寺，園林寧靜，適合作為繁忙官也街後的安靜補點。",
+        blurb_en="A quiet Buddhist temple on Taipa's hillside, a calm counterpoint to busy Rua do Cunha."),
+    "old_taipa_market": dict(
+        zh="氹仔街市", en="Taipa Market", pt="Mercado Municipal da Taipa",
+        cat="street", district="taipa", zone="氹仔舊城區", unesco=False, hotspot=False,
+        crowd=0.4, visit=20, cost=0, price=0, open=hm(7), close=hm(19), closed=[],
+        old_district=True, local_business=True,
+        lat=22.15420, lng=113.55720,
+        tags=["街市", "本地生活", "舊區", "小店"],
+        blurb_zh="氹仔街坊日常買餸的街市，與旁邊旅遊化的官也街形成有趣對照。",
+        blurb_en="A local market showing everyday Taipa life, contrasting with touristy Rua do Cunha nearby."),
+    "venetian_macau": dict(
+        zh="澳門威尼斯人", en="The Venetian Macao", pt="The Venetian Macao",
+        cat="view", district="taipa", zone="路氹金光大道", unesco=False, hotspot=True,
+        crowd=0.85, visit=60, cost=0, price=2, open=hm(10), close=hm(23), closed=[],
+        lat=22.14870, lng=113.56290,
+        tags=["度假村", "運河", "購物", "拍照熱點"],
+        blurb_zh="路氹大型綜合度假村，室內運河與拱廊極具辨識度，但人流較集中。",
+        blurb_en="A large Cotai resort famous for its indoor canals and arcades, usually busy."),
+    "parisian_macau": dict(
+        zh="澳門巴黎人", en="The Parisian Macao", pt="The Parisian Macao",
+        cat="view", district="taipa", zone="路氹金光大道", unesco=False, hotspot=True,
+        crowd=0.75, visit=45, cost=0, price=2, open=hm(10), close=hm(23), closed=[],
+        lat=22.14570, lng=113.56550,
+        tags=["巴黎鐵塔", "夜景", "度假村", "拍照"],
+        blurb_zh="以巴黎鐵塔為地標的綜合度假村，夜景亮燈後最適合拍照。",
+        blurb_en="A Paris-themed resort anchored by a replica Eiffel Tower, especially photogenic at night."),
+    "broadway_food_street": dict(
+        zh="百老匯美食街", en="Broadway Food Street", pt="Broadway Food Street",
+        cat="food", district="taipa", zone="路氹", unesco=False, hotspot=False,
+        crowd=0.55, visit=45, cost=90, price=2, open=hm(11), close=hm(22), closed=[],
+        local_business=True,
+        lat=22.14800, lng=113.55220,
+        tags=["美食街", "澳門小食", "本地餐飲", "多人同行"],
+        blurb_zh="集合多間澳門與亞洲特色餐飲，適合多人同行時各取所需。",
+        blurb_en="A food street gathering Macanese and Asian eateries, useful for groups with different tastes."),
+    "seng_cheong": dict(
+        zh="誠昌飯店（水蟹粥）", en="Seng Cheong Restaurant", pt="Seng Cheong",
+        cat="food", district="taipa", zone="氹仔官也街", unesco=False, hotspot=True,
+        crowd=0.7, visit=50, cost=120, price=2, open=hm(12), close=hm(22, 30), closed=[],
+        old_district=True, local_business=True,
+        lat=22.15405, lng=113.55685,
+        tags=["水蟹粥", "氹仔老店", "本地小店", "必食"],
+        blurb_zh="官也街附近水蟹粥名店，適合作為氹仔舊城區行程的正餐停留。",
+        blurb_en="A Taipa old-name restaurant known for crab congee, ideal as the main meal stop."),
+
+    # ---------------- Expanded Coloane / nature POIs ----------------
+    "coloane_village": dict(
+        zh="路環市區", en="Coloane Village", pt="Vila de Coloane",
+        cat="street", district="coloane", zone="路環市區", unesco=False, hotspot=False,
+        crowd=0.4, visit=45, cost=0, price=1, open=hm(0), close=hm(24), closed=[],
+        old_district=True, local_business=True,
+        lat=22.11680, lng=113.55540,
+        tags=["海邊小村", "慢活", "老街", "本地小店"],
+        blurb_zh="路環海邊小村仍保留慢活節奏，彩色平房、碼頭與小店構成離島風景。",
+        blurb_en="A slow seaside village of colourful houses, piers and local shops — old Macau at island pace."),
+    "tam_kung_temple": dict(
+        zh="路環譚公廟", en="Tam Kung Temple, Coloane", pt="Templo de Tam Kong",
+        cat="temple", district="coloane", zone="路環市區", unesco=False, hotspot=False,
+        crowd=0.25, visit=20, cost=0, price=0, open=hm(8), close=hm(18), closed=[],
+        old_district=True, local_business=False,
+        lat=22.11640, lng=113.55495,
+        tags=["譚公", "漁村信仰", "海邊", "冷門"],
+        blurb_zh="路環漁村信仰的重要廟宇，廟前海風與老榕樹很有離島感。",
+        blurb_en="A temple tied to Coloane's fishing-village faith, with sea breeze and banyan shade."),
+    "lai_chi_vun": dict(
+        zh="荔枝碗船廠片區", en="Lai Chi Vun Shipyards", pt="Estaleiros de Lai Chi Vun",
+        cat="heritage", district="coloane", zone="荔枝碗", unesco=False, hotspot=False,
+        crowd=0.35, visit=40, cost=0, price=0, open=hm(10), close=hm(19), closed=[],
+        old_district=True, local_business=False,
+        lat=22.12490, lng=113.55250,
+        tags=["船廠", "工業遺產", "文創", "冷門靚位"],
+        blurb_zh="舊船廠活化而成的海邊文化片區，木構船棚保留澳門造船業記憶。",
+        blurb_en="A revitalised shipyard area preserving Macau's wooden boatbuilding heritage by the water."),
+    "hac_sa_beach": dict(
+        zh="黑沙海灘", en="Hac Sa Beach", pt="Praia de Hac Sá",
+        cat="view", district="coloane", zone="黑沙", unesco=False, hotspot=True,
+        crowd=0.65, visit=60, cost=0, price=0, open=hm(0), close=hm(24), closed=[],
+        lat=22.12420, lng=113.57500,
+        tags=["海灘", "黑沙", "日落", "自然"],
+        blurb_zh="澳門最大天然海灘，黑色細沙與海岸風景適合放慢節奏。",
+        blurb_en="Macau's largest natural beach, known for its dark sand and relaxed coastal atmosphere."),
+    "hac_sa_park": dict(
+        zh="黑沙公園", en="Hac Sa Park", pt="Parque de Hac Sá",
+        cat="garden", district="coloane", zone="黑沙", unesco=False, hotspot=False,
+        crowd=0.35, visit=40, cost=0, price=0, open=hm(7), close=hm(20), closed=[],
+        lat=22.12480, lng=113.57370,
+        tags=["公園", "親子", "燒烤", "自然"],
+        blurb_zh="鄰近黑沙海灘的大型郊野公園，適合親子、野餐與短途散步。",
+        blurb_en="A large country park near Hac Sa Beach, good for families, picnics and short walks."),
+    "cheoc_van_beach": dict(
+        zh="竹灣海灘", en="Cheoc Van Beach", pt="Praia de Cheoc Van",
+        cat="view", district="coloane", zone="竹灣", unesco=False, hotspot=False,
+        crowd=0.4, visit=50, cost=0, price=0, open=hm(0), close=hm(24), closed=[],
+        lat=22.11690, lng=113.56730,
+        tags=["海灘", "寧靜", "親子", "日落"],
+        blurb_zh="比黑沙更寧靜的小海灣，海水泳池與斜坡小路很適合慢慢散步。",
+        blurb_en="A calmer bay than Hac Sa, with a seaside pool and quiet slopes for a slow walk."),
+    "seac_pai_van_park": dict(
+        zh="石排灣郊野公園", en="Seac Pai Van Park", pt="Parque de Seac Pai Van",
+        cat="garden", district="coloane", zone="石排灣", unesco=False, hotspot=False,
+        crowd=0.45, visit=60, cost=0, price=0, open=hm(8), close=hm(18), closed=[],
+        lat=22.12870, lng=113.56070,
+        tags=["郊野公園", "親子", "自然", "熊貓館附近"],
+        blurb_zh="路環大型郊野公園，有步道、自然教育設施與親子活動空間。",
+        blurb_en="A large country park in Coloane with trails, nature education and family facilities."),
+    "panda_pavilion": dict(
+        zh="澳門大熊貓館", en="Macao Giant Panda Pavilion", pt="Pavilhão do Panda Gigante de Macau",
+        cat="garden", district="coloane", zone="石排灣", unesco=False, hotspot=False,
+        crowd=0.55, visit=45, cost=10, price=1, open=hm(10), close=hm(17), closed=[0],
+        lat=22.12920, lng=113.56050,
+        tags=["大熊貓", "親子", "室內", "石排灣"],
+        blurb_zh="石排灣內的親子景點，可觀看大熊貓與小熊貓，是家庭多日遊好選項。",
+        blurb_en="A family-friendly pavilion for giant pandas and red pandas inside Seac Pai Van Park."),
+    "fernando_restaurant": dict(
+        zh="法蘭度餐廳", en="Fernando's Restaurant", pt="Restaurante Fernando",
+        cat="food", district="coloane", zone="黑沙", unesco=False, hotspot=True,
+        crowd=0.7, visit=70, cost=180, price=3, open=hm(12), close=hm(21, 30), closed=[],
+        local_business=True,
+        lat=22.12310, lng=113.57360,
+        tags=["葡國菜", "黑沙", "老店", "多人聚餐"],
+        blurb_zh="黑沙旁經典葡國菜餐廳，蒜蓉包、葡式烤雞與海鮮都適合分享。",
+        blurb_en="A classic Portuguese restaurant by Hac Sa, known for garlic bread, roast chicken and seafood."),
+    "nga_tim_cafe": dict(
+        zh="雅憩花園餐廳", en="Nga Tim Café", pt="Café Nga Tim",
+        cat="food", district="coloane", zone="路環市區", unesco=False, hotspot=False,
+        crowd=0.55, visit=55, cost=120, price=2, open=hm(12), close=hm(22), closed=[],
+        old_district=True, local_business=True,
+        lat=22.11665, lng=113.55555,
+        tags=["葡國菜", "路環廣場", "本地老店", "海邊"],
+        blurb_zh="路環聖方濟各聖堂旁的街坊餐廳，露天座位與葡國菜很有小村氣氛。",
+        blurb_en="A village-side Macanese/Portuguese café beside St. Francis Xavier Chapel, atmospheric and relaxed."),
+}
+
+# District display names
+DISTRICT_ZH = {
+    "central": "澳門半島·中區", "inner_harbour": "澳門半島·內港/西灣",
+    "taipa": "氹仔", "coloane": "路環", "guia": "松山·東區",
+}
+
+out = []
+for pid, m in META.items():
+    r = raw.get(pid, {})
+    lat = m.get("lat", r.get("lat"))
+    lng = m.get("lng", r.get("lng"))
+    if lat is None or lng is None:
+        print("WARN missing coords:", pid)
+        continue
+    rec = {
+        "id": pid,
+        "name": {"zh": m["zh"], "en": m["en"], "pt": m.get("pt", m["en"])},
+        "category": m["cat"],
+        "district": m["district"],
+        "district_name": DISTRICT_ZH.get(m["district"], m["district"]),
+        "zone": m.get("zone", ""),
+        "lat": round(float(lat), 6),
+        "lng": round(float(lng), 6),
+        "unesco": m.get("unesco", False),
+        "hotspot": m.get("hotspot", False),
+        "old_district": m.get("old_district", False),
+        "local_business": m.get("local_business", False),
+        "crowd_base": m["crowd"],
+        "visit_min": m["visit"],
+        "cost_mop": m["cost"],
+        "price_level": m["price"],
+        "open_min": m["open"],
+        "close_min": m["close"],
+        "closed_days": m.get("closed", []),
+        "tags": m["tags"],
+        "blurb": {"zh": m["blurb_zh"], "en": m["blurb_en"]},
+        "image": r.get("local_image"),
+        "wiki_url": r.get("wiki_url"),
+    }
+    if m.get("tip_zh"):
+        rec["tip"] = {"zh": m["tip_zh"]}
+    if m.get("story_zh"):
+        rec["story_zh"] = m["story_zh"]
+    out.append(rec)
+
+out.sort(key=lambda x: (x["district"], x["id"]))
+with open(os.path.join(HERE, "pois.json"), "w", encoding="utf-8") as f:
+    json.dump(out, f, ensure_ascii=False, indent=2)
+
+print(f"Built pois.json with {len(out)} POIs")
+print("  old-district lanes/shops:", sum(1 for x in out if x["old_district"]))
+print("  local businesses:", sum(1 for x in out if x["local_business"]))
+print("  with images:", sum(1 for x in out if x["image"]))
+print("  hotspots:", sum(1 for x in out if x["hotspot"]))

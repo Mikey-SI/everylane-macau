@@ -1,0 +1,2681 @@
+[
+  {
+    "id": "camoes_garden",
+    "name": {
+      "zh": "白鴿巢公園與東方基金會",
+      "en": "Camões Garden & Casa Garden",
+      "pt": "Jardim de Camões"
+    },
+    "category": "garden",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "澳門歷史城區",
+    "lat": 22.200306,
+    "lng": 113.539889,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.3,
+    "visit_min": 30,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 360,
+    "close_min": 1320,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "公園",
+      "老樹",
+      "本地人日常",
+      "免費"
+    ],
+    "blurb": {
+      "zh": "綠蔭如蓋的老公園，本地長者晨運下棋之地，旁為東方基金會白色別墅。",
+      "en": "A leafy old park where locals do tai-chi and play chess, next to the white Casa Garden villa."
+    },
+    "image": "assets/poi/camoes_garden.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Casa_Garden"
+  },
+  {
+    "id": "cathedral_macau",
+    "name": {
+      "zh": "主教座堂",
+      "en": "Cathedral of the Nativity of Our Lady",
+      "pt": "Sé Catedral"
+    },
+    "category": "temple",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "大堂前地",
+    "lat": 22.19373,
+    "lng": 113.54073,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.4,
+    "visit_min": 20,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 540,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "教堂",
+      "大堂前地",
+      "寧靜"
+    ],
+    "blurb": {
+      "zh": "澳門天主教主教座堂，位於大堂前地，外觀樸素而莊重。",
+      "en": "Macau's Catholic cathedral on Cathedral Square, modest outside and quietly solemn within."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "dom_pedro_theatre",
+    "name": {
+      "zh": "崗頂劇院",
+      "en": "Dom Pedro V Theatre",
+      "pt": "Teatro Dom Pedro V"
+    },
+    "category": "heritage",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "澳門歷史城區",
+    "lat": 22.191573,
+    "lng": 113.537302,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.4,
+    "visit_min": 20,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 600,
+    "close_min": 1080,
+    "closed_days": [
+      1
+    ],
+    "tags": [
+      "世界遺產",
+      "綠色劇院",
+      "崗頂前地",
+      "免費"
+    ],
+    "blurb": {
+      "zh": "中國第一座西式劇院，薄荷綠新古典外牆，靜立於崗頂前地。",
+      "en": "China's first Western-style theatre, a mint-green neoclassical gem on St. Augustine's Square."
+    },
+    "image": "assets/poi/dom_pedro_theatre.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Dom_Pedro_V_Theatre",
+    "tip": {
+      "zh": "逢星期二休息；崗頂前地一帶遊人少，極適合慢行。"
+    }
+  },
+  {
+    "id": "guan_qian",
+    "name": {
+      "zh": "關前正街",
+      "en": "Rua de Nossa Senhora do Amparo",
+      "pt": "Rua de N. S. do Amparo"
+    },
+    "category": "street",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "舊城區",
+    "lat": 22.1952,
+    "lng": 113.5393,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.35,
+    "visit_min": 25,
+    "cost_mop": 0,
+    "price_level": 1,
+    "open_min": 660,
+    "close_min": 1200,
+    "closed_days": [],
+    "tags": [
+      "文創",
+      "咖啡店",
+      "古著",
+      "年輕主理人",
+      "本地小店"
+    ],
+    "blurb": {
+      "zh": "近年由年輕主理人活化的文創老街，古著、咖啡、本地設計小店進駐，新舊交融。",
+      "en": "A revitalised creative lane — vintage shops, indie cafés and local designers breathing new life into old houses."
+    },
+    "image": "assets/poi/guan_qian.jpg",
+    "wiki_url": null,
+    "tip": {
+      "zh": "舊區活化最佳示範：老建築 + 後生創業，最啱慢慢嘆杯咖啡。"
+    }
+  },
+  {
+    "id": "hang_yau_fishball",
+    "name": {
+      "zh": "恆友魚蛋（大堂巷）",
+      "en": "Hang Yau Curry Fishballs",
+      "pt": "Hang Yau"
+    },
+    "category": "food",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "大堂巷",
+    "lat": 22.1933,
+    "lng": 113.5403,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.6,
+    "visit_min": 20,
+    "cost_mop": 35,
+    "price_level": 1,
+    "open_min": 660,
+    "close_min": 1260,
+    "closed_days": [],
+    "tags": [
+      "咖喱魚蛋",
+      "街頭小食",
+      "本地排隊",
+      "本地小店"
+    ],
+    "blurb": {
+      "zh": "大堂巷內長期排隊的咖喱魚蛋車仔檔，自選餸料、咖喱濃郁，本地人至愛。",
+      "en": "A perpetually-queued curry fishball stall in Travessa da Sé — pick your skewers, drown in curry."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "ho_tung_library",
+    "name": {
+      "zh": "何東圖書館",
+      "en": "Sir Robert Ho Tung Library",
+      "pt": "Biblioteca Sir Robert Ho Tung"
+    },
+    "category": "heritage",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "澳門歷史城區",
+    "lat": 22.1925,
+    "lng": 113.537778,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.3,
+    "visit_min": 25,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 600,
+    "close_min": 1140,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "花園圖書館",
+      "靜謐",
+      "免費",
+      "冷門靚位"
+    ],
+    "blurb": {
+      "zh": "百年花園洋房改造的圖書館，後院綠意盎然，是鬧市中的綠洲。",
+      "en": "A century-old garden villa turned library, with a leafy courtyard — an oasis in the old town."
+    },
+    "image": "assets/poi/ho_tung_library.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Sir_Robert_Ho_Tung_Library"
+  },
+  {
+    "id": "holy_house_mercy",
+    "name": {
+      "zh": "仁慈堂大樓",
+      "en": "Holy House of Mercy",
+      "pt": "Santa Casa da Misericórdia"
+    },
+    "category": "heritage",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "澳門歷史城區",
+    "lat": 22.19373,
+    "lng": 113.53985,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.35,
+    "visit_min": 20,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 600,
+    "close_min": 1050,
+    "closed_days": [
+      0
+    ],
+    "tags": [
+      "世界遺產",
+      "白色立面",
+      "慈善歷史",
+      "議事亭"
+    ],
+    "blurb": {
+      "zh": "議事亭前地旁的白色新古典建築，見證澳門早期慈善與醫療制度。",
+      "en": "A white neoclassical landmark by Senado Square, tied to Macau's early charity and healthcare history."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "leal_senado",
+    "name": {
+      "zh": "民政總署大樓",
+      "en": "Leal Senado Building",
+      "pt": "Edifício do Leal Senado"
+    },
+    "category": "heritage",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "澳門歷史城區",
+    "lat": 22.193333,
+    "lng": 113.539444,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.6,
+    "visit_min": 25,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 540,
+    "close_min": 1260,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "葡式建築",
+      "花園",
+      "免費"
+    ],
+    "blurb": {
+      "zh": "議事亭前地對面的新古典葡式建築，內有寧靜的葡式花園與圖書館。",
+      "en": "A neoclassical Portuguese building facing the square, with a tranquil garden and library."
+    },
+    "image": "assets/poi/leal_senado.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Leal_Senado_Building"
+  },
+  {
+    "id": "lin_fong_temple",
+    "name": {
+      "zh": "蓮峰廟",
+      "en": "Lin Fong Temple",
+      "pt": "Templo de Lin Fong"
+    },
+    "category": "temple",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "關閘附近",
+    "lat": 22.2092,
+    "lng": 113.5483,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.3,
+    "visit_min": 25,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 420,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "古廟",
+      "林則徐",
+      "冷門",
+      "免費"
+    ],
+    "blurb": {
+      "zh": "相傳林則徐曾在此接見葡官，古樹與石刻保留濃厚歷史氣息。",
+      "en": "An old temple associated with Lin Zexu, with ancient trees and stone inscriptions."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "lou_kau_mansion",
+    "name": {
+      "zh": "盧家大屋",
+      "en": "Lou Kau Mansion",
+      "pt": "Casa de Lou Kau"
+    },
+    "category": "heritage",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "澳門歷史城區",
+    "lat": 22.194222,
+    "lng": 113.541222,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.4,
+    "visit_min": 30,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 540,
+    "close_min": 1140,
+    "closed_days": [
+      0
+    ],
+    "tags": [
+      "世界遺產",
+      "嶺南民居",
+      "中西合璧",
+      "免費",
+      "冷門靚位"
+    ],
+    "blurb": {
+      "zh": "隱身鬧市的青磚大宅，嶺南風格融合西式裝飾，遊客稀少卻極具韻味。",
+      "en": "A grey-brick Cantonese mansion hidden downtown — Lingnan style with Western touches, rarely crowded."
+    },
+    "image": "assets/poi/lou_kau_mansion.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Lou_Kau_Mansion",
+    "tip": {
+      "zh": "逢星期一休息；就喺大三巴落山幾步，好多人錯過。"
+    }
+  },
+  {
+    "id": "lou_lim_ioc_garden",
+    "name": {
+      "zh": "盧廉若公園",
+      "en": "Lou Lim Ieoc Garden",
+      "pt": "Jardim de Lou Lim Ieoc"
+    },
+    "category": "garden",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "荷蘭園",
+    "lat": 22.19928,
+    "lng": 113.54644,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.35,
+    "visit_min": 35,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 360,
+    "close_min": 1260,
+    "closed_days": [],
+    "tags": [
+      "蘇州園林",
+      "亭台水榭",
+      "本地人日常",
+      "免費"
+    ],
+    "blurb": {
+      "zh": "澳門少見的中式園林，曲橋、池塘、亭台相映，是本地人散步歇腳的綠洲。",
+      "en": "A rare Suzhou-style garden in Macau with ponds, bridges and pavilions — a local green oasis."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "macau_museum",
+    "name": {
+      "zh": "澳門博物館",
+      "en": "Macao Museum",
+      "pt": "Museu de Macau"
+    },
+    "category": "museum",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "大炮台",
+    "lat": 22.19762,
+    "lng": 113.54084,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.55,
+    "visit_min": 60,
+    "cost_mop": 15,
+    "price_level": 1,
+    "open_min": 600,
+    "close_min": 1080,
+    "closed_days": [
+      0
+    ],
+    "tags": [
+      "博物館",
+      "澳門歷史",
+      "室內",
+      "親子",
+      "雨天備案"
+    ],
+    "blurb": {
+      "zh": "位於大炮台內，系統展示澳門從漁村、商港到世界旅遊城市的歷史。",
+      "en": "A museum inside Mount Fortress telling Macau's story from fishing village to world tourism city."
+    },
+    "image": null,
+    "wiki_url": null,
+    "tip": {
+      "zh": "逢星期一休館；雨天或炎熱天氣非常適合。"
+    }
+  },
+  {
+    "id": "monte_fort",
+    "name": {
+      "zh": "大炮台",
+      "en": "Mount Fortress",
+      "pt": "Fortaleza do Monte"
+    },
+    "category": "heritage",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "澳門歷史城區",
+    "lat": 22.1969,
+    "lng": 113.5422,
+    "unesco": true,
+    "hotspot": true,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.8,
+    "visit_min": 35,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 420,
+    "close_min": 1140,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "古炮台",
+      "城市全景",
+      "免費"
+    ],
+    "blurb": {
+      "zh": "緊鄰大三巴的17世紀軍事要塞，居高臨下俯瞰澳門半島全景。",
+      "en": "A 17th-century fortress next to the Ruins, offering panoramic views of the peninsula."
+    },
+    "image": "assets/poi/monte_fort.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Fortaleza_do_Monte",
+    "tip": {
+      "zh": "同大三巴一齊行最順路，上面有澳門博物館。"
+    }
+  },
+  {
+    "id": "na_tcha_temple",
+    "name": {
+      "zh": "哪吒廟",
+      "en": "Na Tcha Temple",
+      "pt": "Templo de Na Tcha"
+    },
+    "category": "temple",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "澳門歷史城區",
+    "lat": 22.197778,
+    "lng": 113.540556,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.45,
+    "visit_min": 15,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 480,
+    "close_min": 1020,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "小廟",
+      "緊鄰大三巴",
+      "免費"
+    ],
+    "blurb": {
+      "zh": "緊貼大三巴與舊城牆的迷你廟宇，見證澳門多元宗教共存。",
+      "en": "A tiny temple beside the Ruins and old city wall, symbolising Macau's religious diversity."
+    },
+    "image": "assets/poi/na_tcha_temple.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Na_Tcha_Temple"
+  },
+  {
+    "id": "old_city_walls",
+    "name": {
+      "zh": "舊城牆遺址",
+      "en": "Section of the Old City Walls",
+      "pt": "Troço das Antigas Muralhas"
+    },
+    "category": "heritage",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "澳門歷史城區",
+    "lat": 22.19733,
+    "lng": 113.54008,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.35,
+    "visit_min": 15,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "防禦遺址",
+      "大三巴旁",
+      "冷門"
+    ],
+    "blurb": {
+      "zh": "以夯土、砂石與蠔殼灰建成的城牆遺段，緊貼大三巴卻常被忽略。",
+      "en": "A surviving rammed-earth city wall beside the Ruins, often missed by hurried visitors."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "red_market",
+    "name": {
+      "zh": "紅街市",
+      "en": "Red Market",
+      "pt": "Mercado Vermelho"
+    },
+    "category": "heritage",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "高士德",
+    "lat": 22.20355,
+    "lng": 113.5443,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.5,
+    "visit_min": 25,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 420,
+    "close_min": 1140,
+    "closed_days": [],
+    "tags": [
+      "街市",
+      "紅磚建築",
+      "本地生活",
+      "舊區"
+    ],
+    "blurb": {
+      "zh": "1930年代紅磚街市建築，是觀察澳門日常買餸文化的好地方。",
+      "en": "A 1930s red-brick market building, ideal for seeing everyday Macau shopping culture."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "rua_estalagens",
+    "name": {
+      "zh": "草堆街與爛鬼樓",
+      "en": "Rua das Estalagens",
+      "pt": "Rua das Estalagens"
+    },
+    "category": "street",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "舊城區",
+    "lat": 22.19488,
+    "lng": 113.53868,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.3,
+    "visit_min": 25,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "老街",
+      "中藥老舖",
+      "古玩",
+      "孫中山",
+      "本地小店",
+      "冷門"
+    ],
+    "blurb": {
+      "zh": "昔日客棧與藥材集散地，草堆街80號為孫中山開設的中西藥局舊址，巷內藏古玩與懷舊小店。",
+      "en": "An old inn-and-herb street; No.80 was Sun Yat-sen's pharmacy. Antiques and nostalgic shops hide in its lanes."
+    },
+    "image": "assets/poi/rua_estalagens.jpg",
+    "wiki_url": null,
+    "story_zh": "草堆街80號，係孫中山先生 1892 年喺澳門開嘅『中西藥局』舊址。佢當年一邊行醫一邊講革命。成條街以前係賣藥材同開客棧嘅，𠵇家仲有古玩舖，好多本地人都未必行勻。"
+  },
+  {
+    "id": "rua_felicidade",
+    "name": {
+      "zh": "福隆新街",
+      "en": "Rua da Felicidade",
+      "pt": "Rua da Felicidade"
+    },
+    "category": "street",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "舊城區",
+    "lat": 22.19283,
+    "lng": 113.53894,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.55,
+    "visit_min": 30,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "老街",
+      "紅窗門",
+      "手信",
+      "電影取景",
+      "本地小店"
+    ],
+    "blurb": {
+      "zh": "兩排朱紅木窗的百年青樓老街，今為手信與老字號食肆聚集地，《歲月神偷》取景地。",
+      "en": "A century-old street of vermilion shutters, once a pleasure quarter, now lined with old-name eateries and snack shops."
+    },
+    "image": "assets/poi/rua_felicidade.jpg",
+    "wiki_url": null,
+    "story_zh": "福隆新街喺清末民初係澳門最旺嘅『花街』，兩邊全部酒樓茶館。你而家見到嘅紅色木窗花，就係當年青樓嘅痕跡。後尾洗盡鉛華，變咗手信街，但係嗰種舊澳門嘅味道一直都喺度。"
+  },
+  {
+    "id": "ruins_st_paul",
+    "name": {
+      "zh": "大三巴牌坊",
+      "en": "Ruins of St. Paul's",
+      "pt": "Ruínas de São Paulo"
+    },
+    "category": "heritage",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "澳門歷史城區",
+    "lat": 22.1975,
+    "lng": 113.540556,
+    "unesco": true,
+    "hotspot": true,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.98,
+    "visit_min": 45,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "地標",
+      "拍照",
+      "必去"
+    ],
+    "blurb": {
+      "zh": "澳門最具代表性的地標，聖保祿教堂遺留的前壁，融合東西方雕刻。",
+      "en": "Macau's iconic landmark — the surviving façade of St. Paul's, blending East-West carvings."
+    },
+    "image": "assets/poi/ruins_st_paul.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Ruins_of_Saint_Paul%27s",
+    "tip": {
+      "zh": "人潮極多，建議清晨或黃昏前往；旁邊戀愛巷更好拍。"
+    },
+    "story_zh": "呢座『三巴』其實係聖保祿學院教堂嘅前壁，1835年一場大火燒淨剩塊石牌坊。你抬頭望，最頂係銅鴿代表聖神，再落啲有耶穌、聖母，仲有牡丹同菊花——係當年中國工匠落嘅手影，中西合璧，全世界獨一無二。"
+  },
+  {
+    "id": "sam_kai_vui_kun",
+    "name": {
+      "zh": "三街會館（關帝廟）",
+      "en": "Sam Kai Vui Kun",
+      "pt": "Templo Kuan Tai"
+    },
+    "category": "temple",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "澳門歷史城區",
+    "lat": 22.194,
+    "lng": 113.539333,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.35,
+    "visit_min": 15,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 480,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "關帝廟",
+      "商會舊址",
+      "免費",
+      "冷門"
+    ],
+    "blurb": {
+      "zh": "昔日華商議事的會館兼關帝廟，藏身營地大街，香火與歷史並存。",
+      "en": "A former Chinese merchants' guild hall and Kuan Tai temple tucked in Rua dos Mercadores."
+    },
+    "image": "assets/poi/sam_kai_vui_kun.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Sam_Kai_Vui_Kun"
+  },
+  {
+    "id": "senado_square",
+    "name": {
+      "zh": "議事亭前地",
+      "en": "Senado Square",
+      "pt": "Largo do Senado"
+    },
+    "category": "heritage",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "澳門歷史城區",
+    "lat": 22.193583,
+    "lng": 113.539667,
+    "unesco": true,
+    "hotspot": true,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.95,
+    "visit_min": 30,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "波浪石地",
+      "購物",
+      "必去"
+    ],
+    "blurb": {
+      "zh": "鋪滿葡式碎石波浪紋的城市客廳，四周是粉彩色歐式建築。",
+      "en": "The city's living room paved with Portuguese wave-pattern stones, ringed by pastel colonial buildings."
+    },
+    "image": "assets/poi/senado_square.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Senado_Square",
+    "tip": {
+      "zh": "周末同假期人山人海，平日上午較舒服。"
+    }
+  },
+  {
+    "id": "st_anthony_church",
+    "name": {
+      "zh": "聖安多尼教堂（花王堂）",
+      "en": "St. Anthony's Church",
+      "pt": "Igreja de Santo António"
+    },
+    "category": "temple",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "花王堂區",
+    "lat": 22.19958,
+    "lng": 113.53935,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.3,
+    "visit_min": 20,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 540,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "古教堂",
+      "婚禮",
+      "寧靜"
+    ],
+    "blurb": {
+      "zh": "澳門最古老教堂之一，因舉行婚禮多而有「花王堂」之稱。",
+      "en": "One of Macau's oldest churches, affectionately linked with weddings and local parish life."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "st_augustine",
+    "name": {
+      "zh": "聖奧斯定教堂",
+      "en": "St. Augustine's Church",
+      "pt": "Igreja de Santo Agostinho"
+    },
+    "category": "temple",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "澳門歷史城區",
+    "lat": 22.19166,
+    "lng": 113.53745,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.35,
+    "visit_min": 15,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 600,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "崗頂前地",
+      "苦難耶穌",
+      "免費"
+    ],
+    "blurb": {
+      "zh": "崗頂前地上的古老教堂，每年苦難善耶穌聖像出遊由此起行。",
+      "en": "An ancient church on St. Augustine's Square, start of the annual Passion procession."
+    },
+    "image": "assets/poi/st_augustine.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/St._Augustine%27s_Church,_Macau"
+  },
+  {
+    "id": "st_dominic",
+    "name": {
+      "zh": "玫瑰堂",
+      "en": "St. Dominic's Church",
+      "pt": "Igreja de São Domingos"
+    },
+    "category": "temple",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "澳門歷史城區",
+    "lat": 22.194722,
+    "lng": 113.540556,
+    "unesco": true,
+    "hotspot": true,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.85,
+    "visit_min": 20,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 600,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "巴洛克",
+      "鵝黃色",
+      "拍照"
+    ],
+    "blurb": {
+      "zh": "鵝黃色巴洛克教堂，內設聖物寶庫，是議事亭前地的視覺焦點。",
+      "en": "A butter-yellow Baroque church with a sacred art treasury, a focal point off Senado Square."
+    },
+    "image": "assets/poi/st_dominic.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/St._Dominic%27s_Church,_Macau"
+  },
+  {
+    "id": "tap_seac_gallery",
+    "name": {
+      "zh": "塔石藝文館",
+      "en": "Tap Seac Gallery",
+      "pt": "Galeria Tap Seac"
+    },
+    "category": "museum",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "塔石",
+    "lat": 22.19821,
+    "lng": 113.54479,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.3,
+    "visit_min": 30,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 600,
+    "close_min": 1260,
+    "closed_days": [
+      0
+    ],
+    "tags": [
+      "藝文館",
+      "展覽",
+      "文創",
+      "免費",
+      "室內"
+    ],
+    "blurb": {
+      "zh": "由歷史建築改造的展覽空間，適合把藝術與老城散步串在一起。",
+      "en": "A heritage building turned gallery, pairing contemporary exhibitions with an old-town walk."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "tap_seac_square",
+    "name": {
+      "zh": "塔石廣場",
+      "en": "Tap Seac Square",
+      "pt": "Praça do Tap Seac"
+    },
+    "category": "street",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "塔石",
+    "lat": 22.19786,
+    "lng": 113.54447,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": false,
+    "crowd_base": 0.45,
+    "visit_min": 25,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "廣場",
+      "文創活動",
+      "葡式建築",
+      "本地日常"
+    ],
+    "blurb": {
+      "zh": "紅磚地面的城市廣場，周邊葡式建築整齊，常有書展、文創市集與社區活動。",
+      "en": "A red-paved civic square ringed by Portuguese buildings, often hosting book fairs and creative markets."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "three_lamps",
+    "name": {
+      "zh": "三盞燈（嘉路米耶圓形地）",
+      "en": "Three Lamps District",
+      "pt": "Rotunda de Carlos da Maia"
+    },
+    "category": "street",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "三盞燈",
+    "lat": 22.2021,
+    "lng": 113.5461,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.45,
+    "visit_min": 30,
+    "cost_mop": 0,
+    "price_level": 1,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "東南亞美食",
+      "街市",
+      "本地生活",
+      "舊區小店"
+    ],
+    "blurb": {
+      "zh": "緬甸、泰國、印尼風味小店密集的舊區生活圈，最能看到澳門多元社群。",
+      "en": "A multicultural neighbourhood of Burmese, Thai and Indonesian eateries around a local roundabout."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "travessa_paixao",
+    "name": {
+      "zh": "戀愛巷",
+      "en": "Travessa da Paixão",
+      "pt": "Travessa da Paixão"
+    },
+    "category": "street",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "舊城區",
+    "lat": 22.19719,
+    "lng": 113.5404,
+    "unesco": false,
+    "hotspot": true,
+    "old_district": true,
+    "local_business": false,
+    "crowd_base": 0.65,
+    "visit_min": 15,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "老街",
+      "粉色建築",
+      "拍照熱點",
+      "婚紗",
+      "緊鄰大三巴"
+    ],
+    "blurb": {
+      "zh": "緊鄰大三巴的粉色與鵝黃斜巷，葡式碎石路面，是澳門最浪漫的打卡點。",
+      "en": "A pastel pink-and-yellow lane beside the Ruins — Macau's most romantic photo spot."
+    },
+    "image": "assets/poi/travessa_paixao.jpg",
+    "wiki_url": null,
+    "tip": {
+      "zh": "名字其實源自葡文『Paixão』(激情/受難)，唔關拍拖事，但勝在靚！"
+    }
+  },
+  {
+    "id": "wong_chi_kei",
+    "name": {
+      "zh": "黃枝記粥麵（議事亭店）",
+      "en": "Wong Chi Kei Noodles",
+      "pt": "Wong Chi Kei"
+    },
+    "category": "food",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "議事亭前地",
+    "lat": 22.1936,
+    "lng": 113.5398,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.55,
+    "visit_min": 45,
+    "cost_mop": 70,
+    "price_level": 2,
+    "open_min": 510,
+    "close_min": 1380,
+    "closed_days": [],
+    "tags": [
+      "蝦子撈麵",
+      "竹昇麵",
+      "米芝蓮推介",
+      "老字號",
+      "本地小店"
+    ],
+    "blurb": {
+      "zh": "逾八十年的竹昇打麵老店，招牌蝦子撈麵與鮮蝦雲吞，曾獲米芝蓮推介。",
+      "en": "An 80-year-old bamboo-pressed noodle house — signature shrimp-roe noodles and prawn wontons, a Michelin pick."
+    },
+    "image": "assets/poi/wong_chi_kei.jpg",
+    "wiki_url": null
+  },
+  {
+    "id": "yee_shun_milk",
+    "name": {
+      "zh": "義順鮮奶",
+      "en": "Yee Shun Milk Company",
+      "pt": "Leitaria I Son"
+    },
+    "category": "food",
+    "district": "central",
+    "district_name": "澳門半島·中區",
+    "zone": "議事亭前地",
+    "lat": 22.19305,
+    "lng": 113.53945,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.5,
+    "visit_min": 30,
+    "cost_mop": 45,
+    "price_level": 1,
+    "open_min": 600,
+    "close_min": 1320,
+    "closed_days": [],
+    "tags": [
+      "雙皮燉奶",
+      "甜品",
+      "老字號",
+      "本地小店"
+    ],
+    "blurb": {
+      "zh": "源自順德的燉奶老店，馳名雙皮燉奶與薑汁撞奶，奶香濃滑。",
+      "en": "A famed steamed-milk-pudding shop — silky 'double-skin' milk and ginger milk curd."
+    },
+    "image": "assets/poi/yee_shun_milk.jpg",
+    "wiki_url": null
+  },
+  {
+    "id": "cheoc_van_beach",
+    "name": {
+      "zh": "竹灣海灘",
+      "en": "Cheoc Van Beach",
+      "pt": "Praia de Cheoc Van"
+    },
+    "category": "view",
+    "district": "coloane",
+    "district_name": "路環",
+    "zone": "竹灣",
+    "lat": 22.1169,
+    "lng": 113.5673,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.4,
+    "visit_min": 50,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "海灘",
+      "寧靜",
+      "親子",
+      "日落"
+    ],
+    "blurb": {
+      "zh": "比黑沙更寧靜的小海灣，海水泳池與斜坡小路很適合慢慢散步。",
+      "en": "A calmer bay than Hac Sa, with a seaside pool and quiet slopes for a slow walk."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "coloane_village",
+    "name": {
+      "zh": "路環市區",
+      "en": "Coloane Village",
+      "pt": "Vila de Coloane"
+    },
+    "category": "street",
+    "district": "coloane",
+    "district_name": "路環",
+    "zone": "路環市區",
+    "lat": 22.1168,
+    "lng": 113.5554,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.4,
+    "visit_min": 45,
+    "cost_mop": 0,
+    "price_level": 1,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "海邊小村",
+      "慢活",
+      "老街",
+      "本地小店"
+    ],
+    "blurb": {
+      "zh": "路環海邊小村仍保留慢活節奏，彩色平房、碼頭與小店構成離島風景。",
+      "en": "A slow seaside village of colourful houses, piers and local shops — old Macau at island pace."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "fernando_restaurant",
+    "name": {
+      "zh": "法蘭度餐廳",
+      "en": "Fernando's Restaurant",
+      "pt": "Restaurante Fernando"
+    },
+    "category": "food",
+    "district": "coloane",
+    "district_name": "路環",
+    "zone": "黑沙",
+    "lat": 22.1231,
+    "lng": 113.5736,
+    "unesco": false,
+    "hotspot": true,
+    "old_district": false,
+    "local_business": true,
+    "crowd_base": 0.7,
+    "visit_min": 70,
+    "cost_mop": 180,
+    "price_level": 3,
+    "open_min": 720,
+    "close_min": 1290,
+    "closed_days": [],
+    "tags": [
+      "葡國菜",
+      "黑沙",
+      "老店",
+      "多人聚餐"
+    ],
+    "blurb": {
+      "zh": "黑沙旁經典葡國菜餐廳，蒜蓉包、葡式烤雞與海鮮都適合分享。",
+      "en": "A classic Portuguese restaurant by Hac Sa, known for garlic bread, roast chicken and seafood."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "hac_sa_beach",
+    "name": {
+      "zh": "黑沙海灘",
+      "en": "Hac Sa Beach",
+      "pt": "Praia de Hac Sá"
+    },
+    "category": "view",
+    "district": "coloane",
+    "district_name": "路環",
+    "zone": "黑沙",
+    "lat": 22.1242,
+    "lng": 113.575,
+    "unesco": false,
+    "hotspot": true,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.65,
+    "visit_min": 60,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "海灘",
+      "黑沙",
+      "日落",
+      "自然"
+    ],
+    "blurb": {
+      "zh": "澳門最大天然海灘，黑色細沙與海岸風景適合放慢節奏。",
+      "en": "Macau's largest natural beach, known for its dark sand and relaxed coastal atmosphere."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "hac_sa_park",
+    "name": {
+      "zh": "黑沙公園",
+      "en": "Hac Sa Park",
+      "pt": "Parque de Hac Sá"
+    },
+    "category": "garden",
+    "district": "coloane",
+    "district_name": "路環",
+    "zone": "黑沙",
+    "lat": 22.1248,
+    "lng": 113.5737,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.35,
+    "visit_min": 40,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 420,
+    "close_min": 1200,
+    "closed_days": [],
+    "tags": [
+      "公園",
+      "親子",
+      "燒烤",
+      "自然"
+    ],
+    "blurb": {
+      "zh": "鄰近黑沙海灘的大型郊野公園，適合親子、野餐與短途散步。",
+      "en": "A large country park near Hac Sa Beach, good for families, picnics and short walks."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "lai_chi_vun",
+    "name": {
+      "zh": "荔枝碗船廠片區",
+      "en": "Lai Chi Vun Shipyards",
+      "pt": "Estaleiros de Lai Chi Vun"
+    },
+    "category": "heritage",
+    "district": "coloane",
+    "district_name": "路環",
+    "zone": "荔枝碗",
+    "lat": 22.1249,
+    "lng": 113.5525,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": false,
+    "crowd_base": 0.35,
+    "visit_min": 40,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 600,
+    "close_min": 1140,
+    "closed_days": [],
+    "tags": [
+      "船廠",
+      "工業遺產",
+      "文創",
+      "冷門靚位"
+    ],
+    "blurb": {
+      "zh": "舊船廠活化而成的海邊文化片區，木構船棚保留澳門造船業記憶。",
+      "en": "A revitalised shipyard area preserving Macau's wooden boatbuilding heritage by the water."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "lord_stow",
+    "name": {
+      "zh": "安德魯餅店（路環總店）",
+      "en": "Lord Stow's Bakery",
+      "pt": "Lord Stow's Bakery"
+    },
+    "category": "food",
+    "district": "coloane",
+    "district_name": "路環",
+    "zone": "路環市區",
+    "lat": 22.1176,
+    "lng": 113.5548,
+    "unesco": false,
+    "hotspot": true,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.7,
+    "visit_min": 25,
+    "cost_mop": 40,
+    "price_level": 1,
+    "open_min": 420,
+    "close_min": 1320,
+    "closed_days": [],
+    "tags": [
+      "葡撻",
+      "路環",
+      "創始店",
+      "必食"
+    ],
+    "blurb": {
+      "zh": "葡式蛋撻的鼻祖，1989 年由英國人 Andrew 在路環創立，焦香酥脆。",
+      "en": "The birthplace of the Macanese egg tart — created by Englishman Andrew Stow in Coloane, 1989."
+    },
+    "image": "assets/poi/lord_stow.jpg",
+    "wiki_url": null
+  },
+  {
+    "id": "nga_tim_cafe",
+    "name": {
+      "zh": "雅憩花園餐廳",
+      "en": "Nga Tim Café",
+      "pt": "Café Nga Tim"
+    },
+    "category": "food",
+    "district": "coloane",
+    "district_name": "路環",
+    "zone": "路環市區",
+    "lat": 22.11665,
+    "lng": 113.55555,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.55,
+    "visit_min": 55,
+    "cost_mop": 120,
+    "price_level": 2,
+    "open_min": 720,
+    "close_min": 1320,
+    "closed_days": [],
+    "tags": [
+      "葡國菜",
+      "路環廣場",
+      "本地老店",
+      "海邊"
+    ],
+    "blurb": {
+      "zh": "路環聖方濟各聖堂旁的街坊餐廳，露天座位與葡國菜很有小村氣氛。",
+      "en": "A village-side Macanese/Portuguese café beside St. Francis Xavier Chapel, atmospheric and relaxed."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "panda_pavilion",
+    "name": {
+      "zh": "澳門大熊貓館",
+      "en": "Macao Giant Panda Pavilion",
+      "pt": "Pavilhão do Panda Gigante de Macau"
+    },
+    "category": "garden",
+    "district": "coloane",
+    "district_name": "路環",
+    "zone": "石排灣",
+    "lat": 22.1292,
+    "lng": 113.5605,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.55,
+    "visit_min": 45,
+    "cost_mop": 10,
+    "price_level": 1,
+    "open_min": 600,
+    "close_min": 1020,
+    "closed_days": [
+      0
+    ],
+    "tags": [
+      "大熊貓",
+      "親子",
+      "室內",
+      "石排灣"
+    ],
+    "blurb": {
+      "zh": "石排灣內的親子景點，可觀看大熊貓與小熊貓，是家庭多日遊好選項。",
+      "en": "A family-friendly pavilion for giant pandas and red pandas inside Seac Pai Van Park."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "seac_pai_van_park",
+    "name": {
+      "zh": "石排灣郊野公園",
+      "en": "Seac Pai Van Park",
+      "pt": "Parque de Seac Pai Van"
+    },
+    "category": "garden",
+    "district": "coloane",
+    "district_name": "路環",
+    "zone": "石排灣",
+    "lat": 22.1287,
+    "lng": 113.5607,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.45,
+    "visit_min": 60,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 480,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "郊野公園",
+      "親子",
+      "自然",
+      "熊貓館附近"
+    ],
+    "blurb": {
+      "zh": "路環大型郊野公園，有步道、自然教育設施與親子活動空間。",
+      "en": "A large country park in Coloane with trails, nature education and family facilities."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "st_francis_coloane",
+    "name": {
+      "zh": "路環聖方濟各聖堂",
+      "en": "Chapel of St. Francis Xavier",
+      "pt": "Capela de São Francisco Xavier"
+    },
+    "category": "temple",
+    "district": "coloane",
+    "district_name": "路環",
+    "zone": "路環",
+    "lat": 22.11649,
+    "lng": 113.5556,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": false,
+    "crowd_base": 0.4,
+    "visit_min": 25,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 570,
+    "close_min": 1050,
+    "closed_days": [],
+    "tags": [
+      "鵝黃教堂",
+      "路環village",
+      "寧靜",
+      "免費",
+      "靚景"
+    ],
+    "blurb": {
+      "zh": "路環村海邊的鵝黃巴洛克小教堂，前方廣場椰影搖曳，是慢活的代名詞。",
+      "en": "A cream-yellow Baroque chapel by Coloane village waterfront — the very image of slow living."
+    },
+    "image": "assets/poi/st_francis_coloane.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Chapel_of_St._Francis_Xavier,_Coloane"
+  },
+  {
+    "id": "tam_kung_temple",
+    "name": {
+      "zh": "路環譚公廟",
+      "en": "Tam Kung Temple, Coloane",
+      "pt": "Templo de Tam Kong"
+    },
+    "category": "temple",
+    "district": "coloane",
+    "district_name": "路環",
+    "zone": "路環市區",
+    "lat": 22.1164,
+    "lng": 113.55495,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": false,
+    "crowd_base": 0.25,
+    "visit_min": 20,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 480,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "譚公",
+      "漁村信仰",
+      "海邊",
+      "冷門"
+    ],
+    "blurb": {
+      "zh": "路環漁村信仰的重要廟宇，廟前海風與老榕樹很有離島感。",
+      "en": "A temple tied to Coloane's fishing-village faith, with sea breeze and banyan shade."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "fishermans_wharf",
+    "name": {
+      "zh": "澳門漁人碼頭",
+      "en": "Macau Fisherman's Wharf",
+      "pt": "Doca dos Pescadores"
+    },
+    "category": "view",
+    "district": "guia",
+    "district_name": "松山·東區",
+    "zone": "外港",
+    "lat": 22.1929,
+    "lng": 113.5587,
+    "unesco": false,
+    "hotspot": true,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.55,
+    "visit_min": 45,
+    "cost_mop": 0,
+    "price_level": 1,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "海濱",
+      "羅馬建築",
+      "拍照",
+      "親子"
+    ],
+    "blurb": {
+      "zh": "外港旁的主題海濱區，羅馬競技場外觀與海景適合拍照散步。",
+      "en": "A themed waterfront beside the ferry terminal with Roman-style façades and harbour views."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "grand_prix_museum",
+    "name": {
+      "zh": "澳門大賽車博物館",
+      "en": "Macao Grand Prix Museum",
+      "pt": "Museu do Grande Prémio de Macau"
+    },
+    "category": "museum",
+    "district": "guia",
+    "district_name": "松山·東區",
+    "zone": "新口岸",
+    "lat": 22.1906,
+    "lng": 113.5521,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.5,
+    "visit_min": 60,
+    "cost_mop": 80,
+    "price_level": 2,
+    "open_min": 600,
+    "close_min": 1080,
+    "closed_days": [
+      1
+    ],
+    "tags": [
+      "賽車",
+      "博物館",
+      "互動體驗",
+      "室內"
+    ],
+    "blurb": {
+      "zh": "展示澳門格蘭披治大賽車歷史，設有賽車、頭盔與互動體驗。",
+      "en": "A museum dedicated to the Macau Grand Prix, with race cars, helmets and interactive exhibits."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "guia_fortress",
+    "name": {
+      "zh": "東望洋炮台與燈塔",
+      "en": "Guia Fortress & Lighthouse",
+      "pt": "Fortaleza da Guia"
+    },
+    "category": "view",
+    "district": "guia",
+    "district_name": "松山·東區",
+    "zone": "澳門歷史城區",
+    "lat": 22.1965,
+    "lng": 113.55,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.5,
+    "visit_min": 40,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 540,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "燈塔",
+      "全城最高點",
+      "纜車",
+      "免費"
+    ],
+    "blurb": {
+      "zh": "中國海岸最古老的燈塔，登上松山可俯瞰全澳，內有珍貴壁畫。",
+      "en": "The oldest lighthouse on the China coast, atop Guia Hill with sweeping city views and rare frescoes."
+    },
+    "image": "assets/poi/guia_fortress.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Guia_Fortress",
+    "tip": {
+      "zh": "可搭松山纜車（全球最短）上山。"
+    }
+  },
+  {
+    "id": "kun_iam_temple",
+    "name": {
+      "zh": "普濟禪院（觀音堂）",
+      "en": "Kun Iam Temple",
+      "pt": "Templo de Kun Iam Tong"
+    },
+    "category": "temple",
+    "district": "guia",
+    "district_name": "松山·東區",
+    "zone": "望廈/美副將",
+    "lat": 22.20345,
+    "lng": 113.55248,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.35,
+    "visit_min": 35,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 420,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "古剎",
+      "觀音",
+      "望廈條約",
+      "寧靜"
+    ],
+    "blurb": {
+      "zh": "澳門三大古廟之一，與《望廈條約》簽訂地相關，庭院深幽。",
+      "en": "One of Macau's great old temples, linked to the Treaty of Wanghia, with peaceful courtyards."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "science_center",
+    "name": {
+      "zh": "澳門科學館",
+      "en": "Macao Science Center",
+      "pt": "Centro de Ciência de Macau"
+    },
+    "category": "museum",
+    "district": "guia",
+    "district_name": "松山·東區",
+    "zone": "新口岸海濱",
+    "lat": 22.1869,
+    "lng": 113.5592,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.45,
+    "visit_min": 75,
+    "cost_mop": 50,
+    "price_level": 2,
+    "open_min": 600,
+    "close_min": 1080,
+    "closed_days": [
+      3
+    ],
+    "tags": [
+      "親子",
+      "科學",
+      "室內",
+      "海濱"
+    ],
+    "blurb": {
+      "zh": "貝聿銘團隊設計的銀色圓錐建築，展覽互動性高，適合親子與雨天。",
+      "en": "A silver cone-shaped science centre designed by Pei Partnership Architects, great for families and rainy days."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "a_ma_temple",
+    "name": {
+      "zh": "媽閣廟",
+      "en": "A-Ma Temple",
+      "pt": "Templo de A-Má"
+    },
+    "category": "temple",
+    "district": "inner_harbour",
+    "district_name": "澳門半島·內港/西灣",
+    "zone": "澳門歷史城區",
+    "lat": 22.186111,
+    "lng": 113.531139,
+    "unesco": true,
+    "hotspot": true,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.75,
+    "visit_min": 30,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 420,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "媽祖",
+      "澳門起源",
+      "免費"
+    ],
+    "blurb": {
+      "zh": "澳門最古老的廟宇，『Macau』之名正源於此。依山而建，海香裊裊。",
+      "en": "Macau's oldest temple — the very source of the name 'Macau'. Built into the hillside by the sea."
+    },
+    "image": "assets/poi/a_ma_temple.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/A-Ma_Temple",
+    "story_zh": "話說當年葡萄牙人喺呢度上岸，問本地人呢度叫咩，街坊以為佢問緊間廟，答『媽閣』(Maa-Gok)，葡人聽落變咗『Macau』——成個城市嘅名就係咁嚟。"
+  },
+  {
+    "id": "kun_iam_statue",
+    "name": {
+      "zh": "觀音蓮花苑",
+      "en": "Kun Iam Ecumenical Centre",
+      "pt": "Centro Ecuménico Kun Iam"
+    },
+    "category": "view",
+    "district": "inner_harbour",
+    "district_name": "澳門半島·內港/西灣",
+    "zone": "新口岸",
+    "lat": 22.1908,
+    "lng": 113.5546,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.4,
+    "visit_min": 25,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 600,
+    "close_min": 1080,
+    "closed_days": [
+      5
+    ],
+    "tags": [
+      "海濱",
+      "觀音像",
+      "新口岸",
+      "靚景"
+    ],
+    "blurb": {
+      "zh": "立於海面的現代觀音像，融合佛教與當代雕塑語言，海風開揚。",
+      "en": "A modern bronze Kun Iam statue set by the waterfront, blending spirituality and contemporary form."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "lilau_square",
+    "name": {
+      "zh": "亞婆井前地",
+      "en": "Lilau Square",
+      "pt": "Largo do Lilau"
+    },
+    "category": "heritage",
+    "district": "inner_harbour",
+    "district_name": "澳門半島·內港/西灣",
+    "zone": "澳門歷史城區",
+    "lat": 22.18879,
+    "lng": 113.53381,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.3,
+    "visit_min": 15,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "葡人聚居",
+      "老榕樹",
+      "免費",
+      "冷門靚位"
+    ],
+    "blurb": {
+      "zh": "昔日澳門主要水源地，葡人最早聚居處，老榕樹下保留南歐風情。",
+      "en": "Once Macau's main water source and earliest Portuguese settlement, with old banyan trees."
+    },
+    "image": "assets/poi/lilau_square.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Lilau_Square",
+    "story_zh": "有句葡文老話：『飲過亞婆井水，忘唔到澳門』。以前呢度係城裡最重要嘅水井，葡萄牙人就喺周圍起屋定居，所以你會見到好濃嘅南歐味。"
+  },
+  {
+    "id": "macau_tower",
+    "name": {
+      "zh": "澳門旅遊塔",
+      "en": "Macau Tower",
+      "pt": "Torre de Macau"
+    },
+    "category": "view",
+    "district": "inner_harbour",
+    "district_name": "澳門半島·內港/西灣",
+    "zone": "南灣",
+    "lat": 22.179722,
+    "lng": 113.536667,
+    "unesco": false,
+    "hotspot": true,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.6,
+    "visit_min": 60,
+    "cost_mop": 195,
+    "price_level": 3,
+    "open_min": 600,
+    "close_min": 1260,
+    "closed_days": [],
+    "tags": [
+      "地標",
+      "笨豬跳",
+      "觀景台",
+      "全景"
+    ],
+    "blurb": {
+      "zh": "338 米高的觀光塔，可玩世界最高笨豬跳，360 度飽覽珠江口。",
+      "en": "A 338m tower with the world's highest bungee jump and 360° views of the Pearl River estuary."
+    },
+    "image": "assets/poi/macau_tower.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Macau_Tower",
+    "tip": {
+      "zh": "觀光門票約 MOP 195；落日時段最受歡迎。"
+    }
+  },
+  {
+    "id": "mandarin_house",
+    "name": {
+      "zh": "鄭家大屋",
+      "en": "Mandarin's House",
+      "pt": "Casa do Mandarim"
+    },
+    "category": "heritage",
+    "district": "inner_harbour",
+    "district_name": "澳門半島·內港/西灣",
+    "zone": "澳門歷史城區",
+    "lat": 22.1886,
+    "lng": 113.535,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.45,
+    "visit_min": 40,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 600,
+    "close_min": 1080,
+    "closed_days": [
+      2
+    ],
+    "tags": [
+      "世界遺產",
+      "嶺南大宅",
+      "鄭觀應",
+      "免費",
+      "必看"
+    ],
+    "blurb": {
+      "zh": "思想家鄭觀應故居，澳門現存最大的中式宅院，庭院深深、磚雕精美。",
+      "en": "Home of reformer Zheng Guanying — Macau's largest surviving Chinese residential compound."
+    },
+    "image": "assets/poi/mandarin_house.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Mandarin%27s_House",
+    "tip": {
+      "zh": "逢星期三休息（公眾假期除外）；最後入場約 17:30。"
+    },
+    "story_zh": "呢度係《盛世危言》作者鄭觀應住過嘅大屋，據講孫中山先生都嚟過。成個大宅有六十幾間房，中式天井加上西式百葉窗，行入去好似穿越返清末。"
+  },
+  {
+    "id": "moorish_barracks",
+    "name": {
+      "zh": "港務局大樓（嚤囉兵營）",
+      "en": "Moorish Barracks",
+      "pt": "Quartel dos Mouros"
+    },
+    "category": "heritage",
+    "district": "inner_harbour",
+    "district_name": "澳門半島·內港/西灣",
+    "zone": "澳門歷史城區",
+    "lat": 22.187389,
+    "lng": 113.532583,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.3,
+    "visit_min": 15,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 540,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "摩爾風格",
+      "拱廊",
+      "免費",
+      "冷門靚位"
+    ],
+    "blurb": {
+      "zh": "伊斯蘭摩爾風格的黃色拱廊建築，原為印度兵營，臨海而立極具異國情調。",
+      "en": "A yellow Moorish-style arcaded building, originally barracks for Indian troops by the sea."
+    },
+    "image": "assets/poi/moorish_barracks.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Moorish_Barracks"
+  },
+  {
+    "id": "penha_church",
+    "name": {
+      "zh": "西望洋聖堂（主教山小堂）",
+      "en": "Penha Church",
+      "pt": "Capela de Nossa Senhora da Penha"
+    },
+    "category": "view",
+    "district": "inner_harbour",
+    "district_name": "澳門半島·內港/西灣",
+    "zone": "舊城區",
+    "lat": 22.18693,
+    "lng": 113.53455,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.4,
+    "visit_min": 25,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 540,
+    "close_min": 1050,
+    "closed_days": [],
+    "tags": [
+      "教堂",
+      "山頂景觀",
+      "婚紗勝地",
+      "免費",
+      "靚景"
+    ],
+    "blurb": {
+      "zh": "主教山頂的白色聖堂，可俯瞰西灣大橋與南灣夜景，是澳門最美的觀景台之一。",
+      "en": "A white chapel atop Penha Hill overlooking the bridges and bay — one of Macau's finest viewpoints."
+    },
+    "image": "assets/poi/penha_church.jpg",
+    "wiki_url": null
+  },
+  {
+    "id": "rua_cinco",
+    "name": {
+      "zh": "十月初五街",
+      "en": "Rua de Cinco de Outubro",
+      "pt": "Rua de Cinco de Outubro"
+    },
+    "category": "street",
+    "district": "inner_harbour",
+    "district_name": "澳門半島·內港/西灣",
+    "zone": "舊城區",
+    "lat": 22.19565,
+    "lng": 113.5371,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.4,
+    "visit_min": 25,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "老街",
+      "內港",
+      "老字號",
+      "本地生活",
+      "本地小店"
+    ],
+    "blurb": {
+      "zh": "因 TVB 劇而街知巷聞的內港老街，老餅家、茶莊、海味舖仍在營業，滿載市井氣息。",
+      "en": "An Inner Harbour old street famed by a TVB drama — old bakeries, tea houses and dried-seafood shops still trade here."
+    },
+    "image": "assets/poi/rua_cinco.jpg",
+    "wiki_url": null,
+    "story_zh": "十月初五街個名，係紀念葡萄牙建立共和國嗰日。呢條街以前係內港最旺嘅商業街，𠵇家仲有好多幾十年嘅老舖——梁慶記、成記粥、咸蝦燦……行落去就好似翻返轉頭幾十年前嘅澳門。"
+  },
+  {
+    "id": "st_lawrence",
+    "name": {
+      "zh": "聖老楞佐教堂（風順堂）",
+      "en": "St. Lawrence's Church",
+      "pt": "Igreja de São Lourenço"
+    },
+    "category": "temple",
+    "district": "inner_harbour",
+    "district_name": "澳門半島·內港/西灣",
+    "zone": "澳門歷史城區",
+    "lat": 22.1885,
+    "lng": 113.5349,
+    "unesco": true,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.35,
+    "visit_min": 20,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 600,
+    "close_min": 1020,
+    "closed_days": [],
+    "tags": [
+      "世界遺產",
+      "風順堂",
+      "華麗",
+      "免費"
+    ],
+    "blurb": {
+      "zh": "澳門三大古教堂之一，俗稱『風順堂』，昔日葡人為出海家人祈求順風。",
+      "en": "One of Macau's three oldest churches, where Portuguese families once prayed for fair winds."
+    },
+    "image": "assets/poi/st_lawrence.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/St._Lawrence%27s_Church,_Macau"
+  },
+  {
+    "id": "broadway_food_street",
+    "name": {
+      "zh": "百老匯美食街",
+      "en": "Broadway Food Street",
+      "pt": "Broadway Food Street"
+    },
+    "category": "food",
+    "district": "taipa",
+    "district_name": "氹仔",
+    "zone": "路氹",
+    "lat": 22.148,
+    "lng": 113.5522,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": true,
+    "crowd_base": 0.55,
+    "visit_min": 45,
+    "cost_mop": 90,
+    "price_level": 2,
+    "open_min": 660,
+    "close_min": 1320,
+    "closed_days": [],
+    "tags": [
+      "美食街",
+      "澳門小食",
+      "本地餐飲",
+      "多人同行"
+    ],
+    "blurb": {
+      "zh": "集合多間澳門與亞洲特色餐飲，適合多人同行時各取所需。",
+      "en": "A food street gathering Macanese and Asian eateries, useful for groups with different tastes."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "carmel_church",
+    "name": {
+      "zh": "嘉模聖母堂",
+      "en": "Our Lady of Carmel Church",
+      "pt": "Igreja de Nossa Senhora do Carmo"
+    },
+    "category": "temple",
+    "district": "taipa",
+    "district_name": "氹仔",
+    "zone": "龍環葡韻",
+    "lat": 22.15389,
+    "lng": 113.55922,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.45,
+    "visit_min": 20,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 540,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "教堂",
+      "婚禮",
+      "龍環葡韻",
+      "拍照"
+    ],
+    "blurb": {
+      "zh": "立於氹仔小山上的米黃色教堂，可俯瞰龍環葡韻與濕地一帶。",
+      "en": "A cream-coloured church on a small hill overlooking Taipa Houses and the wetland."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "mok_yi_kei",
+    "name": {
+      "zh": "莫義記大菜糕",
+      "en": "Mok Yi Kei",
+      "pt": "Mok Yi Kei"
+    },
+    "category": "food",
+    "district": "taipa",
+    "district_name": "氹仔",
+    "zone": "氹仔官也街",
+    "lat": 22.15388,
+    "lng": 113.557,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.45,
+    "visit_min": 25,
+    "cost_mop": 40,
+    "price_level": 1,
+    "open_min": 600,
+    "close_min": 1260,
+    "closed_days": [],
+    "tags": [
+      "大菜糕",
+      "榴槤雪糕",
+      "百年老店",
+      "本地小店"
+    ],
+    "blurb": {
+      "zh": "官也街百年甜品老店，招牌大菜糕與榴槤雪糕，消暑首選。",
+      "en": "A century-old Rua do Cunha dessert shop — signature agar jelly and durian ice cream."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "old_taipa_market",
+    "name": {
+      "zh": "氹仔街市",
+      "en": "Taipa Market",
+      "pt": "Mercado Municipal da Taipa"
+    },
+    "category": "street",
+    "district": "taipa",
+    "district_name": "氹仔",
+    "zone": "氹仔舊城區",
+    "lat": 22.1542,
+    "lng": 113.5572,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.4,
+    "visit_min": 20,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 420,
+    "close_min": 1140,
+    "closed_days": [],
+    "tags": [
+      "街市",
+      "本地生活",
+      "舊區",
+      "小店"
+    ],
+    "blurb": {
+      "zh": "氹仔街坊日常買餸的街市，與旁邊旅遊化的官也街形成有趣對照。",
+      "en": "A local market showing everyday Taipa life, contrasting with touristy Rua do Cunha nearby."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "pak_tai_temple_taipa",
+    "name": {
+      "zh": "氹仔北帝廟",
+      "en": "Pak Tai Temple, Taipa",
+      "pt": "Templo de Pak Tai"
+    },
+    "category": "temple",
+    "district": "taipa",
+    "district_name": "氹仔",
+    "zone": "氹仔舊城區",
+    "lat": 22.15333,
+    "lng": 113.55644,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": false,
+    "crowd_base": 0.3,
+    "visit_min": 20,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 480,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "北帝",
+      "氹仔古廟",
+      "冷門",
+      "免費"
+    ],
+    "blurb": {
+      "zh": "氹仔最重要的傳統廟宇之一，保留漁村時代的民間信仰記憶。",
+      "en": "One of Taipa's key traditional temples, preserving memories of its fishing-village past."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "parisian_macau",
+    "name": {
+      "zh": "澳門巴黎人",
+      "en": "The Parisian Macao",
+      "pt": "The Parisian Macao"
+    },
+    "category": "view",
+    "district": "taipa",
+    "district_name": "氹仔",
+    "zone": "路氹金光大道",
+    "lat": 22.1457,
+    "lng": 113.5655,
+    "unesco": false,
+    "hotspot": true,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.75,
+    "visit_min": 45,
+    "cost_mop": 0,
+    "price_level": 2,
+    "open_min": 600,
+    "close_min": 1380,
+    "closed_days": [],
+    "tags": [
+      "巴黎鐵塔",
+      "夜景",
+      "度假村",
+      "拍照"
+    ],
+    "blurb": {
+      "zh": "以巴黎鐵塔為地標的綜合度假村，夜景亮燈後最適合拍照。",
+      "en": "A Paris-themed resort anchored by a replica Eiffel Tower, especially photogenic at night."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "pou_tai_temple",
+    "name": {
+      "zh": "菩提禪院",
+      "en": "Pou Tai Un Temple",
+      "pt": "Templo Pou Tai Un"
+    },
+    "category": "temple",
+    "district": "taipa",
+    "district_name": "氹仔",
+    "zone": "氹仔",
+    "lat": 22.1589,
+    "lng": 113.5558,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.25,
+    "visit_min": 30,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 480,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "佛寺",
+      "素食",
+      "寧靜",
+      "冷門"
+    ],
+    "blurb": {
+      "zh": "氹仔山邊清幽佛寺，園林寧靜，適合作為繁忙官也街後的安靜補點。",
+      "en": "A quiet Buddhist temple on Taipa's hillside, a calm counterpoint to busy Rua do Cunha."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "rua_cunha",
+    "name": {
+      "zh": "官也街",
+      "en": "Rua do Cunha",
+      "pt": "Rua do Cunha"
+    },
+    "category": "street",
+    "district": "taipa",
+    "district_name": "氹仔",
+    "zone": "氹仔舊城區",
+    "lat": 22.15368,
+    "lng": 113.55692,
+    "unesco": false,
+    "hotspot": true,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.8,
+    "visit_min": 40,
+    "cost_mop": 0,
+    "price_level": 1,
+    "open_min": 600,
+    "close_min": 1320,
+    "closed_days": [],
+    "tags": [
+      "美食街",
+      "手信",
+      "氹仔",
+      "本地小店",
+      "必食"
+    ],
+    "blurb": {
+      "zh": "氹仔最熱鬧的美食手信街，豬扒包、大菜糕、蛋卷雲集，短短一條卻臥虎藏龍。",
+      "en": "Taipa's liveliest food street — pork-chop buns, agar jelly and egg rolls packed into one short lane."
+    },
+    "image": "assets/poi/rua_cunha.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Rua_do_Cunha"
+  },
+  {
+    "id": "seng_cheong",
+    "name": {
+      "zh": "誠昌飯店（水蟹粥）",
+      "en": "Seng Cheong Restaurant",
+      "pt": "Seng Cheong"
+    },
+    "category": "food",
+    "district": "taipa",
+    "district_name": "氹仔",
+    "zone": "氹仔官也街",
+    "lat": 22.15405,
+    "lng": 113.55685,
+    "unesco": false,
+    "hotspot": true,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.7,
+    "visit_min": 50,
+    "cost_mop": 120,
+    "price_level": 2,
+    "open_min": 720,
+    "close_min": 1350,
+    "closed_days": [],
+    "tags": [
+      "水蟹粥",
+      "氹仔老店",
+      "本地小店",
+      "必食"
+    ],
+    "blurb": {
+      "zh": "官也街附近水蟹粥名店，適合作為氹仔舊城區行程的正餐停留。",
+      "en": "A Taipa old-name restaurant known for crab congee, ideal as the main meal stop."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "tai_lei_loi",
+    "name": {
+      "zh": "大利來記豬扒包",
+      "en": "Tai Lei Loi Kei Pork Chop Bun",
+      "pt": "Tai Lei Loi Kei"
+    },
+    "category": "food",
+    "district": "taipa",
+    "district_name": "氹仔",
+    "zone": "氹仔官也街",
+    "lat": 22.156,
+    "lng": 113.5572,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.6,
+    "visit_min": 30,
+    "cost_mop": 45,
+    "price_level": 1,
+    "open_min": 480,
+    "close_min": 1080,
+    "closed_days": [],
+    "tags": [
+      "豬扒包",
+      "氹仔名物",
+      "老字號",
+      "本地小店",
+      "必食"
+    ],
+    "blurb": {
+      "zh": "氹仔豬扒包的代名詞，現炸厚切豬扒夾脆菠蘿包，每日限量。",
+      "en": "The face of Taipa's pork-chop bun — a thick fried chop in a crisp pineapple bun, daily limited."
+    },
+    "image": "assets/poi/tai_lei_loi.jpg",
+    "wiki_url": null
+  },
+  {
+    "id": "taipa_houses",
+    "name": {
+      "zh": "龍環葡韻",
+      "en": "Taipa Houses",
+      "pt": "Casas-Museu da Taipa"
+    },
+    "category": "museum",
+    "district": "taipa",
+    "district_name": "氹仔",
+    "zone": "氹仔",
+    "lat": 22.15388,
+    "lng": 113.559615,
+    "unesco": false,
+    "hotspot": true,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.7,
+    "visit_min": 40,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 600,
+    "close_min": 1080,
+    "closed_days": [
+      0
+    ],
+    "tags": [
+      "葡式碧綠屋",
+      "濕地",
+      "拍照",
+      "婚紗",
+      "免費"
+    ],
+    "blurb": {
+      "zh": "五幢薄荷綠葡式別墅臨湖而立，前身為葡人官邸，現為博物館群。",
+      "en": "Five mint-green Portuguese villas by a wetland lake, former officials' residences, now museums."
+    },
+    "image": "assets/poi/taipa_houses.jpg",
+    "wiki_url": "https://en.wikipedia.org/wiki/Taipa_Houses%E2%80%93Museum",
+    "tip": {
+      "zh": "逢星期一休館；黃昏燈光亮起最靚。"
+    }
+  },
+  {
+    "id": "taipa_museum",
+    "name": {
+      "zh": "氹仔市政博物館",
+      "en": "Museum of Taipa and Coloane History",
+      "pt": "Museu da História da Taipa e Coloane"
+    },
+    "category": "museum",
+    "district": "taipa",
+    "district_name": "氹仔",
+    "zone": "氹仔舊城區",
+    "lat": 22.1535,
+    "lng": 113.5569,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": false,
+    "crowd_base": 0.25,
+    "visit_min": 35,
+    "cost_mop": 0,
+    "price_level": 0,
+    "open_min": 600,
+    "close_min": 1080,
+    "closed_days": [
+      0
+    ],
+    "tags": [
+      "博物館",
+      "離島歷史",
+      "室內",
+      "免費"
+    ],
+    "blurb": {
+      "zh": "由舊市政廳改成的小型博物館，補足氹仔與路環的歷史脈絡。",
+      "en": "A small museum in the former municipal building, explaining the history of Taipa and Coloane."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "taipa_village",
+    "name": {
+      "zh": "氹仔舊城區",
+      "en": "Taipa Village",
+      "pt": "Vila da Taipa"
+    },
+    "category": "street",
+    "district": "taipa",
+    "district_name": "氹仔",
+    "zone": "氹仔舊城區",
+    "lat": 22.1538,
+    "lng": 113.5566,
+    "unesco": false,
+    "hotspot": false,
+    "old_district": true,
+    "local_business": true,
+    "crowd_base": 0.55,
+    "visit_min": 45,
+    "cost_mop": 0,
+    "price_level": 1,
+    "open_min": 0,
+    "close_min": 1440,
+    "closed_days": [],
+    "tags": [
+      "氹仔老街",
+      "葡式建築",
+      "美食",
+      "本地小店"
+    ],
+    "blurb": {
+      "zh": "官也街外圍的氹仔老城肌理仍在，葡式小屋、窄巷與街坊食店交錯。",
+      "en": "Beyond Rua do Cunha, Taipa Village keeps its old lanes, Portuguese houses and neighbourhood eateries."
+    },
+    "image": null,
+    "wiki_url": null
+  },
+  {
+    "id": "venetian_macau",
+    "name": {
+      "zh": "澳門威尼斯人",
+      "en": "The Venetian Macao",
+      "pt": "The Venetian Macao"
+    },
+    "category": "view",
+    "district": "taipa",
+    "district_name": "氹仔",
+    "zone": "路氹金光大道",
+    "lat": 22.1487,
+    "lng": 113.5629,
+    "unesco": false,
+    "hotspot": true,
+    "old_district": false,
+    "local_business": false,
+    "crowd_base": 0.85,
+    "visit_min": 60,
+    "cost_mop": 0,
+    "price_level": 2,
+    "open_min": 600,
+    "close_min": 1380,
+    "closed_days": [],
+    "tags": [
+      "度假村",
+      "運河",
+      "購物",
+      "拍照熱點"
+    ],
+    "blurb": {
+      "zh": "路氹大型綜合度假村，室內運河與拱廊極具辨識度，但人流較集中。",
+      "en": "A large Cotai resort famous for its indoor canals and arcades, usually busy."
+    },
+    "image": null,
+    "wiki_url": null
+  }
+]
