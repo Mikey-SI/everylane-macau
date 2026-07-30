@@ -1,0 +1,31 @@
+{
+  "chats": [
+    {
+      "channel": "console",
+      "created_at": "2026-07-30T18:45:23.598086Z",
+      "id": "38d0e753-1316-4a2b-8cbd-837142ccd5ae",
+      "meta": {},
+      "name": "我想去鄭家大屋同附近",
+      "pinned": false,
+      "session_id": "1785437122299-7yfkh3d",
+      "source": "chat",
+      "status": "idle",
+      "updated_at": "2026-07-30T18:45:23.598086Z",
+      "user_id": "default"
+    },
+    {
+      "channel": "console",
+      "created_at": "2026-07-30T18:58:38.803637Z",
+      "id": "399807c8-dd85-4058-bdd6-a096b7264c02",
+      "meta": {},
+      "name": "鄭家大屋老街",
+      "pinned": false,
+      "session_id": "evidence-1785437918",
+      "source": "chat",
+      "status": "idle",
+      "updated_at": "2026-07-30T18:58:52.923337Z",
+      "user_id": "default"
+    }
+  ],
+  "version": 1
+}

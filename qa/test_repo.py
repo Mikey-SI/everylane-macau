@@ -1,0 +1,143 @@
+"""Cycle 5 repository, deliverable and credential consistency checks."""
+from __future__ import annotations
+
+import json
+import os
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "backend"))
+
+import tools  # noqa: E402
+
+passes = 0
+fails: list[str] = []
+
+
+def check(ok, label, detail=""):
+    global passes
+    if ok:
+        passes += 1
+    else:
+        fails.append(f"{label}: {detail}")
+
+
+def text_files():
+    allowed = {".py", ".js", ".css", ".html", ".md", ".json", ".txt", ".bat", ".sh", ".example"}
+    ignored = {".git", ".venv", "__pycache__", "node_modules", "logs"}
+    for path in ROOT.rglob("*"):
+        if not path.is_file() or any(part in ignored for part in path.parts):
+            continue
+        if path.suffix.lower() in allowed or path.name == ".env.example":
+            yield path
+
+
+def main():
+    pois = json.loads((ROOT / "backend/data/pois.json").read_text(encoding="utf-8"))
+    check(len(pois) == 70, "POI count exactly 70")
+    check(len(tools.TOOLS) == 7, "granular tool count exactly 7")
+    check(all(p["image"] for p in pois), "all POIs have image paths")
+    check(all((ROOT / "frontend" / p["image"]).is_file() for p in pois),
+          "all POI image files exist")
+
+    # No production credential (placeholder text is allowed).
+    secret_re = re.compile(r"sk-sp-[A-Za-z0-9_./+=-]{20,}")
+    secret_files = []
+    stale_files = []
+    stale = (
+        "街知巷聞工作室",
+        "參賽者：SITINIEK",
+        "34 個景點",
+        "34个景点",
+        "對標 QwenPaw 的五層",
+    )
+    for path in text_files():
+        if path.resolve() == Path(__file__).resolve():
+            continue
+        try:
+            content = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        if secret_re.search(content):
+            secret_files.append(str(path.relative_to(ROOT)))
+        if any(term in content for term in stale):
+            stale_files.append(str(path.relative_to(ROOT)))
+    check(not secret_files, "repository has no Token Plan secret", secret_files)
+    check(not stale_files, "repository has no stale identity/architecture claims", stale_files)
+    check(not (ROOT / ".env").exists(), "local .env not present in repository workspace")
+
+    required = [
+        "docs/概念計劃書_街知巷聞_EveryLaneMacau.docx",
+        "docs/概念計劃書_街知巷聞_EveryLaneMacau.pdf",
+        "docs/實踐文章_街知巷聞_EveryLaneMacau.docx",
+        "docs/實踐文章_街知巷聞_EveryLaneMacau.pdf",
+        "docs/開發過程證明_QwenPaw_街知巷聞.docx",
+        "docs/開發過程證明_QwenPaw_街知巷聞.pdf",
+        "docs/團隊介紹視頻腳本_3分鐘.md",
+        "docs/團隊介紹視頻_3分鐘.mp4",
+        "qwenpaw/skill/everylane-macau/SKILL.md",
+        "qwenpaw/mcp_server.py",
+        "qwenpaw/README.md",
+    ]
+    for rel in required:
+        check((ROOT / rel).is_file(), f"deliverable exists: {rel}")
+
+    video = ROOT / "docs/團隊介紹視頻_3分鐘.mp4"
+    try:
+        import imageio_ffmpeg
+
+        frames = imageio_ffmpeg.read_frames(str(video), pix_fmt="rgb24")
+        metadata = next(frames)
+        frames.close()
+        duration = float(metadata["duration"])
+        check(120 <= duration < 180, "team video duration below 3 minutes", duration)
+        check(metadata["size"] == (1920, 1080), "team video is 1080p", metadata["size"])
+        check(video.stat().st_size > 2_000_000, "team video file has audio/video payload",
+              video.stat().st_size)
+    except Exception as exc:
+        check(False, "team video metadata readable", str(exc))
+
+    for i in range(1, 5):
+        matches = list((ROOT / "docs/assets/qwenpaw").glob(f"0{i}_*.png"))
+        check(len(matches) == 1 and matches[0].stat().st_size > 50_000,
+              f"QwenPaw evidence image {i} valid",
+              [str(m) for m in matches])
+
+    # Extract PDFs to verify identity and QwenPaw evidence survived conversion.
+    try:
+        import fitz
+
+        pdf_expect = {
+            "docs/概念計劃書_街知巷聞_EveryLaneMacau.pdf": [
+                "愛拼才會贏", "施天益", "QwenPaw 2.0.0", "EveryLane Macau MCP",
+            ],
+            "docs/實踐文章_街知巷聞_EveryLaneMacau.pdf": [
+                "愛拼才會贏", "施天益", "QwenPaw 2.0.0", "qwen3.7-plus",
+            ],
+            "docs/開發過程證明_QwenPaw_街知巷聞.pdf": [
+                "愛拼才會贏", "施天益", "QwenPaw 2.0.0", "531 PASS",
+            ],
+        }
+        for rel, needles in pdf_expect.items():
+            doc = fitz.open(ROOT / rel)
+            text = "\n".join(page.get_text() for page in doc)
+            check(all(needle in text for needle in needles),
+                  f"PDF content verified: {rel}",
+                  [n for n in needles if n not in text])
+            check(3 <= len(doc) <= 12, f"PDF page count sane: {rel}", len(doc))
+    except ImportError:
+        check(False, "PyMuPDF available for PDF verification")
+
+    temp = [p.name for p in (ROOT / "docs").glob("~$*")]
+    check(not temp, "no Word lock/temp files", temp)
+
+    print(f"REPOSITORY PASS {passes} FAIL {len(fails)}")
+    for failure in fails:
+        print("FAIL:", failure)
+    raise SystemExit(1 if fails else 0)
+
+
+if __name__ == "__main__":
+    main()

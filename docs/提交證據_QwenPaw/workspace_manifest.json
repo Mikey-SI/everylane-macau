@@ -1,0 +1,19 @@
+{
+  "workspace": "C:\\Users\\MACAU\\.qwenpaw\\workspaces\\default",
+  "files": [
+    ".mcp",
+    ".skill.json.lock",
+    "agent.json",
+    "chats.json",
+    "credentials.yaml",
+    "drivers\\.legacy_mcp_migration_report.yaml",
+    "drivers\\mcp\\everylane_macau.yaml",
+    "drivers\\mcp\\tavily_search.yaml",
+    "history.db",
+    "history.db-shm",
+    "history.db-wal",
+    "jobs.json",
+    "skill.json",
+    "skills\\everylane-macau\\SKILL.md"
+  ]
+}

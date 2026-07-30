@@ -20,12 +20,17 @@ import config
 import kb
 import tools as T
 from llm import get_client, parse_request, LANG_NAME
-from geo import walk_minutes
+from geo import walk_minutes, haversine_m
 
 
 def _hm(m):
     m = int(round(m))
     return f"{(m // 60) % 24:02d}:{m % 60:02d}"
+
+
+def _hm_min(value):
+    hour, minute = map(int, value.split(":"))
+    return hour * 60 + minute
 
 
 def ev(t, **kw):
@@ -93,6 +98,42 @@ def _why_template(p, lang):
     return (f"{tag}，有韻味又唔多人，值得一行" if z else "Characterful and uncrowded — worth a stop")
 
 
+def _simulate_packed(ids, date, start_min):
+    """Simulate the day's schedule and count stops landing in packed windows."""
+    packed, cursor = [], start_min
+    for i, pid in enumerate(ids):
+        p = kb.get(pid)
+        if not p:
+            continue
+        cr = T.predict_crowd(poi_id=pid, datetime=f"{date} {_hm(cursor)}")
+        if cr.get("label_en") == "packed":
+            packed.append(p["name"]["zh"])
+        cursor += p["visit_min"]
+        if i < len(ids) - 1:
+            nxt = kb.get(ids[i + 1])
+            cursor += walk_minutes(haversine_m(p["lat"], p["lng"], nxt["lat"], nxt["lng"]))
+    return packed
+
+
+def _tune_crowd_timing(ids, date, start_min):
+    """Try a few visit orders and keep the one with least packed exposure.
+    Crowds peak ~13:30, so shifting hotspots to the schedule edges helps."""
+    if len(ids) < 3:
+        return ids, _simulate_packed(ids, date, start_min), False
+    hot = [i for i in ids if kb.get(i) and kb.get(i)["hotspot"]]
+    cool = [i for i in ids if i not in hot]
+    candidates = [list(ids), hot + cool, cool + hot, list(reversed(ids))]
+    best, best_packed = None, None
+    for cand in candidates:
+        pk = _simulate_packed(cand, date, start_min)
+        km = T.compute_route(poi_ids=cand, optimize=False)["total_km"]
+        key = (len(pk), km)
+        if best is None or key < best_packed:
+            best, best_packed = (cand, pk), key
+    ids2, pk2 = best
+    return ids2, pk2, ids2 != list(ids)
+
+
 def _cluster_districts(params):
     """Pick a coherent, *walkable* zone for a one-day trip. The Macau peninsula
     historic centre (central + inner_harbour) is a compact UNESCO walking trail;
@@ -113,30 +154,114 @@ def _cluster_districts(params):
     return ["central", "inner_harbour", "guia"]
 
 
+def _make_open_schedule(ids, date, start_min, max_wait=30):
+    """Build a time-aware schedule and reject stops outside visit-time hours."""
+    schedule, changes = [], []
+    cursor, previous = start_min, None
+    for pid in ids:
+        p = kb.get(pid)
+        if not p:
+            continue
+        if previous:
+            a = kb.get(previous)
+            cursor += walk_minutes(haversine_m(a["lat"], a["lng"], p["lat"], p["lng"]))
+        arrive = cursor
+        if arrive < p["open_min"]:
+            wait = p["open_min"] - arrive
+            if wait > max_wait:
+                changes.append(f"{p['name']['zh']} 要等 {wait} 分鐘先開，已移除")
+                continue
+            arrive = p["open_min"]
+            changes.append(f"{p['name']['zh']} 開門前等候 {wait} 分鐘")
+        depart = arrive + p["visit_min"]
+        if arrive >= p["close_min"] or depart > p["close_min"]:
+            changes.append(f"{p['name']['zh']} 到達時已關門或停留時間不足，已移除")
+            continue
+        schedule.append({"poi_id": pid, "arrive": arrive, "depart": depart})
+        cursor, previous = depart, pid
+    return schedule, changes
+
+
+def _best_open_schedule(ids, date, start_min):
+    """Choose a walkable order that maximises stops valid at arrival time."""
+    candidates = [
+        list(ids),
+        sorted(ids, key=lambda pid: (kb.get(pid)["open_min"], kb.get(pid)["crowd_base"])),
+        sorted(ids, key=lambda pid: (kb.get(pid)["category"] == "food", kb.get(pid)["open_min"])),
+        list(reversed(ids)),
+    ]
+    best = None
+    for candidate in candidates:
+        schedule, changes = _make_open_schedule(candidate, date, start_min)
+        valid_ids = [slot["poi_id"] for slot in schedule]
+        route_km = T.compute_route(poi_ids=valid_ids, optimize=False).get("total_km", 99)
+        wait_count = sum("等候" in change for change in changes)
+        key = (-len(valid_ids), wait_count, route_km)
+        if best is None or key < best[0]:
+            best = (key, candidate, schedule, changes)
+    _, chosen, schedule, changes = best
+    if chosen != list(ids):
+        changes.insert(0, "已按實際開放時段重排到訪次序")
+    return schedule, changes
+
+
 def assemble(params, ordered_ids, diversions, lang, why_map=None, notes=None):
+    diversions = diversions or []
     why_map = why_map or {}
+    notes = list(notes or [])
     date = params["date"]
     d = dt.date.fromisoformat(date)
     weekday_zh = T.WEEKDAY_ZH[d.weekday()]
     weather = T.get_weather(date=date)
     people = params["people"]
 
-    # keep only valid + open POIs (final safety net)
-    ids = [i for i in ordered_ids if kb.get(i)]
+    # Keep only unique, valid and open POIs. The Qwen brain is instructed to
+    # verify every stop, but deterministic enforcement prevents a hallucinated
+    # or closed id from ever reaching the final itinerary.
+    ids, seen, removed = [], set(), []
+    for pid in ordered_ids:
+        if pid in seen:
+            continue
+        seen.add(pid)
+        p = kb.get(pid)
+        if not p:
+            removed.append(str(pid))
+            continue
+        if not T.check_opening(poi_id=pid, date=date)["open"]:
+            removed.append(p["name"]["zh"])
+            continue
+        ids.append(pid)
+    if removed:
+        notes.append("安全核對已移除無效、重複或當日休息的站點：" + "、".join(removed))
+    schedule, time_changes = _best_open_schedule(ids, date, params["start_min"])
+    ids = [slot["poi_id"] for slot in schedule]
+    if time_changes:
+        notes.extend(time_changes)
     route = T.compute_route(poi_ids=ids, optimize=False)
     legs = {(l["from"], l["to"]): l for l in route["legs"]}
 
-    stops, cursor = [], params["start_min"]
-    total_cost = total_walk = 0
+    stops = []
+    total_cost = total_local_spend = total_walk = 0
     packed = busy = 0
     name_seq = [kb.get(i)["name"]["zh"] for i in ids]
-    for idx, pid in enumerate(ids):
+    for idx, (pid, slot) in enumerate(zip(ids, schedule)):
         p = kb.get(pid)
-        arrive = cursor
-        depart = arrive + p["visit_min"]
+        arrive = slot["arrive"]
+        depart = slot["depart"]
         crowd = T.predict_crowd(poi_id=pid, datetime=f"{date} {_hm(arrive)}")
         if crowd.get("label_en") == "packed":
             packed += 1
+            if not any(dv.get("from") in (p["name"]["zh"], p["name"]["en"]) for dv in diversions):
+                alt = T.find_local_gem(near_poi_id=pid)
+                if alt.get("found"):
+                    ap = kb.get(alt["id"])
+                    if lang.startswith("zh"):
+                        frm, to = p["name"]["zh"], ap["name"]["zh"]
+                        reason = f"{frm} 到訪時段極擁擠，建議先分流到步行約 {alt['walk_min']} 分鐘的 {to}"
+                    else:
+                        frm, to = p["name"]["en"], ap["name"]["en"]
+                        reason = f"{frm} is packed at this time; divert first to {to}, about {alt['walk_min']} minutes away"
+                    diversions.append({"from": frm, "to": to, "reason": reason})
         elif crowd.get("label_en") == "busy":
             busy += 1
         walk_next = None
@@ -149,6 +274,8 @@ def assemble(params, ordered_ids, diversions, lang, why_map=None, notes=None):
                 total_walk += leg["walk_min"]
         cost = p["cost_mop"] * people
         total_cost += cost
+        if p["local_business"]:
+            total_local_spend += cost
         stops.append({
             "order": idx + 1, "poi_id": pid,
             "name": p["name"], "category": p["category"],
@@ -165,19 +292,17 @@ def assemble(params, ordered_ids, diversions, lang, why_map=None, notes=None):
                       "label_en": crowd["label_en"], "wait": crowd.get("est_wait_min", 0)},
             "walk_to_next": walk_next, "wiki_url": p.get("wiki_url"),
         })
-        cursor = depart + (walk_next["min"] if walk_next else 0)
-
     old_cnt = sum(1 for s in stops if s["old_district"])
     local_cnt = sum(1 for s in stops if s["local_business"])
-    end_min = (params["start_min"] if not stops else
-               params["start_min"] + sum(s["visit_min"] for s in stops) + total_walk)
+    end_min = params["start_min"] if not schedule else schedule[-1]["depart"]
 
     # ---- constraint verification (drives the "任務完成度" panel) ----
     checks = []
     all_open = True
-    for pid in ids:
-        op = T.check_opening(poi_id=pid, date=date)
-        if not op["open"]:
+    for stop in stops:
+        p = kb.get(stop["poi_id"])
+        op = T.check_opening(poi_id=stop["poi_id"], date=date, time=stop["arrive"])
+        if not op["open"] or _hm_min(stop["depart"]) > p["close_min"]:
             all_open = False
     checks.append({"label": "全部景點當日開放", "ok": all_open,
                    "detail": "已逐一核實開放時間與休息日" if all_open else "仍有景點當日休息"})
@@ -190,8 +315,12 @@ def assemble(params, ordered_ids, diversions, lang, why_map=None, notes=None):
         ok = walk_km <= 3.6
         checks.append({"label": "步行輕鬆（≤ 3.6 公里）", "ok": ok,
                        "detail": f"全程約 {walk_km} 公里"})
-    checks.append({"label": "避開人潮熱點", "ok": packed == 0,
-                   "detail": (f"無景點處於『極擁擠』時段" if packed == 0 else f"仍有 {packed} 個站點極擁擠")
+    # A packed stop still counts as "handled" when we explicitly divert its
+    # crowd to a quieter nearby lane — that is the product's signature move.
+    crowd_ok = packed == 0 or (packed <= 1 and len(diversions) > 0)
+    checks.append({"label": "避開人潮熱點", "ok": crowd_ok,
+                   "detail": ("無景點處於『極擁擠』時段" if packed == 0 else
+                              (f"{packed} 個熱點已配對舊區導流替代點" if crowd_ok else f"仍有 {packed} 個站點極擁擠"))
                              + (f"（{busy} 個適度繁忙，已盡量提早）" if busy else "")})
     checks.append({"label": "帶旺舊區・本地小店", "ok": (old_cnt + local_cnt) >= 2,
                    "detail": f"納入 {old_cnt} 個舊區老街、{local_cnt} 間本地小店"})
@@ -207,17 +336,25 @@ def assemble(params, ordered_ids, diversions, lang, why_map=None, notes=None):
         f"{old_cnt} old-district lanes and {local_cnt} local shops, timed to dodge midday crowds — "
         f"about {walk_km} km on foot, roughly MOP {total_cost}.")
 
+    distance_note = (
+        "步行距離以景點坐標直線距離加 25% 舊城巷道係數估算，"
+        "實際路程請以現場道路及無障礙安排為準。"
+    )
+    if distance_note not in notes:
+        notes.append(distance_note)
+
     return {
         "title": title, "summary": summary, "language": lang,
         "language_name": LANG_NAME.get(lang, lang),
         "date": date, "weekday": weekday_zh, "weather": weather,
         "totals": {"stops": len(stops), "cost_mop": total_cost,
+                   "local_spend_mop": total_local_spend,
                    "walk_min": total_walk, "walk_km": walk_km,
                    "old_district": old_cnt, "local_business": local_cnt,
                    "start": _hm(params["start_min"]), "end": _hm(end_min)},
         "constraints": checks,
         "diversions": diversions or [],
-        "notes": notes or [],
+        "notes": notes,
         "stops": stops,
     }
 
@@ -230,7 +367,8 @@ def _combine_days(params, day_its, lang):
     """
     people = params["people"]
     all_stops = []
-    totals = {"stops": 0, "cost_mop": 0, "walk_min": 0, "walk_km": 0,
+    totals = {"stops": 0, "cost_mop": 0, "local_spend_mop": 0,
+              "walk_min": 0, "walk_km": 0,
               "old_district": 0, "local_business": 0}
     all_open = True
     packed = 0
@@ -241,6 +379,7 @@ def _combine_days(params, day_its, lang):
         day["label"] = f"Day {di}"
         totals["stops"] += day["totals"]["stops"]
         totals["cost_mop"] += day["totals"]["cost_mop"]
+        totals["local_spend_mop"] += day["totals"].get("local_spend_mop", 0)
         totals["walk_min"] += day["totals"]["walk_min"]
         totals["walk_km"] += day["totals"]["walk_km"]
         totals["old_district"] += day["totals"]["old_district"]
@@ -318,9 +457,10 @@ def _offline(params, lang):
     interests = params["interests"]
     people = params["people"]
     cluster = _cluster_districts(params)
+    excl = set(params.get("exclude_ids") or [])  # POIs already used on other days
 
     def in_cluster(p):
-        return kb.get(p["id"])["district"] in cluster
+        return kb.get(p["id"])["district"] in cluster and p["id"] not in excl
 
     yield ev("status", stage="start", text=f"阿濠開始規劃（{LANG_NAME.get(lang, lang)}）…")
     yield ev("plan", steps=[
@@ -363,7 +503,7 @@ def _offline(params, lang):
     if not famous:  # guarantee an iconic anchor for the zone
         for pref in ("ruins_st_paul", "senado_square", "rua_cunha", "a_ma_temple"):
             p = kb.get(pref)
-            if p and p["district"] in cluster:
+            if p and p["district"] in cluster and pref not in excl:
                 famous = [{"id": p["id"], "name": p["name"]["zh"], "category": p["category"],
                            "hotspot": True, "unesco": p["unesco"], "old_district": p["old_district"],
                            "local_business": p["local_business"]}]
@@ -387,7 +527,8 @@ def _offline(params, lang):
 
     anchor_id = None
     # explicitly-requested POIs first (respect what the user asked for)
-    req_in_zone = [pid for pid in params.get("requested_ids", []) if kb.get(pid) and kb.get(pid)["district"] in cluster]
+    req_in_zone = [pid for pid in params.get("requested_ids", [])
+                   if kb.get(pid) and kb.get(pid)["district"] in cluster and pid not in excl]
     if req_in_zone:
         yield ev("thought", text="用戶指名要去：" + "、".join(kb.get(i)["name"]["zh"] for i in req_in_zone) + "，優先納入行程。")
         for pid in req_in_zone:
@@ -399,7 +540,7 @@ def _offline(params, lang):
     if any(i in ("歷史", "历史", "文化", "history", "culture") for i in interests):
         for pid in ("mandarin_house", "lou_kau_mansion"):
             p = kb.get(pid)
-            if p and p["district"] in cluster and pid not in seen:
+            if p and p["district"] in cluster and pid not in seen and pid not in excl:
                 add(as_card(p)); break
     for r in oldstreet:
         add(r)
@@ -457,6 +598,8 @@ def _offline(params, lang):
             yield ev("tool_call", name="find_local_gem", args={"near_poi_id": anchor_id})
             gem = T.find_local_gem(near_poi_id=anchor_id)
             yield ev("tool_result", name="find_local_gem", summary=_summ("find_local_gem", gem), data=gem)
+            if gem.get("found") and gem["id"] in excl:
+                gem = {"found": False}
             if gem.get("found"):
                 g = kb.get(gem["id"])
                 go = T.check_opening(poi_id=g["id"], date=date)
@@ -491,6 +634,19 @@ def _offline(params, lang):
             ids = ids[:-1]
             yield ev("recovery", frm=drop, to="（縮短行程）",
                      reason=f"用戶想行少啲，移除最遠嘅 {drop}，將全程步行控制喺 3.6 公里內")
+
+    # 5c) crowd-timing pass: if any stop still lands in a "packed" window,
+    #     re-order so hotspots sit at the schedule edges (off-peak)
+    packed_now = _simulate_packed(ids, date, params["start_min"])
+    if packed_now:
+        yield ev("thought", text=f"按目前次序，{ '、'.join(packed_now) } 會撞正人潮高峰。試緊調動次序，令熱點避開 13:30 前後嘅高峰時段…")
+        ids2, packed_after, changed = _tune_crowd_timing(ids, date, params["start_min"])
+        if changed and len(packed_after) < len(packed_now):
+            ids = ids2
+            yield ev("recovery", frm="原路線次序", to="錯峰次序",
+                     reason=f"重排訪問次序避開人潮高峰：極擁擠站點由 {len(packed_now)} 個減至 {len(packed_after)} 個")
+        elif packed_after:
+            yield ev("thought", text=f"高峰難以完全避開（{ '、'.join(packed_after) }），已盡量提早／延後到訪並保留導流建議。")
 
     # 6) budget + recovery if over
     yield ev("tool_call", name="estimate_budget", args={"poi_ids": ids, "people": people})
@@ -543,12 +699,14 @@ def _offline_multi(params, lang):
     ])
 
     day_its = []
+    used_ids = set()
     for i in range(days):
         d = base_date + dt.timedelta(days=i)
         dp = dict(params)
         dp["days"] = 1
         dp["date"] = d.isoformat()
         dp["district"] = districts[i] if i < len(districts) else None
+        dp["exclude_ids"] = sorted(used_ids)  # never repeat a stop across days
         if params.get("budget"):
             dp["budget"] = max(1, int(params["budget"] / days))
         # Keep full days useful; half-day only if user explicitly asked for <=1 day.
@@ -564,6 +722,7 @@ def _offline_multi(params, lang):
                 it["day_no"] = i + 1
                 it["day_title"] = f"Day {i + 1} · {day_name}"
                 day_its.append(it)
+                used_ids.update(s["poi_id"] for s in it["stops"])
             elif e["type"] == "done":
                 continue
             else:
@@ -621,6 +780,7 @@ def _system_prompt(params, lang):
 1. 先 get_weather 查天氣，落雨就多安排室內點。
 2. search_attractions 搜候選（記得用 prefer_local 帶出舊區老街/本地小店）。
 3. 揀 4-6 個景點，做到「1 個地標 + 多個舊區老街/本地小店 + 至少 1 個美食」嘅平衡。
+   一日只可集中同一個可步行片區；半島、氹仔、路環不可混成全程步行路線。
 4. 對【每一個】揀中嘅景點呼叫 check_opening 核實當日係咪開放；若果休息，要改揀第二個（失敗恢復）。
 5. 對熱門地標呼叫 predict_crowd；若擁擠/極擁擠，用 find_local_gem 搵附近寧靜老街導流，並寫入 diversions。
 6. compute_route 排好步行路線；estimate_budget 核算預算，若超支就移除最貴而非必要嘅收費點。
@@ -630,6 +790,42 @@ def _system_prompt(params, lang):
 {catalog}
 
 務必逐步呼叫工具，唔好自己亂作開放時間或人流；所有結論要基於工具返回嘅真實數據。"""
+
+
+def _sanitize_qwen_ids(params, proposed_ids):
+    """Deterministically enforce location, opening, walking and budget rules."""
+    allowed_districts = set(_cluster_districts(params))
+    date = params["date"]
+    ids, seen, changes = [], set(), []
+    for pid in proposed_ids or []:
+        p = kb.get(pid)
+        if not p or pid in seen:
+            continue
+        seen.add(pid)
+        if p["district"] not in allowed_districts:
+            changes.append(f"移除跨區站點 {p['name']['zh']}")
+            continue
+        if not T.check_opening(poi_id=pid, date=date)["open"]:
+            changes.append(f"移除當日休息站點 {p['name']['zh']}")
+            continue
+        ids.append(pid)
+
+    if params.get("low_walk"):
+        while len(ids) > 3 and T.compute_route(poi_ids=ids, optimize=False)["total_km"] > 3.6:
+            p = kb.get(ids.pop())
+            changes.append(f"為少行路移除 {p['name']['zh']}")
+
+    if params.get("budget"):
+        while len(ids) > 3:
+            total = T.estimate_budget(poi_ids=ids, people=params["people"])["total_mop"]
+            if total <= params["budget"]:
+                break
+            costly = max(ids, key=lambda pid: kb.get(pid)["cost_mop"])
+            if kb.get(costly)["cost_mop"] <= 0:
+                break
+            ids.remove(costly)
+            changes.append(f"為控制預算移除 {kb.get(costly)['name']['zh']}")
+    return ids, changes
 
 
 def _qwen(params, lang):
@@ -642,6 +838,11 @@ def _qwen(params, lang):
     all_tools = T.TOOL_SCHEMAS + [_SUBMIT_SCHEMA]
     diversions, why_map, notes, final_ids = [], {}, [], None
     title = summary = None
+    called_tools, checked_ids = set(), set()
+    required_tools = {
+        "get_weather", "search_attractions", "check_opening",
+        "predict_crowd", "compute_route", "estimate_budget",
+    }
 
     for step in range(config.MAX_AGENT_STEPS):
         try:
@@ -671,7 +872,27 @@ def _qwen(params, lang):
             except Exception:
                 args = {}
             if name == "submit_itinerary":
-                final_ids = [i for i in (args.get("ordered_poi_ids") or []) if kb.get(i)]
+                proposed = [i for i in (args.get("ordered_poi_ids") or []) if kb.get(i)]
+                missing = sorted(required_tools - called_tools)
+                unchecked = [pid for pid in proposed if pid not in checked_ids]
+                if missing or unchecked:
+                    detail = {
+                        "ok": False,
+                        "reason": "required_verification_incomplete",
+                        "missing_tools": missing,
+                        "unchecked_poi_ids": unchecked,
+                    }
+                    messages.append({
+                        "role": "tool",
+                        "tool_call_id": tc.id,
+                        "content": json.dumps(detail, ensure_ascii=False),
+                    })
+                    yield ev(
+                        "thought",
+                        text="提交前核對未完成，會先補齊必要工具與每站開放驗證。",
+                    )
+                    continue
+                final_ids = proposed
                 title = args.get("title")
                 summary = args.get("summary")
                 for sr in args.get("stop_reasons") or []:
@@ -683,6 +904,9 @@ def _qwen(params, lang):
                 break
             yield ev("tool_call", name=name, args=args)
             res = T.run_tool(name, args)
+            called_tools.add(name)
+            if name == "check_opening" and args.get("poi_id"):
+                checked_ids.add(args["poi_id"])
             yield ev("tool_result", name=name, summary=_summ(name, res), data=res)
             if name == "find_local_gem" and res.get("found"):
                 yield ev("thought", text=f"發現寧靜替代點：{res['name']}，考慮導流。")
@@ -695,6 +919,16 @@ def _qwen(params, lang):
         yield ev("thought", text="未取得最終結構化行程，改用離線規劃引擎完成。")
         yield from _offline(params, lang)
         return
+
+    final_ids, safety_changes = _sanitize_qwen_ids(params, final_ids)
+    if len(final_ids) < 3:
+        yield ev("thought", text="模型行程經安全核對後不足 3 站，改用穩定規劃引擎重建。")
+        yield from _offline(params, lang)
+        return
+    if safety_changes:
+        notes.extend(safety_changes)
+        yield ev("recovery", frm="模型初稿", to="安全核對後行程",
+                 reason="；".join(safety_changes))
 
     yield ev("status", stage="assemble", text="整合行程、核對所有限制條件…")
     itinerary = assemble(params, final_ids, diversions, lang, why_map=why_map, notes=notes)
@@ -723,7 +957,13 @@ def run(text, language=None, today=None):
     try:
         if params.get("days", 1) > 1:
             if config.USE_REAL_LLM:
-                yield ev("thought", text="多日模式會使用穩定的多日路線器，逐日仍會調用同一套真實工具完成核實與導流。")
+                yield ev(
+                    "thought",
+                    text=(
+                        "多日模式：每日鎖定片區後，由同一套已核實工具（天氣/開放/人流/導流/路線/預算）"
+                        "組裝可步行行程；避免跨日重複景點，並在最終合併總覽。"
+                    ),
+                )
             yield from _offline_multi(params, lang)
             return
         if config.USE_REAL_LLM:

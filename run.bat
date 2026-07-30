@@ -15,7 +15,7 @@ if errorlevel 1 (
 )
 echo.
 echo [2/2] 啟動伺服器：http://127.0.0.1:8000
-echo       （未設定 DASHSCOPE_API_KEY 時會以離線示範引擎完整運行）
+echo       （未設定 QWEN_API_KEY 時會以穩定示範引擎完整運行）
 echo       按 Ctrl+C 可停止伺服器。
 echo.
 start "" http://127.0.0.1:8000

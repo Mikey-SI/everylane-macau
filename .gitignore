@@ -1,10 +1,28 @@
 __pycache__/
 *.pyc
 .env
+.env.*
+!.env.example
 .venv/
 venv/
 _shots/
 _test_output.txt
 backend/_test_output.txt
 backend/data/raw_scraped.json
+logs/
+qa/_*.txt
+deploy/_*.txt
 .DS_Store
+# Office / temp / local secrets
+~$*
+*.secret
+docs/_scan_secrets.py
+docs/_ppt_from_video/
+docs/_evidence_video_build/
+docs/_ui_probe/
+docs/_capture_log.txt
+docs/_fixup_log.txt
+# never commit live credentials or local QwenPaw secret stores
+credentials.yaml
+**/credentials.yaml
+.qwenpaw.secret/

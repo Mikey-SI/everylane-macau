@@ -10,9 +10,10 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(HERE, "概念計劃書_街知巷聞_EveryLaneMacau.docx")
+OUT = os.environ.get("CONCEPT_DOC_OUT", os.path.join(HERE, "概念計劃書_街知巷聞_EveryLaneMacau.docx"))
 ASSET_DIR = os.path.join(HERE, "assets")
-PAGES_URL = "https://mikey-si.github.io/everylane-macau/"
+PAGES_URL = "http://47.79.228.128/"
+GITHUB_DEMO_URL = "https://mikey-si.github.io/everylane-macau/"
 
 TERRA = RGBColor(0xBE, 0x4A, 0x3A)
 AZUL = RGBColor(0x2C, 0x5E, 0x86)
@@ -227,9 +228,10 @@ para("澳門深度遊 AI 智能體 —— 唔止大三巴，帶你行勻澳門�
 table([
     ["參賽方向", "澳門文旅專題（兼及舊區活化）"],
     ["作品形式", "Web 應用（可運行網站）＋ 基於 Qwen / QwenPaw 的 ReAct AI 智能體"],
-    ["線上展示", PAGES_URL],
-    ["團隊名稱", "街知巷聞工作室"],
-    ["參賽者 / 隊長", "SITINIEK（學號 dc227126）"],
+    ["公網實例（真實 Qwen）", PAGES_URL],
+    ["靜態備用演示", GITHUB_DEMO_URL],
+    ["團隊名稱", "愛拼才會贏"],
+    ["參賽者 / 隊長", "施天益（SITINIEK，學號 dc227126）"],
     ["指導教師", "（待定）"],
     ["日期", "2026 年 6 月"],
 ], widths=[1.6, 4.7])
@@ -265,21 +267,27 @@ para("我們相信 AI 智能體可以做一件有商業價值又有社會意義�
 
 # ====================== 三 ======================
 h1("三、", "怎麼做（技術方案）")
-para("作品為一個可直接運行的網站，後端以 FastAPI 承載一個 ReAct 智能體，"
-     "對標 QwenPaw「FastAPI 運行時 + ReAct 核心 + 工具 / Toolkit」的五層架構。", )
+para("作品已在 Windows 本地完成 QwenPaw 2.0.0 基礎部署：以專用 Skill 固化阿濠人設與工作流，"
+     "並透過 stdio MCP 將網站同一套真實工具接入 QwenPaw；網站後端另以 FastAPI + SSE "
+     "實時呈現 ReAct 規劃、工具調用與失敗恢復。")
 h2("步驟 1：建立澳門景點知識庫（真實、可驗證）")
 bullet("以程式抓取 Wikipedia / Wikimedia Commons 的真實景點坐標與相片（公開授權）；")
 bullet("人手整理開放時間、休息日、費用、人流特徵、舊區 / 本地小店標記，共 70 個景點。")
 h2("步驟 2：以 Qwen + QwenPaw 構建 ReAct 智能體")
-bullet("透過百煉（DashScope）OpenAI 相容接口接入 Qwen 千問模型，驅動 ReAct「思考-行動-觀察」迴圈；")
-bullet("為智能體配置 7 種工具，統一以 function-calling schema 註冊（對標 QwenPaw Toolkit）：")
+bullet("QwenPaw 2.0.0 已實際啟動，Default Agent 已開啟 Plan Mode，everylane-macau Skill 已啟用；")
+bullet("已完成主辦方 Token Plan OpenAI 相容配置與 qwen3.7-plus 模型白名單校驗；隊伍 Key 由隊長在 QwenPaw 密鑰頁安全貼入後啟用，驅動 ReAct「思考-行動-觀察」迴圈；")
+bullet("透過 EveryLane Macau MCP 接入 7 種細粒度工具及 1 個完整流程比較工具：")
 para("　　搜尋景點 · 查天氣 · 核實開放時間 · 預測人流 · 舊區導流 · 規劃步行路線 · 估算預算", size=10, color=AZUL, bold=True)
 bullet("設定阿濠人設 Prompt（粵語、親切、本地街坊味），並要求所有結論基於工具返回的真實數據。")
+add_image("qwenpaw/03_everylane_mcp_connected.png",
+          "QwenPaw 實際部署證據：EveryLane Macau Tools MCP 客戶端已連接並啟用",
+          width=6.35, after=8)
 h2("步驟 3：實時可視化 + 測試優化")
 bullet("前端以 Server-Sent Events 實時展示智能體的規劃、工具調用、改線過程，並以地圖 + 時間軸呈現行程；")
 bullet("反覆測試多種情境（不同興趣 / 人數 / 預算 / 日期），校正路線合理性與失敗恢復邏輯。")
-para("所需資源：一台個人電腦 + 大會提供的百煉代金券。系統亦內建「離線示範引擎」，"
-     "未有金鑰時仍能調用同一套真實工具完整運行，方便開發與路演。", color=GREY)
+para("所需資源：一台個人電腦 + 大會提供的 Token Plan 團隊 Key。網站亦保留不含模型憑證的"
+     "穩定示範引擎，在無網絡或額度異常時仍可調用同一知識庫完成路演；QwenPaw 接入證據、"
+     "MCP 測試與截圖另見《開發過程證明》。", color=GREY)
 
 # ====================== 四 ======================
 doc.add_page_break()
@@ -313,8 +321,8 @@ doc.add_page_break()
 h1("六、", "計劃時間表")
 table([
     ["時間", "任務"],
-    ["7 月上旬", "完成 70 個景點知識庫，補全開放時間 / 人流 / 相片；接入百煉 Qwen"],
-    ["7 月中旬", "完善 ReAct 工具鏈、多日分區行程與失敗恢復策略；多情境測試與路線校正"],
+    ["7 月上旬（已完成）", "完成 70 個景點知識庫與 70 / 70 相片；部署 QwenPaw 2.0.0、Skill 與 MCP"],
+    ["7 月中旬（進行中）", "接入主辦方 Token Plan；完善 ReAct 工具鏈、多日分區、失敗恢復與五輪測試"],
     ["7 月下旬", "前端體驗打磨（多日總覽、地圖、時間軸、多語言）；加入收藏 / 匯出 PDF"],
     ["8 月上旬", "邀請 20+ 位同學與遊客試用，收集反饋；接入真實天氣 API"],
     ["8 月中旬", "優化迭代：人流模型校正、商戶端原型（精選商戶 / 引流統計）"],
@@ -325,7 +333,7 @@ table([
 h1("七、", "預期效果與價值")
 bullet("覆蓋 70 個澳門景點，當中 25 個為舊區老街 / 活化片區、20 間為本地小店；")
 bullet("智能體能就任意合理需求，輸出一日或 2–5 日多日深度遊，並確保每日鎖定可步行片區；")
-bullet("每份行程平均納入 ≥ 3 個舊區老街 / 本地小店，量化「導流」成效；")
+bullet("每份行程平均納入 ≥ 3 個舊區老街 / 本地小店，先量化導流覆蓋與本地消費估算；商戶試點再用一次性到店碼核銷驗證實際轉化；")
 bullet("試用者中 80% 認同「比自己上網查更慳時間、更有在地味」。")
 para("社會與商業價值：本作品不只是 AI 應用，更是一個可持續的「舊區導流引擎」——"
      "為小店帶客流、為遊客帶體驗、為城市帶平衡，具清晰的 B 端變現路徑"
@@ -340,12 +348,12 @@ bullet("不收集個人身分資料、無需登入即可使用；景點相片均
 
 # ====================== 九 ======================
 h1("九、", "分工與技術說明")
-para("本作品由參賽者 SITINIEK（學號 dc227126）獨立完成，涵蓋以下範疇：")
+para("本作品由參賽者施天益（SITINIEK，學號 dc227126）獨立完成，涵蓋以下範疇：")
 table([
     ["範疇", "內容"],
     ["產品 / 創意", "舊區導流定位、情境設計、商業模式"],
     ["資料工程", "景點知識庫建構、Wikipedia/Commons 資料抓取與校正"],
-    ["智能體 / 後端", "ReAct 迴圈、7 種工具、Qwen 接入、FastAPI 與 SSE"],
+    ["智能體 / 後端", "QwenPaw Skill、MCP（7 工具 + 1 流程工具）、ReAct、Token Plan、FastAPI / SSE"],
     ["前端 / 設計", "互動網站、地圖與時間軸、智能體過程可視化"],
 ], widths=[1.8, 4.5], header=True)
 para("我們相信，Qwen 與 QwenPaw 讓「諗到」就能「做到」——"

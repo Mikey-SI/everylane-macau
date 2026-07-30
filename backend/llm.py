@@ -2,9 +2,8 @@
 """
 LLM access layer.
 
-- get_client(): an OpenAI-compatible client pointed at Alibaba Cloud DashScope
-  (Bailian), used to call Qwen models. This is exactly how QwenPaw / Bailian
-  expose Qwen, so the same code works on the competition's 百炼 credits.
+- get_client(): an OpenAI-compatible client for Alibaba Cloud Token Plan or
+  DashScope. This matches the provider protocol used by QwenPaw.
 - parse_request(): lightweight NLU used to seed constraints (date, budget,
   party size, interests, mobility) — also powers the offline demo brain.
 """
@@ -41,7 +40,7 @@ def get_client():
         return None
     if _client is None:
         from openai import OpenAI
-        _client = OpenAI(api_key=config.DASHSCOPE_API_KEY, base_url=config.DASHSCOPE_BASE_URL)
+        _client = OpenAI(api_key=config.QWEN_API_KEY, base_url=config.QWEN_BASE_URL)
     return _client
 
 
@@ -110,21 +109,24 @@ def _resolve_date(text, today=None):
     if any(k in text for k in ["後日", "后日", "後天", "后天"]):
         return (today + dt.timedelta(days=2)).isoformat()
     # weekday names
-    wd_map = {0: ["週一", "周一", "星期一", "禮拜一", "monday"],
-              1: ["週二", "周二", "星期二", "禮拜二", "tuesday"],
-              2: ["週三", "周三", "星期三", "禮拜三", "wednesday"],
-              3: ["週四", "周四", "星期四", "禮拜四", "thursday"],
-              4: ["週五", "周五", "星期五", "禮拜五", "friday"],
-              5: ["週六", "周六", "星期六", "禮拜六", "saturday", "weekend", "週末", "周末"],
-              6: ["週日", "周日", "星期日", "禮拜日", "星期天", "sunday"]}
-    next_week = any(k in text for k in ["下週", "下周", "下個", "下个", "next"])
+    wd_map = {0: ["週一", "周一", "星期一", "禮拜一", "礼拜一", "monday"],
+              1: ["週二", "周二", "星期二", "禮拜二", "礼拜二", "tuesday"],
+              2: ["週三", "周三", "星期三", "禮拜三", "礼拜三", "wednesday"],
+              3: ["週四", "周四", "星期四", "禮拜四", "礼拜四", "thursday"],
+              4: ["週五", "周五", "星期五", "禮拜五", "礼拜五", "friday"],
+              5: ["週六", "周六", "星期六", "禮拜六", "礼拜六", "saturday", "weekend", "週末", "周末"],
+              6: ["週日", "周日", "星期日", "禮拜日", "礼拜日", "星期天", "sunday"]}
+    next_week = any(k in t for k in ["下週", "下周", "下星期", "下個禮拜", "下个礼拜",
+                                     "下禮拜", "下礼拜", "next week", "next "])
     for wd, keys in wd_map.items():
         if any(k in t for k in keys):
-            days = (wd - today.weekday()) % 7
-            if days == 0 or next_week:
-                days += 7 if (days == 0 or next_week) else 0
+            if next_week:
+                # the named weekday in the NEXT calendar week
+                days = (7 - today.weekday()) + wd
+            else:
+                days = (wd - today.weekday()) % 7
                 if days == 0:
-                    days = 7
+                    days = 7  # same weekday named -> assume next occurrence
             return (today + dt.timedelta(days=days)).isoformat()
     # default: the coming Saturday
     days = (5 - today.weekday()) % 7 or 7
@@ -152,7 +154,7 @@ def parse_request(text, override_lang=None, today=None):
     low = text.lower()
     today = _coerce_today(today)
 
-    lang = override_lang
+    lang = override_lang if override_lang in {"zh-HK", "zh", "en", "pt", "ja"} else None
     if not lang:
         for code, pats in _LANG_PATTERNS:
             if any(p in low for p in pats):
@@ -175,15 +177,27 @@ def parse_request(text, override_lang=None, today=None):
 
     # party size
     people = 1
-    m = re.search(r"(\d+)\s*(?:個|个|位)?\s*人", text)
+    m = (re.search(r"(\d+)\s*(?:個|个|位)?\s*人", text)
+         or re.search(r"(\d+)\s*(?:people|persons?|pax|adults?)", low)
+         or re.search(r"(?:party|group)\s+of\s+(\d+)", low))
+    cn_people = {"一": 1, "兩": 2, "两": 2, "二": 2, "三": 3, "四": 4, "五": 5,
+                 "六": 6, "七": 7, "八": 8, "九": 9, "十": 10}
+    if not m:
+        m2 = re.search(r"([一兩两二三四五六七八九十])\s*(?:個|个|位)?\s*人", text)
+        if m2:
+            people = cn_people.get(m2.group(1), 1)
     if m:
         people = int(m.group(1))
-    elif any(k in text for k in ["爸媽", "爸妈", "父母", "屋企人", "家人"]):
-        people = 3
-    elif any(k in text for k in ["一家", "全家", "家庭"]):
-        people = 4
-    elif any(k in text for k in ["情侶", "情侣", "拍拖", "另一半", "couple", "女朋友", "男朋友"]):
-        people = 2
+    elif people == 1:
+        if any(k in text for k in ["一家四口", "一家", "全家", "家庭", "family"]):
+            people = 4
+        elif any(k in text for k in ["爸媽", "爸妈", "父母", "屋企人", "家人", "parents"]):
+            people = 3
+        elif any(k in text for k in ["情侶", "情侣", "拍拖", "另一半", "couple", "女朋友", "男朋友",
+                                     "老婆", "老公", "girlfriend", "boyfriend", "wife", "husband"]):
+            people = 2
+        elif any(k in low for k in [" we ", "we love", "we like", "we are", "we're", "us "]):
+            people = 2
     people = max(1, min(people, 12))
 
     # budget (total MOP); None if unspecified

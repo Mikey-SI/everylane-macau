@@ -6,7 +6,7 @@ from docstyle import (new_doc, para, runs, h1, h2, bullet, table,
                       TERRA, AZUL, INK, GOLD, GREY, CENTER)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(HERE, "實踐文章_街知巷聞_EveryLaneMacau.docx")
+OUT = os.environ.get("PRACTICE_DOC_OUT", os.path.join(HERE, "實踐文章_街知巷聞_EveryLaneMacau.docx"))
 ASSET_DIR = os.path.join(HERE, "assets")
 doc = new_doc()
 
@@ -15,13 +15,14 @@ para(doc, "「千模百煉」AI 開發者系列之學生競賽 · 實踐文章",
 para(doc, "街知巷聞 · EveryLane Macau", 24, TERRA, bold=True, align=CENTER, after=2)
 para(doc, "把 AI 由「問答」做成「做任務」——一個會將遊客導流入舊區老街的澳門深度遊智能體",
      12, INK, bold=True, align=CENTER, after=2)
-para(doc, "參賽者：SITINIEK（學號 dc227126）　·　方向：澳門文旅 × 舊區活化　·　2026 年",
+para(doc, "隊伍：愛拼才會贏　·　參賽者：施天益（SITINIEK，學號 dc227126）　·　2026 年",
      9.5, GREY, align=CENTER, after=10)
 
 # abstract
 h2(doc, "摘要")
-para(doc, "本作品基於阿里雲 Qwen 千問大模型與 QwenPaw 智能體理念，實作了一個可直接運行的網站"
-     "「街知巷聞」。它不是聊天機械人，而是一個會規劃、調用 7 種工具、多步執行並能失敗自動恢復的"
+para(doc, "本作品已在 QwenPaw 2.0.0 完成本地部署，完成阿里雲 Qwen Token Plan 相容配置，並以專用"
+     " Skill 與 MCP 實作一個可直接運行的網站「街知巷聞」。它不是聊天機械人，而是一個會規劃、調用 7 種工具、"
+     "多步執行並能失敗自動恢復的"
      "ReAct 智能體（人設「阿濠」）。其核心創新是「舊區導流引擎」：在為遊客生成個人化深度遊行程時，"
      "主動把人流由大三巴、議事亭等熱點，分流到福隆新街、十月初五街等舊區老街與本地老字號，"
      "形成遊客、小店、城市三方共贏的商業模式。全程於網頁實時可視化，結果可逐項驗證。")
@@ -46,15 +47,17 @@ para(doc, "賽事評分中「任務完成度（30%）」與「智能體能力（
      "而非由模型空泛生成。")
 
 # 3
-h1(doc, "三、", "系統架構（對標 QwenPaw 五層）")
+h1(doc, "三、", "系統架構（實際部署 QwenPaw Skill + MCP）")
 table(doc, [
     ["層", "本作品實作", "對應 QwenPaw"],
     ["接入層", "瀏覽器 SPA + Server-Sent Events 實時串流", "頻道接入層"],
-    ["運行時", "FastAPI 應用，/api/plan 串流端點", "Agent 運行時 / FastAPI app"],
-    ["智能體核心", "ReAct 迴圈（思考-行動-觀察）+ 失敗恢復", "QwenPawAgent / ReAct 核心"],
-    ["能力層", "7 種工具，統一 function-calling schema", "工具 / Toolkit / MCP"],
-    ["模型層", "Qwen（百煉 OpenAI 相容）/ 離線雙腦", "雲端模型供應商 / 模型路由"],
+    ["運行時", "QwenPaw 2.0 Console + FastAPI /api/plan SSE", "Agent 運行時"],
+    ["智能體核心", "EveryLane Skill + Plan Mode + ReAct + 失敗恢復", "QwenPaw Agent / Skills"],
+    ["能力層", "stdio MCP：7 種工具 + 1 個流程比較工具", "MCP 工具層"],
+    ["模型層", "Token Plan qwen3.7-plus 配置就緒 / 網站穩定示範引擎", "模型供應商 / 路由"],
 ], widths=[1.1, 3.4, 2.0], head_fill="2C5E86")
+image(doc, os.path.join(ASSET_DIR, "qwenpaw", "03_everylane_mcp_connected.png"),
+      "QwenPaw 中 EveryLane Macau Tools MCP 客戶端已實際連接", width=6.35, after=8)
 
 # 4
 page_break(doc)
@@ -79,14 +82,14 @@ bullet(doc, "熱點正午極擁擠 → 透過 find_local_gem 加插鄰近寧靜�
 bullet(doc, "預算超支 / 步行太遠 → 自動剔除最貴的非必要收費點、縮減最遠站點。", "預算與距離　")
 image(doc, os.path.join(ASSET_DIR, "agent_trace.png"),
       "智能體實時軌跡：核實開放時間後發現鄭家大屋休息，並自動改線", width=3.55, after=8)
-h2(doc, "在線 / 離線雙腦（穩健性設計）")
-para(doc, "設定百煉 API Key 時由真實 Qwen 驅動；未設定時切換到「離線示範引擎」——它調用同一套真實工具、"
-     "用同一份真實數據完成規劃與失敗恢復，確保網站任何環境都能完整演示，亦避免路演時受網絡影響。"
-     "二者共用同一個確定性「行程組裝器」，保證輸出穩定可驗證。")
+h2(doc, "Token Plan / 穩定示範雙模式（穩健性設計）")
+para(doc, "QwenPaw 與網站可透過 OpenAI 相容協議接入主辦方 Token Plan；未設定本機 Key 或網絡異常時，"
+     "網站切換到穩定示範引擎，仍使用同一知識庫和輸出結構，確保路演不翻車。Key 只存於 QwenPaw "
+     "密鑰庫或 Git 忽略的 .env，任何截圖均不展示憑證。")
 
 # 5
 h1(doc, "五、", "數據與真實性")
-bullet(doc, "以程式抓取 Wikipedia / Wikimedia Commons 的真實坐標與相片（公開授權），坐標用於真實步行距離計算；", "來源　")
+bullet(doc, "以程式抓取 Wikipedia / Wikimedia Commons 的真實坐標與相片（公開授權）；步行以坐標直線距離加 25% 舊城巷道係數估算，介面明確提示並預留道路導航接口；", "來源　")
 bullet(doc, "人手整理 70 個景點的開放時間、休息日、費用、人流特徵、舊區 / 本地小店標記；", "校正　")
 bullet(doc, "天氣與人流以季節 / 時段模型估算並於介面明確標示，預留接入真實 API 的接口。", "估算　")
 

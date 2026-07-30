@@ -120,7 +120,7 @@ def check_opening(poi_id, date=None, time=None, **_):
         try:
             hh, mm = map(int, time.split(":"))
             t = hh * 60 + mm
-            if t < p["open_min"] or t > p["close_min"]:
+            if t < p["open_min"] or t >= p["close_min"]:
                 res.update({"open": False,
                             "reason": f"{time} 不在開放時間（{res['hours']}）內"})
                 return res
@@ -179,7 +179,7 @@ def find_local_gem(near_poi_id, **_):
 
 
 def compute_route(poi_ids, optimize=True, start_id=None, **_):
-    """Compute walking legs between POIs (optionally nearest-neighbour optimised).
+    """Estimate walking legs between POIs (optionally nearest-neighbour optimised).
     If start_id is given, the route begins there (keeps an early-bird anchor first)."""
     pts = []
     for pid in poi_ids:
@@ -209,6 +209,8 @@ def compute_route(poi_ids, optimize=True, start_id=None, **_):
         "legs": legs,
         "total_walk_min": sum(l["walk_min"] for l in legs),
         "total_km": round(total_m / 1000.0, 2),
+        "method": "great_circle_distance_with_1.25_old_town_factor",
+        "note": "估算步行距離；實際道路、樓梯及無障礙繞行以現場導航為準",
     }
 
 
@@ -279,7 +281,7 @@ TOOL_SCHEMAS = [
             "near_poi_id": {"type": "string"}}, "required": ["near_poi_id"]}}},
     {"type": "function", "function": {
         "name": "compute_route",
-        "description": "計算一組景點之間的步行路線（可最近鄰優化排序），返回每段距離、步行時間與總步行距離/時間。",
+        "description": "以景點坐標和舊城巷道係數估算一組景點的步行順序、每段距離與時間；結果為規劃估算，非逐路口導航。",
         "parameters": {"type": "object", "properties": {
             "poi_ids": {"type": "array", "items": {"type": "string"}},
             "optimize": {"type": "boolean", "description": "是否最近鄰優化排序，預設true"},

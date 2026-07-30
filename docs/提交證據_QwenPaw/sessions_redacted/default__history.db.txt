@@ -1,0 +1,2 @@
+binary: C:\Users\MACAU\.qwenpaw\workspaces\default\history.db
+size=249856

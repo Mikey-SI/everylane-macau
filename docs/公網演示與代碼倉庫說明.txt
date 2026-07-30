@@ -1,0 +1,15 @@
+街知巷聞 · EveryLane Macau
+隊伍：愛拼才會贏　·　參賽者：施天益（SITINIEK / dc227126）
+
+【公網演示】
+http://47.79.228.128/
+
+【備用靜態演示（GitHub Pages）】
+https://mikey-si.github.io/everylane-macau/
+
+【代碼倉庫（含 QwenPaw Skill + MCP + 後端 Agent + 前端）】
+https://github.com/Mikey-SI/everylane-macau
+
+說明：
+- 倉庫不含 .env / API Key；請使用 .env.example 自行配置 Token Plan。
+- 正式評測請優先打開公網連結，使用真實 Qwen（qwen3.7-plus）規劃行程。

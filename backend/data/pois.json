@@ -71,7 +71,7 @@
       "zh": "澳門天主教主教座堂，位於大堂前地，外觀樸素而莊重。",
       "en": "Macau's Catholic cathedral on Cathedral Square, modest outside and quietly solemn within."
     },
-    "image": null,
+    "image": "assets/poi/cathedral_macau.jpg",
     "wiki_url": null
   },
   {
@@ -191,7 +191,7 @@
       "zh": "大堂巷內長期排隊的咖喱魚蛋車仔檔，自選餸料、咖喱濃郁，本地人至愛。",
       "en": "A perpetually-queued curry fishball stall in Travessa da Sé — pick your skewers, drown in curry."
     },
-    "image": null,
+    "image": "assets/poi/hang_yau_fishball.jpg",
     "wiki_url": null
   },
   {
@@ -268,7 +268,7 @@
       "zh": "議事亭前地旁的白色新古典建築，見證澳門早期慈善與醫療制度。",
       "en": "A white neoclassical landmark by Senado Square, tied to Macau's early charity and healthcare history."
     },
-    "image": null,
+    "image": "assets/poi/holy_house_mercy.jpg",
     "wiki_url": null
   },
   {
@@ -342,7 +342,7 @@
       "zh": "相傳林則徐曾在此接見葡官，古樹與石刻保留濃厚歷史氣息。",
       "en": "An old temple associated with Lin Zexu, with ancient trees and stone inscriptions."
     },
-    "image": null,
+    "image": "assets/poi/lin_fong_temple.jpg",
     "wiki_url": null
   },
   {
@@ -422,7 +422,7 @@
       "zh": "澳門少見的中式園林，曲橋、池塘、亭台相映，是本地人散步歇腳的綠洲。",
       "en": "A rare Suzhou-style garden in Macau with ponds, bridges and pavilions — a local green oasis."
     },
-    "image": null,
+    "image": "assets/poi/lou_lim_ioc_garden.jpg",
     "wiki_url": null
   },
   {
@@ -462,7 +462,7 @@
       "zh": "位於大炮台內，系統展示澳門從漁村、商港到世界旅遊城市的歷史。",
       "en": "A museum inside Mount Fortress telling Macau's story from fishing village to world tourism city."
     },
-    "image": null,
+    "image": "assets/poi/macau_museum.jpg",
     "wiki_url": null,
     "tip": {
       "zh": "逢星期一休館；雨天或炎熱天氣非常適合。"
@@ -579,7 +579,7 @@
       "zh": "以夯土、砂石與蠔殼灰建成的城牆遺段，緊貼大三巴卻常被忽略。",
       "en": "A surviving rammed-earth city wall beside the Ruins, often missed by hurried visitors."
     },
-    "image": null,
+    "image": "assets/poi/old_city_walls.jpg",
     "wiki_url": null
   },
   {
@@ -616,7 +616,7 @@
       "zh": "1930年代紅磚街市建築，是觀察澳門日常買餸文化的好地方。",
       "en": "A 1930s red-brick market building, ideal for seeing everyday Macau shopping culture."
     },
-    "image": null,
+    "image": "assets/poi/red_market.jpg",
     "wiki_url": null
   },
   {
@@ -851,7 +851,7 @@
       "zh": "澳門最古老教堂之一，因舉行婚禮多而有「花王堂」之稱。",
       "en": "One of Macau's oldest churches, affectionately linked with weddings and local parish life."
     },
-    "image": null,
+    "image": "assets/poi/st_anthony_church.jpg",
     "wiki_url": null
   },
   {
@@ -965,7 +965,7 @@
       "zh": "由歷史建築改造的展覽空間，適合把藝術與老城散步串在一起。",
       "en": "A heritage building turned gallery, pairing contemporary exhibitions with an old-town walk."
     },
-    "image": null,
+    "image": "assets/poi/tap_seac_gallery.jpg",
     "wiki_url": null
   },
   {
@@ -1002,7 +1002,7 @@
       "zh": "紅磚地面的城市廣場，周邊葡式建築整齊，常有書展、文創市集與社區活動。",
       "en": "A red-paved civic square ringed by Portuguese buildings, often hosting book fairs and creative markets."
     },
-    "image": null,
+    "image": "assets/poi/tap_seac_square.jpg",
     "wiki_url": null
   },
   {
@@ -1039,7 +1039,7 @@
       "zh": "緬甸、泰國、印尼風味小店密集的舊區生活圈，最能看到澳門多元社群。",
       "en": "A multicultural neighbourhood of Burmese, Thai and Indonesian eateries around a local roundabout."
     },
-    "image": null,
+    "image": "assets/poi/three_lamps.jpg",
     "wiki_url": null
   },
   {
@@ -1192,7 +1192,7 @@
       "zh": "比黑沙更寧靜的小海灣，海水泳池與斜坡小路很適合慢慢散步。",
       "en": "A calmer bay than Hac Sa, with a seaside pool and quiet slopes for a slow walk."
     },
-    "image": null,
+    "image": "assets/poi/cheoc_van_beach.jpg",
     "wiki_url": null
   },
   {
@@ -1229,7 +1229,7 @@
       "zh": "路環海邊小村仍保留慢活節奏，彩色平房、碼頭與小店構成離島風景。",
       "en": "A slow seaside village of colourful houses, piers and local shops — old Macau at island pace."
     },
-    "image": null,
+    "image": "assets/poi/coloane_village.jpg",
     "wiki_url": null
   },
   {
@@ -1266,7 +1266,7 @@
       "zh": "黑沙旁經典葡國菜餐廳，蒜蓉包、葡式烤雞與海鮮都適合分享。",
       "en": "A classic Portuguese restaurant by Hac Sa, known for garlic bread, roast chicken and seafood."
     },
-    "image": null,
+    "image": "assets/poi/fernando_restaurant.jpg",
     "wiki_url": null
   },
   {
@@ -1303,7 +1303,7 @@
       "zh": "澳門最大天然海灘，黑色細沙與海岸風景適合放慢節奏。",
       "en": "Macau's largest natural beach, known for its dark sand and relaxed coastal atmosphere."
     },
-    "image": null,
+    "image": "assets/poi/hac_sa_beach.jpg",
     "wiki_url": null
   },
   {
@@ -1340,7 +1340,7 @@
       "zh": "鄰近黑沙海灘的大型郊野公園，適合親子、野餐與短途散步。",
       "en": "A large country park near Hac Sa Beach, good for families, picnics and short walks."
     },
-    "image": null,
+    "image": "assets/poi/hac_sa_park.jpg",
     "wiki_url": null
   },
   {
@@ -1377,7 +1377,7 @@
       "zh": "舊船廠活化而成的海邊文化片區，木構船棚保留澳門造船業記憶。",
       "en": "A revitalised shipyard area preserving Macau's wooden boatbuilding heritage by the water."
     },
-    "image": null,
+    "image": "assets/poi/lai_chi_vun.jpg",
     "wiki_url": null
   },
   {
@@ -1451,7 +1451,7 @@
       "zh": "路環聖方濟各聖堂旁的街坊餐廳，露天座位與葡國菜很有小村氣氛。",
       "en": "A village-side Macanese/Portuguese café beside St. Francis Xavier Chapel, atmospheric and relaxed."
     },
-    "image": null,
+    "image": "assets/poi/nga_tim_cafe.jpg",
     "wiki_url": null
   },
   {
@@ -1490,7 +1490,7 @@
       "zh": "石排灣內的親子景點，可觀看大熊貓與小熊貓，是家庭多日遊好選項。",
       "en": "A family-friendly pavilion for giant pandas and red pandas inside Seac Pai Van Park."
     },
-    "image": null,
+    "image": "assets/poi/panda_pavilion.jpg",
     "wiki_url": null
   },
   {
@@ -1527,7 +1527,7 @@
       "zh": "路環大型郊野公園，有步道、自然教育設施與親子活動空間。",
       "en": "A large country park in Coloane with trails, nature education and family facilities."
     },
-    "image": null,
+    "image": "assets/poi/seac_pai_van_park.jpg",
     "wiki_url": null
   },
   {
@@ -1602,7 +1602,7 @@
       "zh": "路環漁村信仰的重要廟宇，廟前海風與老榕樹很有離島感。",
       "en": "A temple tied to Coloane's fishing-village faith, with sea breeze and banyan shade."
     },
-    "image": null,
+    "image": "assets/poi/tam_kung_temple.jpg",
     "wiki_url": null
   },
   {
@@ -1639,7 +1639,7 @@
       "zh": "外港旁的主題海濱區，羅馬競技場外觀與海景適合拍照散步。",
       "en": "A themed waterfront beside the ferry terminal with Roman-style façades and harbour views."
     },
-    "image": null,
+    "image": "assets/poi/fishermans_wharf.jpg",
     "wiki_url": null
   },
   {
@@ -1678,7 +1678,7 @@
       "zh": "展示澳門格蘭披治大賽車歷史，設有賽車、頭盔與互動體驗。",
       "en": "A museum dedicated to the Macau Grand Prix, with race cars, helmets and interactive exhibits."
     },
-    "image": null,
+    "image": "assets/poi/grand_prix_museum.jpg",
     "wiki_url": null
   },
   {
@@ -1756,7 +1756,7 @@
       "zh": "澳門三大古廟之一，與《望廈條約》簽訂地相關，庭院深幽。",
       "en": "One of Macau's great old temples, linked to the Treaty of Wanghia, with peaceful courtyards."
     },
-    "image": null,
+    "image": "assets/poi/kun_iam_temple.jpg",
     "wiki_url": null
   },
   {
@@ -1795,7 +1795,7 @@
       "zh": "貝聿銘團隊設計的銀色圓錐建築，展覽互動性高，適合親子與雨天。",
       "en": "A silver cone-shaped science centre designed by Pei Partnership Architects, great for families and rainy days."
     },
-    "image": null,
+    "image": "assets/poi/science_center.jpg",
     "wiki_url": null
   },
   {
@@ -1872,7 +1872,7 @@
       "zh": "立於海面的現代觀音像，融合佛教與當代雕塑語言，海風開揚。",
       "en": "A modern bronze Kun Iam statue set by the waterfront, blending spirituality and contemporary form."
     },
-    "image": null,
+    "image": "assets/poi/kun_iam_statue.jpg",
     "wiki_url": null
   },
   {
@@ -2184,7 +2184,7 @@
       "zh": "集合多間澳門與亞洲特色餐飲，適合多人同行時各取所需。",
       "en": "A food street gathering Macanese and Asian eateries, useful for groups with different tastes."
     },
-    "image": null,
+    "image": "assets/poi/broadway_food_street.jpg",
     "wiki_url": null
   },
   {
@@ -2221,7 +2221,7 @@
       "zh": "立於氹仔小山上的米黃色教堂，可俯瞰龍環葡韻與濕地一帶。",
       "en": "A cream-coloured church on a small hill overlooking Taipa Houses and the wetland."
     },
-    "image": null,
+    "image": "assets/poi/carmel_church.jpg",
     "wiki_url": null
   },
   {
@@ -2258,7 +2258,7 @@
       "zh": "官也街百年甜品老店，招牌大菜糕與榴槤雪糕，消暑首選。",
       "en": "A century-old Rua do Cunha dessert shop — signature agar jelly and durian ice cream."
     },
-    "image": null,
+    "image": "assets/poi/mok_yi_kei.jpg",
     "wiki_url": null
   },
   {
@@ -2295,7 +2295,7 @@
       "zh": "氹仔街坊日常買餸的街市，與旁邊旅遊化的官也街形成有趣對照。",
       "en": "A local market showing everyday Taipa life, contrasting with touristy Rua do Cunha nearby."
     },
-    "image": null,
+    "image": "assets/poi/old_taipa_market.jpg",
     "wiki_url": null
   },
   {
@@ -2332,7 +2332,7 @@
       "zh": "氹仔最重要的傳統廟宇之一，保留漁村時代的民間信仰記憶。",
       "en": "One of Taipa's key traditional temples, preserving memories of its fishing-village past."
     },
-    "image": null,
+    "image": "assets/poi/pak_tai_temple_taipa.jpg",
     "wiki_url": null
   },
   {
@@ -2369,7 +2369,7 @@
       "zh": "以巴黎鐵塔為地標的綜合度假村，夜景亮燈後最適合拍照。",
       "en": "A Paris-themed resort anchored by a replica Eiffel Tower, especially photogenic at night."
     },
-    "image": null,
+    "image": "assets/poi/parisian_macau.jpg",
     "wiki_url": null
   },
   {
@@ -2406,7 +2406,7 @@
       "zh": "氹仔山邊清幽佛寺，園林寧靜，適合作為繁忙官也街後的安靜補點。",
       "en": "A quiet Buddhist temple on Taipa's hillside, a calm counterpoint to busy Rua do Cunha."
     },
-    "image": null,
+    "image": "assets/poi/pou_tai_temple.jpg",
     "wiki_url": null
   },
   {
@@ -2481,7 +2481,7 @@
       "zh": "官也街附近水蟹粥名店，適合作為氹仔舊城區行程的正餐停留。",
       "en": "A Taipa old-name restaurant known for crab congee, ideal as the main meal stop."
     },
-    "image": null,
+    "image": "assets/poi/seng_cheong.jpg",
     "wiki_url": null
   },
   {
@@ -2601,7 +2601,7 @@
       "zh": "由舊市政廳改成的小型博物館，補足氹仔與路環的歷史脈絡。",
       "en": "A small museum in the former municipal building, explaining the history of Taipa and Coloane."
     },
-    "image": null,
+    "image": "assets/poi/taipa_museum.jpg",
     "wiki_url": null
   },
   {
@@ -2638,7 +2638,7 @@
       "zh": "官也街外圍的氹仔老城肌理仍在，葡式小屋、窄巷與街坊食店交錯。",
       "en": "Beyond Rua do Cunha, Taipa Village keeps its old lanes, Portuguese houses and neighbourhood eateries."
     },
-    "image": null,
+    "image": "assets/poi/taipa_village.jpg",
     "wiki_url": null
   },
   {
@@ -2675,7 +2675,7 @@
       "zh": "路氹大型綜合度假村，室內運河與拱廊極具辨識度，但人流較集中。",
       "en": "A large Cotai resort famous for its indoor canals and arcades, usually busy."
     },
-    "image": null,
+    "image": "assets/poi/venetian_macau.jpg",
     "wiki_url": null
   }
 ]

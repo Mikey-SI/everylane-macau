@@ -5,9 +5,10 @@ Serves the static frontend and exposes the agent over a Server-Sent-Events
 stream so the UI can render the live ReAct trace.
 """
 import json
+import logging
 import os
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Query, Request
 from fastapi.responses import StreamingResponse, FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -20,6 +21,25 @@ _ROOT = os.path.dirname(_BACKEND)
 _FRONTEND = os.path.join(_ROOT, "frontend")
 
 app = FastAPI(title=config.APP_TITLE)
+logger = logging.getLogger("everylane")
+
+
+@app.middleware("http")
+async def security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; "
+        "script-src 'self'; "
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+        "img-src 'self' data: https://*.tile.openstreetmap.org; "
+        "connect-src 'self'; font-src 'self' data: https://fonts.gstatic.com; "
+        "object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+    )
+    return response
 
 
 @app.get("/api/health")
@@ -40,7 +60,11 @@ def pois():
 
 
 @app.get("/api/plan")
-def plan(q: str = "", lang: str = "", today: str = ""):
+def plan(
+    q: str = Query(default="", max_length=1000),
+    lang: str = Query(default="", pattern=r"^(|zh-HK|zh|en|pt|ja)$"),
+    today: str = Query(default="", max_length=32),
+):
     """Stream the agent's planning as Server-Sent Events."""
     def gen():
         # tell proxies not to buffer
@@ -48,8 +72,12 @@ def plan(q: str = "", lang: str = "", today: str = ""):
         try:
             for event in agent.run(q, language=(lang or None), today=(today or None)):
                 yield "data: " + json.dumps(event, ensure_ascii=False) + "\n\n"
-        except Exception as e:
-            yield "data: " + json.dumps({"type": "error", "text": f"{type(e).__name__}: {e}"}, ensure_ascii=False) + "\n\n"
+        except Exception:
+            logger.exception("Unhandled planning stream error")
+            yield "data: " + json.dumps({
+                "type": "error",
+                "text": "規劃暫時未能完成，請稍後再試。",
+            }, ensure_ascii=False) + "\n\n"
     return StreamingResponse(gen(), media_type="text/event-stream", headers={
         "Cache-Control": "no-cache, no-transform",
         "X-Accel-Buffering": "no",
@@ -69,7 +97,11 @@ def index():
 @app.get("/{path:path}")
 def static_files(path: str):
     full = os.path.normpath(os.path.join(_FRONTEND, path))
-    if full.startswith(_FRONTEND) and os.path.isfile(full):
+    try:
+        inside_frontend = os.path.commonpath([_FRONTEND, full]) == _FRONTEND
+    except ValueError:
+        inside_frontend = False
+    if inside_frontend and os.path.isfile(full):
         return FileResponse(full)
     return JSONResponse({"error": "not found"}, status_code=404)
 
