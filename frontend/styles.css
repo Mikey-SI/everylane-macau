@@ -253,6 +253,23 @@ section{scroll-margin-top:74px;}
 .tg.crowd-busy{background:#fbe6d3; color:var(--orange);}
 .tg.crowd-packed{background:#f8dcd7; color:var(--red);}
 .tg.cost{background:var(--bg-2); color:var(--ink-2);}
+.tg.access-ok{background:#e6f3ec; color:var(--green); cursor:help;}
+.tg.access-warn{background:#fbf0da; color:#8a6420; cursor:help;}
+.metachip.live-wx{background:#e7f0e9; border-color:#bcd9c5; color:var(--green);}
+
+/* ---------- one-time visit code (merchant pilot) ---------- */
+.tl-code{margin-top:.55rem; display:flex; align-items:center; gap:.55rem; flex-wrap:wrap;}
+.code-btn{font-family:var(--sans); font-size:.8rem; font-weight:700; cursor:pointer;
+  color:var(--terracotta-d); background:#FDF3EC; border:1.5px dashed var(--terracotta);
+  border-radius:999px; padding:.38em .95em; transition:background .2s, transform .15s;}
+.code-btn:hover{background:#FBE7DB; transform:translateY(-1px);}
+.code-btn:disabled{opacity:.6; cursor:progress;}
+.code-chip{font-family:var(--sans); font-weight:800; font-size:.9rem; letter-spacing:.06em;
+  color:#fff; background:linear-gradient(135deg,var(--terracotta),var(--terracotta-d));
+  border-radius:8px; padding:.32em .8em; box-shadow:var(--shadow-sm);}
+.code-offer{font-size:.78rem; font-weight:700; color:#8a6420; background:#F5EBCF;
+  border-radius:999px; padding:.25em .7em;}
+.code-hint{font-size:.74rem; color:var(--muted);}
 .tl-why{color:var(--ink-2); font-size:.92rem; margin:.3rem 0;}
 .tl-why .qz{color:var(--terracotta); font-weight:700;}
 .tl-blurb{color:var(--muted); font-size:.86rem;}

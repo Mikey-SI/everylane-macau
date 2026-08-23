@@ -1,11 +1,13 @@
 {
-  "workspace": "C:\\Users\\MACAU\\.qwenpaw\\workspaces\\default",
+  "workspace": "<REDACTED>\\.qwenpaw\\workspaces\\default",
+  "excluded_sensitive_files": [
+    "credentials.yaml"
+  ],
   "files": [
     ".mcp",
     ".skill.json.lock",
     "agent.json",
     "chats.json",
-    "credentials.yaml",
     "drivers\\.legacy_mcp_migration_report.yaml",
     "drivers\\mcp\\everylane_macau.yaml",
     "drivers\\mcp\\tavily_search.yaml",

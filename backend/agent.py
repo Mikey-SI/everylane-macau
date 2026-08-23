@@ -290,6 +290,7 @@ def assemble(params, ordered_ids, diversions, lang, why_map=None, notes=None):
             "cost_mop": cost,
             "crowd": {"level": crowd["crowd_level"], "label": crowd["label"],
                       "label_en": crowd["label_en"], "wait": crowd.get("est_wait_min", 0)},
+            "accessibility": kb.accessibility(pid),
             "walk_to_next": walk_next, "wiki_url": p.get("wiki_url"),
         })
     old_cnt = sum(1 for s in stops if s["old_district"])

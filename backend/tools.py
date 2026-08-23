@@ -6,7 +6,11 @@ These tools turn the agent from a chatbot into something that actually *does*
 verifiable work: searching, checking opening hours, predicting crowds, routing,
 budgeting — exactly the "task completion + agent capability" the rubric rewards.
 """
+import json
 import math
+import os
+import threading
+import urllib.request
 import datetime as dt
 
 import kb
@@ -73,9 +77,85 @@ def search_attractions(interests=None, district=None, prefer_local=False,
     return {"count": len(items), "results": items}
 
 
+# --- live weather (計劃書晉級後第 1 階段：加入即時天氣) ----------------------
+# Enabled with EL_LIVE_WEATHER=1 (production). Open-Meteo needs no key; any
+# failure falls back to the deterministic seasonal model so planning and the
+# offline QA suites never depend on the network.
+_LIVE_WEATHER_ON = os.getenv("EL_LIVE_WEATHER", "").strip() == "1"
+_LIVE_CACHE: dict = {}
+_LIVE_LOCK = threading.Lock()
+_LIVE_TTL_S = 1800
+_WMO_ZH = [
+    ((0,), "晴朗", False), ((1, 2), "大致天晴", False), ((3,), "多雲", False),
+    ((45, 48), "潮濕有霧", False), ((51, 53, 55, 56, 57), "有毛毛雨", True),
+    ((61, 63, 65, 66, 67), "有雨", True), ((71, 73, 75, 77, 85, 86), "有雨夾雪", True),
+    ((80, 81, 82), "短暫陣雨", True), ((95,), "雷陣雨", True), ((96, 99), "雷陣雨", True),
+]
+
+
+def _wmo_condition(code):
+    for codes, label, rain in _WMO_ZH:
+        if code in codes:
+            return label, rain
+    return "多雲", False
+
+
+def _live_weather(d: dt.date):
+    """Open-Meteo daily forecast for Macau; returns None when unavailable."""
+    if not _LIVE_WEATHER_ON:
+        return None
+    today = dt.date.today()
+    if not (today <= d <= today + dt.timedelta(days=15)):
+        return None  # outside forecast horizon -> seasonal model
+    key = d.isoformat()
+    now = dt.datetime.now().timestamp()
+    with _LIVE_LOCK:
+        hit = _LIVE_CACHE.get(key)
+        if hit and now - hit[0] < _LIVE_TTL_S:
+            return hit[1]
+    url = (
+        "https://api.open-meteo.com/v1/forecast?latitude=22.1987&longitude=113.5439"
+        "&daily=weather_code,temperature_2m_max,temperature_2m_min,"
+        "precipitation_probability_max,relative_humidity_2m_mean"
+        f"&timezone=Asia%2FMacau&start_date={key}&end_date={key}"
+    )
+    try:
+        with urllib.request.urlopen(url, timeout=2.5) as resp:
+            daily = json.loads(resp.read().decode("utf-8"))["daily"]
+        cond, rain = _wmo_condition(int(daily["weather_code"][0]))
+        tmax = round(float(daily["temperature_2m_max"][0]))
+        tmin = round(float(daily["temperature_2m_min"][0]))
+        rain_prob = int(daily.get("precipitation_probability_max", [0])[0] or 0)
+        humidity = int(daily.get("relative_humidity_2m_mean", [75])[0] or 75)
+        if rain_prob >= 55:
+            rain = True
+        out = {"condition": cond, "temp_c": tmax, "temp_range": f"{tmin}-{tmax}°C",
+               "humidity_pct": humidity, "rain": rain, "rain_prob_pct": rain_prob}
+    except Exception:
+        out = None
+    with _LIVE_LOCK:
+        _LIVE_CACHE[key] = (now, out)
+    return out
+
+
 def get_weather(date=None, **_):
-    """Deterministic Macau weather forecast for a given date (seasonal model)."""
+    """Macau weather for a given date: live Open-Meteo when enabled (with
+    cache + graceful fallback), otherwise the deterministic seasonal model."""
     d = _parse_date(date)
+    live = _live_weather(d)
+    if live:
+        temp = live["temp_c"]
+        rain = live["rain"]
+        advice = "帶遮防曬，補充水分" if temp >= 30 else ("帶把雨傘較穩陣" if rain else "天氣宜人，適合步行")
+        if rain:
+            advice = "建議多安排室內景點（教堂、大屋、博物館），避開雨勢"
+        return {
+            "date": d.isoformat(), "weekday": WEEKDAY_ZH[d.weekday()],
+            "condition": live["condition"], "temp_c": temp,
+            "temp_range": live["temp_range"], "humidity_pct": live["humidity_pct"],
+            "rain": rain, "advice": advice,
+            "source": "open-meteo-live", "rain_prob_pct": live["rain_prob_pct"],
+        }
     seed = (d.year * 372 + d.month * 31 + d.day)
     rnd = (seed * 2654435761) % 100 / 100.0
     m = d.month
@@ -98,6 +178,7 @@ def get_weather(date=None, **_):
         "date": d.isoformat(), "weekday": WEEKDAY_ZH[d.weekday()],
         "condition": cond, "temp_c": temp, "temp_range": f"{tmin}-{tmax}°C",
         "humidity_pct": humidity, "rain": rain, "advice": advice,
+        "source": "seasonal-model",
     }
 
 

@@ -215,7 +215,53 @@ def test_live(browser):
     check("鄭家大屋" in trace and "自動改線" in trace, "后端模式展示休息日失败恢复")
     check(page.locator(".tl-stop").count() >= 3, "后端模式至少 3 站")
     check(page.locator("#map .leaflet-marker-icon").count() >= 3, "后端地图 Marker 正常")
+    check(page.locator(".tg.access-ok, .tg.access-warn").count() >= 3,
+          "行程站点带无障碍标注")
+    # one-time visit code loop from the itinerary page
+    if page.locator(".code-btn").count():
+        page.locator(".code-btn").first.click()
+        page.wait_for_selector("#result .code-chip", timeout=8_000)
+        chip = page.locator("#result .code-chip").first.inner_text()
+        check("EL-" in chip, "行程页可领取一次性到店码", chip)
+    else:
+        check(False, "行程页存在到店码按钮")
     check(not errors, "后端模式无控制台/Page Error", " | ".join(errors))
+    page.close()
+
+
+def test_dashboard(browser):
+    """複賽成效儀表板 + 到店碼核銷閉環（真實 API）。"""
+    errors: list[str] = []
+    page = browser.new_page(viewport={"width": 1440, "height": 1000})
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    page.on("pageerror", lambda exc: errors.append(str(exc)))
+    page.goto(LIVE + "dashboard.html", wait_until="networkidle")
+    page.wait_for_selector(".kpi", timeout=10_000)
+    check(page.locator(".kpi").count() == 6, "仪表板 6 张 KPI 卡",
+          page.locator(".kpi").count())
+    check(page.locator("#targetTable tbody tr").count() == 9, "计划书指标对照 9 行")
+    check(page.locator("#targetTable .t-ok").count() == 9, "计划书指标全部达标")
+    check(page.locator(".merchant").count() == 5, "商户试点 5 间")
+    check(page.locator("svg.chart-svg").count() >= 2, "SVG 走势图渲染")
+    body = page.inner_text("body")
+    check("86.4%" in body and "98.9%" in body and "41.8%" in body,
+          "三大成效指标数值呈现")
+    check("示範數據" in body or "示范数据" in body, "示范数据已明确标注")
+    # full redeem loop: issue -> redeem -> duplicate rejected
+    page.click("#issueBtn")
+    page.wait_for_selector("#issuedCode:not(.hidden)", timeout=8_000)
+    code = page.locator("#issuedCode").inner_text().replace("🎟️", "").strip()
+    check(code.startswith("EL-"), "核销机领码成功", code)
+    page.click("#redeemBtn")
+    page.wait_for_selector(".redeem-result.ok", timeout=8_000)
+    page.click("#redeemBtn")
+    page.wait_for_selector(".redeem-result.warn", timeout=8_000)
+    check("不可重用" in page.locator("#redeemResult").inner_text(), "一次性到店码不可重用")
+    # index page exposes the dashboard entry
+    page.goto(LIVE, wait_until="domcontentloaded")
+    check(page.locator(".nav-links a[href='dashboard.html']").count() == 1,
+          "主页导航含成效仪表板入口")
+    check(not errors, "仪表板无控制台/Page Error", " | ".join(errors))
     page.close()
 
 
@@ -227,6 +273,7 @@ def main():
             test_static(browser)
             test_mobile(browser)
             test_live(browser)
+            test_dashboard(browser)
             browser.close()
     finally:
         for proc in procs:

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>B 端 API 文檔 · 街知巷聞 EveryLane Macau</title>
+<meta name="description" content="酒店與旅行社行程 API、成效數據 API 與一次性到店碼 API 說明。" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=20260823-semi" />
+<link rel="stylesheet" href="dashboard.css?v=20260823-semi" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23C0473B'/%3E%3Cpath d='M16 5l8 7v15h-5v-8h-6v8H5V12z' fill='%23F8EFDD'/%3E%3C/svg%3E">
+</head>
+<body class="dash-body">
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="./">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" width="34" height="34">
+          <rect width="40" height="40" rx="10" fill="var(--terracotta)"/>
+          <path d="M20 7l11 9v17h-7V22h-8v11H9V16z" fill="#F8EFDD"/>
+          <circle cx="20" cy="17" r="2.4" fill="var(--terracotta)"/>
+        </svg>
+      </span>
+      <span class="brand-txt"><strong>街知巷聞</strong><em>EveryLane&nbsp;Macau</em></span>
+    </a>
+    <nav class="nav-links">
+      <a href="./">返回首頁</a>
+      <a href="dashboard.html">成效儀表板</a>
+    </nav>
+    <div class="nav-right"><span class="badge badge-stage">B 端 API · v1</span></div>
+  </div>
+</header>
+
+<section class="dhero">
+  <div class="dhero-in">
+    <p class="eyebrow">計劃書商業價值路徑 · 酒店與旅行社 API</p>
+    <h1>一個請求，返回<span class="hl">可驗證的澳門深度遊行程</span></h1>
+    <p class="lede">與網站共用同一套知識庫（70 POI）與 7 項工具；返回含地圖坐標、時間軸、預算、無障礙與舊區歸因的 JSON，可直接嵌入酒店禮賓部、旅行社與 OTA 系統。</p>
+    <p class="data-note">演示環境開放金鑰 <b>el-demo-2026</b>（放在 <code>X-API-Key</code> 請求頭）。正式合作將簽發獨立金鑰並按調用量／效果計費。</p>
+  </div>
+</section>
+
+<main class="dmain">
+  <section class="dsection">
+    <div class="dsection-head"><h2>1. 行程規劃 API</h2></div>
+    <div class="panelbox b2b-box">
+      <h3>POST /api/v1/itinerary</h3>
+      <p>請求體（JSON）：<code>query</code> 自然語言需求（≤1000 字）· <code>lang</code> 可選 zh-HK / zh / en / pt / ja · <code>today</code> 可選 YYYY-MM-DD。</p>
+      <pre class="code-block">curl -X POST http://47.79.228.128/api/v1/itinerary \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: el-demo-2026" \
+  -d '{"query": "帶爸媽玩一日，歷史美食，唔想行太遠", "lang": "zh-HK"}'</pre>
+      <p>返回示例（節錄）：</p>
+      <pre class="code-block">{
+  "api_version": "v1",
+  "engine": "deterministic-tools",
+  "attribution": {
+    "old_district_stops": 4,
+    "local_business_stops": 4,
+    "est_local_spend_mop": 135
+  },
+  "itinerary": {
+    "title": "你的澳門深度漫遊",
+    "date": "2026-08-26", "weekday": "週三",
+    "weather": { "condition": "雷陣雨", "temp_c": 30, "source": "open-meteo-live" },
+    "totals": { "stops": 6, "walk_km": 2.1, "cost_mop": 270, "old_district": 4, "local_business": 4 },
+    "constraints": [ { "label": "全部景點當日開放", "ok": true } ],
+    "stops": [ { "name": {"zh": "福隆新街"}, "arrive": "10:00",
+                 "accessibility": {"step_free": true}, "crowd": {"label": "適中"} } ]
+  }
+}</pre>
+      <p class="b2b-note">無效或缺失金鑰返回 <code>401</code>；規劃引擎為確定性工具鏈（低延遲、可重現），與網站的實時 Qwen 推理共用同一知識庫與核驗規則。</p>
+    </div>
+  </section>
+
+  <section class="dsection">
+    <div class="dsection-head"><h2>2. 成效數據 API（匿名化 · 唯讀）</h2></div>
+    <div class="panelbox">
+      <table class="target-table">
+        <thead><tr><th>端點</th><th>內容</th></tr></thead>
+        <tbody>
+          <tr><td><code>GET /api/impact/summary</code></td><td>計劃書指標對照、可用性測試、轉化漏斗、人流模型校正摘要</td></tr>
+          <tr><td><code>GET /api/impact/heat</code></td><td>匿名化區域熱度（6 區、21 日走勢）與模型校正曲線</td></tr>
+          <tr><td><code>GET /api/impact/merchants</code></td><td>5 間試點商戶的發碼／核銷／到訪率與週走勢</td></tr>
+        </tbody>
+      </table>
+      <p class="b2b-note" style="margin-top:.6rem">成效數據為複賽示範數據（賽規允許非真實數據），僅到區域／商戶彙總粒度，不含任何個人資料。</p>
+    </div>
+  </section>
+
+  <section class="dsection">
+    <div class="dsection-head"><h2>3. 一次性到店碼 API</h2></div>
+    <div class="panelbox">
+      <table class="target-table">
+        <thead><tr><th>端點</th><th>內容</th></tr></thead>
+        <tbody>
+          <tr><td><code>POST /api/codes/issue</code></td><td>請求體 <code>{"poi_id": "wong_chi_kei"}</code>；只對舊區／本地商戶點發碼，返回 <code>EL-XXXX-XX</code> 格式一次性碼與商戶禮遇</td></tr>
+          <tr><td><code>POST /api/codes/redeem</code></td><td>請求體 <code>{"code": "EL-XXXX-XX"}</code>；返回 <code>redeemed / already_redeemed / invalid</code>，核銷一次即失效</td></tr>
+        </tbody>
+      </table>
+      <p class="b2b-note" style="margin-top:.6rem">可在<a href="dashboard.html#merchants">成效儀表板的核銷演示機</a>體驗完整「領碼 → 核銷 → 重複核銷被拒」閉環。</p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div>
+      <strong>街知巷聞 · EveryLane Macau</strong>
+      <p>「千模百煉」AI 開發者系列之學生競賽 · 複賽 · 澳門文旅 × 舊區活化</p>
+    </div>
+    <div class="foot-meta">
+      <p>隊伍：愛拼才會贏 · 參賽者：施天益（SI TIN IEK，學號 dc227126）</p>
+      <p><a href="./">規劃行程</a> · <a href="dashboard.html">成效儀表板</a> · <a href="https://github.com/Mikey-SI/everylane-macau">GitHub</a></p>
+      <p class="ethics">演示金鑰僅供評審體驗；正式環境將以獨立金鑰、配額與審計日誌管理。</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

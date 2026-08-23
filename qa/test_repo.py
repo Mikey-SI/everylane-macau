@@ -80,6 +80,14 @@ def main():
         "qwenpaw/skill/everylane-macau/SKILL.md",
         "qwenpaw/mcp_server.py",
         "qwenpaw/README.md",
+        # 複賽 deliverables
+        "backend/impact.py",
+        "frontend/dashboard.html",
+        "frontend/dashboard.js",
+        "frontend/dashboard.css",
+        "frontend/api.html",
+        "docs/複賽說明文檔_街知巷聞.docx",
+        "docs/複賽說明文檔_街知巷聞.pdf",
     ]
     for rel in required:
         check((ROOT / rel).is_file(), f"deliverable exists: {rel}")
@@ -117,7 +125,11 @@ def main():
                 "愛拼才會贏", "施天益", "QwenPaw 2.0.0", "qwen3.7-plus",
             ],
             "docs/開發過程證明_QwenPaw_街知巷聞.pdf": [
-                "愛拼才會贏", "施天益", "QwenPaw 2.0.0", "531 PASS",
+                "愛拼才會贏", "施天益", "QwenPaw 2.0.0", "641 PASS",
+            ],
+            "docs/複賽說明文檔_街知巷聞.pdf": [
+                "愛拼才會贏", "施天益", "導流覆蓋率", "路線可行率", "商戶到訪率",
+                "一次性到店碼", "el-demo-2026", "47.79.228.128",
             ],
         }
         for rel, needles in pdf_expect.items():

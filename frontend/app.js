@@ -36,6 +36,8 @@
       city: "城市 / 政府", cityP: "平衡旅遊承載、緩解過度集中、活化舊區與保育文化遺產，契合澳門「世界旅遊休閒中心」定位。",
       valueFoot: "變現路徑：到店碼核銷後的商戶精選訂閱／按效果付費 · 酒店與旅行社 API · 匿名化文旅儀表板。",
       footerSub: "「千模百煉」AI 開發者系列之學生競賽 · 參賽方向：澳門文旅 × 舊區活化", participant: "隊伍：愛拼才會贏 · 參賽者：施天益（SITINIEK，學號 dc227126）", tech: "技術：Qwen / QwenPaw · FastAPI · ReAct Agent", ethics: "AI 倫理：行程由 AI 生成，人流為估算值，請以現場為準；數據來源公開資料。",
+      navDash: "成效儀表板", weatherLive: "實時天氣", accessOk: "無障礙友善", accessSteps: "有梯級/斜路",
+      codeBtn: "領取一次性到店碼", codeHint: "到店出示，核銷一次即失效 · 商戶試點",
       language: "語言", people: "人", interests: "興趣", budget: "預算 MOP", lowWalk: "少行路", daysTrip: "日行程",
       actionPlan: "行動計劃", recovery: "自動改線", noPrompt: "請先講低你想點玩",
       stops: "個站點", walkDistance: "估算步行", budgetPer: "全隊總預算", oldLanes: "舊區景點", localShops: "本地商戶點", localSpend: "本地消費估算", impactTitle: "舊區導流成效 · 由推薦走向可歸因", impactPilot: "目前為行程估算；商戶試點將以一次性到店碼 / 優惠碼核銷，量度實際到訪與轉化。",
@@ -57,6 +59,7 @@
       how1h: "理解与规划", how1p: "解析自然语言需求，拆解成日期、人数、兴趣、预算、步行偏好，并制定行动计划。", how2h: "调用工具", how2p: "天气、景点检索、开放时间核实、人流预测、导流、路线计算、预算估算 —— 7 大工具。", how3h: "多步执行", how3p: "逐一核实每个景点，动态整合天气、人流、地理片区，组装出可步行的顺路行程。", how4h: "失败恢复", how4p: "遇到景点当天休息、预算超支、走得太远，会自动改线、替换、缩减，不会卡住。",
       valueTitle: "商业价值：一个导流引擎，三方共赢", tourist: "游客", touristP: "避开人潮、省钱省脚力，体验真正地道、有故事的澳门，提升满意度与停留时间。", shop: "旧区小店", shopP: "把集中在大三巴／威尼斯人的客流，导入十月初五街、福隆新街等老街与街坊老字号，<b>创造可转化的新客流机会</b>。试点使用一次性到店码核销，验证转化后按效果收费。", city: "城市 / 政府", cityP: "平衡旅游承载、缓解过度集中、活化旧区与保育文化遗产，契合澳门“世界旅游休闲中心”定位。", valueFoot: "变现路径：到店码核销后的商户精选订阅／按效果付费 · 酒店与旅行社 API · 匿名化文旅仪表板。",
       footerSub: "“千模百炼”AI 开发者系列之学生竞赛 · 参赛方向：澳门文旅 × 旧区活化", participant: "队伍：爱拼才会赢 · 参赛者：施天益（SITINIEK，学号 dc227126）", tech: "技术：Qwen / QwenPaw · FastAPI · ReAct Agent", ethics: "AI 伦理：行程由 AI 生成，人流为估算值，请以现场为准；数据来源公开资料。",
+      navDash: "成效仪表板", weatherLive: "实时天气", accessOk: "无障碍友好", accessSteps: "有台阶/坡道", codeBtn: "领取一次性到店码", codeHint: "到店出示，核销一次即失效 · 商户试点",
       language: "语言", people: "人", interests: "兴趣", budget: "预算 MOP", lowWalk: "少走路", daysTrip: "日行程", actionPlan: "行动计划", recovery: "自动改线", noPrompt: "请先写下你想怎么玩", stops: "个站点", walkDistance: "估算步行", budgetPer: "全队总预算", oldLanes: "旧区景点", localShops: "本地商户点", localSpend: "本地消费估算", impactTitle: "旧区导流成效 · 从推荐走向可归因", impactPilot: "目前为行程估算；商户试点将使用一次性到店码 / 优惠码核销，量度实际到访与转化。", diversionTitle: "智能导流 · 从人潮热点带你去旧区老街", constraintsTitle: "任务完成核对 · 每项条件都已验证", constraintsStatic: "场景核对 · 预设演示数据（天气/人流为估算）", staticBanner: "策展演示模式：6 个预设场景，天气与人流为模拟估算；点击样例后按「出发」开始。", staticEngine: "● 策展演示", staticEngineTitle: "GitHub Pages 静态演示：6 个预设场景，非实时 Qwen 推理。", errorPlan: "连接失败，未能取得行程。请检查网络后重试，或使用上方样例进入演示模式。", retryPlan: "重试规划", mapOrderNote: "站点顺序示意（非逐路口导航）", daysOverview: "多日分区总览 · 每日一个可步行主题", fullMap: "全程地图 · 多日分区路线", routeMap: "路线地图 · 顺路而行", timeline: "行程时间轴", notes: "贴士", print: "打印 / 保存为 PDF", replan: "再规划一次", dayStops: "站", dayWalk: "步行", dayBudget: "预算", dayOld: "旧区", dayLocal: "小店", walk: "步行", minutes: "分钟", crowd: "人流：", wait: "约等", minShort: "分", free: "免费", approx: "约 MOP ", ahouSays: "阿濠说：", story: "听阿濠讲故事",
       tool: { get_weather: "查天气", search_attractions: "搜索景点", check_opening: "核实开放时间", predict_crowd: "预测人流", find_local_gem: "找本地老街", compute_route: "规划步行路线", estimate_budget: "估算预算", submit_itinerary: "提交行程" },
       samples: ["我下星期三想带爸妈来澳门玩一天，喜欢历史文化和地道美食，预算不想太贵，又不想走太多路", "帮我安排澳门三天两夜，想玩半岛世遗、氹仔美食和路环慢生活", "情侣星期六想逛旧区老街、拍照，顺便吃街头小吃", "我想去郑家大屋和附近的历史老街，星期三去", "氹仔半日游，主打地道美食", "First time in Macau this weekend, we love history, old streets and street food"],
@@ -72,6 +75,7 @@
       how1h: "Understand & Plan", how1p: "Parse natural language into date, people, interests, budget and walking preference, then form an action plan.", how2h: "Call Tools", how2p: "Weather, POI search, opening checks, crowd prediction, diversion, routing and budgeting — 7 tools.", how3h: "Execute Steps", how3p: "Verify every stop and combine weather, crowd and geography into a walkable route.", how4h: "Recover Failures", how4p: "If a place is closed, over budget or too far away, the agent reroutes, replaces or trims automatically.",
       valueTitle: "Business Value: One Diversion Engine, Three Winners", tourist: "Visitors", touristP: "Avoid crowds, save money and walking effort, and experience a more authentic Macau with stories.", shop: "Old-District Shops", shopP: "Redirect traffic from St. Paul’s and Cotai into old lanes and family-run shops, <b>creating measurable conversion opportunities</b>. A pilot uses one-time visit codes before charging for outcomes.", city: "City / Government", cityP: "Balance visitor flows, reduce overcrowding, revitalise old districts and preserve cultural heritage.", valueFoot: "Monetisation after visit-code validation: featured merchants / pay per outcome · hotel and agency APIs · anonymised tourism dashboards.",
       footerSub: "Qianmo Bailian AI Developer Series Student Competition · Macau Tourism × Old-District Revival", participant: "Team: Ai Pin Cai Hui Ying · Shi Tianyi (SITINIEK, dc227126)", tech: "Tech: Qwen / QwenPaw · FastAPI · ReAct Agent", ethics: "AI Ethics: itineraries are AI-generated; crowd levels are estimates; please follow on-site conditions. Data comes from public sources.",
+      navDash: "Impact Dashboard", weatherLive: "Live weather", accessOk: "Step-free friendly", accessSteps: "Steps / slopes", codeBtn: "Get one-time visit code", codeHint: "Show in store; one redemption only · merchant pilot",
       language: "Language", people: "people", interests: "Interests", budget: "Budget MOP", lowWalk: "Less walking", daysTrip: "days", actionPlan: "Action Plan", recovery: "Auto Reroute", noPrompt: "Please describe how you want to travel", stops: "stops", walkDistance: "estimated walk", budgetPer: "total group budget", oldLanes: "old lanes", localShops: "local shops", localSpend: "estimated local spend", impactTitle: "Old-District Impact · From Recommendation to Attribution", impactPilot: "These are itinerary estimates. Merchant pilots will use one-time visit / offer codes to measure actual arrivals and conversion.", diversionTitle: "Smart Diversion · From Crowded Hotspots to Old Lanes", constraintsTitle: "Task Checks · Every Condition Verified", constraintsStatic: "Scenario Checks · Preset demo data (weather/crowd estimated)", staticBanner: "Curated demo mode: 6 preset scenarios with simulated weather and crowd estimates. Pick a sample, then press Go.", staticEngine: "● Curated Demo", staticEngineTitle: "GitHub Pages static demo: 6 preset scenarios, not live Qwen reasoning.", errorPlan: "Connection failed — itinerary not received. Check your network and retry, or use a sample above.", retryPlan: "Retry planning", mapOrderNote: "Stop order sketch (not turn-by-turn navigation)", daysOverview: "Multi-Day Overview · One Walkable Theme per Day", fullMap: "Full Map · Multi-Day District Routes", routeMap: "Route Map · Walkable Order", timeline: "Itinerary Timeline", notes: "Tips", print: "Print / Save Result as PDF", replan: "Plan Again", dayStops: "stops", dayWalk: "walk", dayBudget: "budget", dayOld: "old areas", dayLocal: "shops", walk: "Walk", minutes: "min", crowd: "Crowd: ", wait: "wait about ", minShort: "min", free: "Free", approx: "Approx. MOP ", ahouSays: "Ah-Hou says: ", story: "Hear Ah-Hou’s story",
       tool: { get_weather: "Weather", search_attractions: "Search POIs", check_opening: "Check Opening", predict_crowd: "Predict Crowd", find_local_gem: "Find Local Gem", compute_route: "Plan Route", estimate_budget: "Estimate Budget", submit_itinerary: "Submit Itinerary" },
       samples: ["Next Wednesday I’m bringing my parents to Macau for one day. We like history and local food, want a modest budget and less walking.", "Plan a 3 days Macau trip with heritage, Taipa food and Coloane slow life", "A couple trip this Saturday: old lanes, photo spots and street food", "I want to visit Mandarin’s House and nearby historic lanes on Wednesday", "Taipa half-day food walk", "First time in Macau this weekend, we love history, old streets and street food"],
@@ -86,6 +90,7 @@
       how1h: "Compreender & Planear", how1p: "Analisa a necessidade em data, pessoas, interesses, orçamento e caminhada, criando um plano de ação.", how2h: "Chamar Ferramentas", how2p: "Tempo, pesquisa de pontos, horários, multidões, alternativas locais, rotas e orçamento — 7 ferramentas.", how3h: "Executar Etapas", how3p: "Verifica cada paragem e combina tempo, multidões e geografia numa rota caminhável.", how4h: "Recuperar Falhas", how4p: "Se um local estiver fechado, caro ou longe, o agente altera, substitui ou reduz automaticamente.",
       valueTitle: "Valor Comercial: Um Motor de Distribuição, Três Beneficiários", tourist: "Visitantes", touristP: "Evita multidões, poupa dinheiro e esforço, e descobre uma Macau mais autêntica.", shop: "Lojas de Bairros Antigos", shopP: "Redireciona fluxo das Ruínas e de Cotai para ruas antigas e lojas familiares, <b>criando oportunidades mensuráveis de conversão</b>. O piloto usa códigos únicos antes da cobrança por resultado.", city: "Cidade / Governo", cityP: "Equilibra fluxos turísticos, reduz sobrelotação, revitaliza bairros antigos e preserva património.", valueFoot: "Monetização após validação: comerciantes destacados / pagamento por resultado · APIs para hotéis · painéis anónimos.",
       footerSub: "Concurso Estudantil Qianmo Bailian AI Developer Series · Turismo de Macau × Revitalização", participant: "Equipa: 愛拼才會贏 · Shi Tianyi / 施天益 (SITINIEK, dc227126)", tech: "Tecnologia: Qwen / QwenPaw · FastAPI · Agente ReAct", ethics: "Ética de IA: roteiros gerados por IA; multidões são estimativas; confirmar no local. Dados de fontes públicas.",
+      navDash: "Painel de Impacto", weatherLive: "Tempo em direto", accessOk: "Acessível sem degraus", accessSteps: "Degraus / rampas", codeBtn: "Obter código de visita único", codeHint: "Mostre na loja; válido uma única vez · piloto de comerciantes",
       language: "Idioma", people: "pessoas", interests: "Interesses", budget: "Orçamento MOP", lowWalk: "Menos caminhada", daysTrip: "dias", actionPlan: "Plano de Ação", recovery: "Reencaminhamento", noPrompt: "Descreve como queres viajar", stops: "paragens", walkDistance: "caminhada estimada", budgetPer: "orçamento total do grupo", oldLanes: "ruas antigas", localShops: "lojas locais", localSpend: "consumo local estimado", impactTitle: "Impacto nos Bairros · Da Recomendação à Atribuição", impactPilot: "São estimativas do roteiro. O piloto usará códigos únicos de visita / oferta para medir chegadas e conversão reais.", diversionTitle: "Distribuição Inteligente · Dos Hotspots para Ruas Antigas", constraintsTitle: "Verificação da Tarefa · Condições Confirmadas", constraintsStatic: "Verificação de Cenário · Dados de demonstração (tempo/multidões estimados)", staticBanner: "Modo de demonstração: 6 cenários pré-definidos com tempo e multidões simulados. Escolha um exemplo e prima Ir.", staticEngine: "● Demo Curada", staticEngineTitle: "Demonstração estática GitHub Pages: 6 cenários, não é raciocínio Qwen em tempo real.", errorPlan: "Falha de ligação — roteiro não recebido. Verifique a rede ou use um exemplo acima.", retryPlan: "Tentar novamente", mapOrderNote: "Ordem das paragens (não é navegação passo a passo)", daysOverview: "Visão Multi-Dia · Um Tema Caminhável por Dia", fullMap: "Mapa Completo · Rotas por Distrito", routeMap: "Mapa da Rota · Ordem Caminhável", timeline: "Linha do Tempo", notes: "Dicas", print: "Imprimir / Guardar Resultado em PDF", replan: "Planear Novamente", dayStops: "paragens", dayWalk: "a pé", dayBudget: "orçamento", dayOld: "bairros antigos", dayLocal: "lojas", walk: "A pé", minutes: "min", crowd: "Multidão: ", wait: "espera aprox. ", minShort: "min", free: "Grátis", approx: "Aprox. MOP ", ahouSays: "Ah-Hou diz: ", story: "Ouvir a história de Ah-Hou",
       tool: { get_weather: "Tempo", search_attractions: "Pesquisar Pontos", check_opening: "Verificar Horário", predict_crowd: "Prever Multidão", find_local_gem: "Alternativa Local", compute_route: "Planear Rota", estimate_budget: "Estimar Orçamento", submit_itinerary: "Submeter Roteiro" },
       samples: ["Na próxima quarta quero levar os meus pais a Macau por um dia, com história, comida local, orçamento moderado e pouca caminhada", "Planeia 3 dias em Macau com património, comida em Taipa e vida lenta em Coloane", "Viagem de casal no sábado: ruas antigas, fotos e comida de rua", "Quero visitar a Casa do Mandarim e ruas históricas próximas na quarta", "Meio dia em Taipa com foco em comida local", "First time in Macau this weekend, we love history, old streets and street food"],
@@ -100,6 +105,7 @@
       how1h: "理解と計画", how1p: "自然言語を日付、人数、興味、予算、歩行希望に分解し、行動計画を立てます。", how2h: "ツール呼び出し", how2p: "天気、スポット検索、営業時間、人流予測、誘導、ルート、予算の7ツール。", how3h: "多段実行", how3p: "各スポットを検証し、天気・人流・地理を組み合わせて歩けるルートにします。", how4h: "失敗回復", how4p: "休業、予算超過、遠すぎる場合は自動で変更・代替・短縮します。",
       valueTitle: "商業価値：誘導エンジンで三方よし", tourist: "旅行者", touristP: "混雑を避け、費用と歩行負担を減らし、物語のある本当のマカオを体験できます。", shop: "旧市街の店", shopP: "聖ポールやコタイに集中する人流を古い路地と家族経営の店へ送り、<b>計測可能な来店機会</b>を作ります。実証では一回限りの来店コードを使います。", city: "都市 / 政府", cityP: "観光流量を分散し、過密を緩和し、旧市街活性化と文化保全に貢献します。", valueFoot: "来店コード検証後の収益化：おすすめ店舗／成果報酬 · ホテルAPI · 匿名観光ダッシュボード。",
       footerSub: "「千模百煉」AI開発者シリーズ学生コンペ · マカオ観光 × 旧市街活性化", participant: "チーム：愛拼才會贏 · 施天益（SITINIEK、dc227126）", tech: "技術：Qwen / QwenPaw · FastAPI · ReAct Agent", ethics: "AI倫理：旅程はAI生成、人流は推定値です。現地状況を優先してください。データは公開資料に基づきます。",
+      navDash: "効果ダッシュボード", weatherLive: "リアルタイム天気", accessOk: "バリアフリー", accessSteps: "階段・坂あり", codeBtn: "ワンタイム来店コードを取得", codeHint: "店頭で提示、1回で失効 · 店舗実証中",
       language: "言語", people: "人", interests: "興味", budget: "予算 MOP", lowWalk: "歩行少なめ", daysTrip: "日旅程", actionPlan: "行動計画", recovery: "自動変更", noPrompt: "旅行の希望を入力してください", stops: "スポット", walkDistance: "推定歩行", budgetPer: "グループ合計予算", oldLanes: "旧市街", localShops: "地元店", localSpend: "地元消費の推定", impactTitle: "旧市街への効果 · 推薦から計測へ", impactPilot: "現在は旅程上の推定です。店舗実証では一回限りの来店 / 特典コードで実来店と転換を測定します。", diversionTitle: "スマート誘導 · 混雑地から旧市街へ", constraintsTitle: "タスク確認 · 条件を検証済み", constraintsStatic: "シナリオ確認 · プリセットデモ（天気/人流は推定）", staticBanner: "キュレーション・デモ：6つのプリセットシナリオ。天気と人流はシミュレーション。サンプルを選び「出発」を押してください。", staticEngine: "● キュレーションデモ", staticEngineTitle: "GitHub Pages 静的デモ：6シナリオ。リアルタイム Qwen 推論ではありません。", errorPlan: "接続に失敗しました。ネットワークを確認して再試行するか、上のサンプルを使ってください。", retryPlan: "再試行", mapOrderNote: "スポット順序の示意（逐次ナビではありません）", daysOverview: "複数日概要 · 1日1つの歩けるテーマ", fullMap: "全体地図 · 複数日エリア別ルート", routeMap: "ルート地図 · 歩きやすい順番", timeline: "旅程タイムライン", notes: "ヒント", print: "印刷 / 結果をPDF保存", replan: "もう一度計画", dayStops: "スポット", dayWalk: "歩行", dayBudget: "予算", dayOld: "旧市街", dayLocal: "地元店", walk: "徒歩", minutes: "分", crowd: "人流：", wait: "待ち約", minShort: "分", free: "無料", approx: "約 MOP ", ahouSays: "阿濠より：", story: "阿濠の話を聞く",
       tool: { get_weather: "天気確認", search_attractions: "スポット検索", check_opening: "営業時間確認", predict_crowd: "人流予測", find_local_gem: "地元スポット", compute_route: "徒歩ルート", estimate_budget: "予算見積", submit_itinerary: "旅程提出" },
       samples: ["来週水曜に両親とマカオを1日観光。歴史文化とローカルグルメが好きで、予算控えめ、歩きすぎたくない", "マカオ3日2泊：半島の世界遺産、タイパのグルメ、コロアンのスローライフ", "土曜のカップル旅：旧市街、写真スポット、ストリートフード", "水曜に鄭家大屋と近くの歴史路地へ行きたい", "タイパ半日グルメ散歩", "First time in Macau this weekend, we love history, old streets and street food"],
@@ -211,6 +217,7 @@
     set(".nav-links a[href='#planner']", "navPlan");
     set(".nav-links a[href='#how']", "navHow");
     set(".nav-links a[href='#value']", "navValue");
+    set(".nav-links a[href='dashboard.html']", "navDash");
     set(".eyebrow", "eyebrow"); set(".hero h1", "heroTitle"); set(".lede", "lede");
     set(".hero-cta .btn-primary", "ctaPlan"); set(".hero-cta .btn-ghost", "ctaHow");
     const statLabels = ["statPoi", "statOld", "statLocal", "statTools"];
@@ -750,6 +757,7 @@
       `<div class="r-meta">` +
       metachip("📅", `${it.date} ${it.weekday}`) +
       metachip(weatherIcon(w), `${esc(w.condition || "")} ${w.temp_c != null ? w.temp_c + "°C" : ""}`) +
+      ((w.source || "").indexOf("live") >= 0 ? `<span class="metachip live-wx"><span class="mc-ic">📡</span>${esc(tt("weatherLive"))}</span>` : "") +
       metachip("🗣️", it.language_name) +
       `</div>`;
     r.appendChild(banner);
@@ -897,6 +905,12 @@
     const cl = CROWD_CLASS[s.crowd.label_en] || "crowd-moderate";
     badges.push(`<span class="tg ${cl}">${esc(tt("crowd"))}${esc(s.crowd.label)}${s.crowd.wait ? " · " + esc(tt("wait")) + s.crowd.wait + esc(tt("minShort")) : ""}</span>`);
     badges.push(`<span class="tg cost">${s.cost_mop ? esc(tt("approx")) + s.cost_mop : esc(tt("free"))}</span>`);
+    if (s.accessibility && typeof s.accessibility.step_free === "boolean") {
+      const a = s.accessibility;
+      const note = langNow().startsWith("zh") ? (a.note_zh || "") : (a.note_en || a.note_zh || "");
+      badges.push(`<span class="tg ${a.step_free ? "access-ok" : "access-warn"}" title="${esc(note)}">` +
+        `${a.step_free ? "♿" : "⚠️"} ${esc(tt(a.step_free ? "accessOk" : "accessSteps"))}</span>`);
+    }
 
     const why = `<div class="tl-why"><span class="qz">${esc(tt("ahouSays"))}</span>${esc(s.why)}</div>`;
     const name = displayPoiName(s);
@@ -906,14 +920,52 @@
     const story = s.story_zh ? `<details class="story"><summary>${esc(tt("story"))}</summary><p>${esc(s.story_zh)}</p></details>` : "";
     const tip = s.tip ? `<div class="tl-tip">💡 ${esc(s.tip)}</div>` : "";
     const tags = (langNow().startsWith("zh") && s.tags && s.tags.length) ? `<div class="tl-tags">${s.tags.slice(0, 5).map(x => `<span class="mini">${esc(x)}</span>`).join("")}</div>` : "";
+    const code = s.local_business
+      ? `<div class="tl-code"><button type="button" class="code-btn" data-poi="${esc(s.poi_id || "")}">🎟️ ${esc(tt("codeBtn"))}</button></div>`
+      : "";
 
     card.innerHTML =
       `<div class="tl-time"><span class="ord">${s.order}</span><span class="t">${s.arrive}<br>↓<br>${s.depart}</span></div>` +
       `<div class="tl-card${lb}"><div class="tl-media">${img}<div class="tl-info">` +
       `<div class="tl-name">${esc(name)}${secondary ? `<span class="en">${esc(secondary)}</span>` : ""}</div>` +
-      `<div class="tl-badges">${badges.join("")}</div>${why}${blurb}${story}${tip}${tags}` +
+      `<div class="tl-badges">${badges.join("")}</div>${why}${blurb}${story}${tip}${tags}${code}` +
       `</div></div></div>`;
     return card;
+  }
+
+  // one-time visit code: real API on the live server, local mock on static demo
+  async function onVisitCodeClick(e) {
+    const btn = e.target.closest(".code-btn");
+    if (!btn || btn.disabled) return;
+    btn.disabled = true;
+    const poiId = btn.dataset.poi || "";
+    let code = "", offer = "";
+    if (!staticMode && poiId) {
+      try {
+        const r = await fetch("/api/codes/issue", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ poi_id: poiId }),
+        });
+        if (r.ok) {
+          const j = await r.json();
+          code = j.code || "";
+          offer = j.offer || "";
+        }
+      } catch (err) { /* fall through to local demo code */ }
+    }
+    if (!code) {
+      const ab = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
+      const pick = (n) => Array.from({ length: n }, () => ab[Math.floor(Math.random() * ab.length)]).join("");
+      code = `EL-${pick(4)}-${pick(2)}`;
+    }
+    const wrap = btn.closest(".tl-code");
+    if (wrap) {
+      wrap.innerHTML =
+        `<span class="code-chip">🎟️ ${esc(code)}</span>` +
+        (offer ? `<span class="code-offer">${esc(offer)}</span>` : "") +
+        `<span class="code-hint">${esc(tt("codeHint"))}</span>`;
+    }
   }
 
   function displayPoiName(s) {
@@ -984,6 +1036,7 @@
   }
 
   $("#planBtn").addEventListener("click", startPlan);
+  $("#result").addEventListener("click", onVisitCodeClick);
   $("#retryBtn")?.addEventListener("click", startPlan);
   $("#prompt").addEventListener("keydown", (e) => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") startPlan(); });
   $("#traceToggle").addEventListener("click", () => {

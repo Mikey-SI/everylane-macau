@@ -13,6 +13,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.environ.get("CONCEPT_DOC_OUT", os.path.join(HERE, "概念計劃書_街知巷聞_EveryLaneMacau.docx"))
 ASSET_DIR = os.path.join(HERE, "assets")
 PAGES_URL = "http://47.79.228.128/"
+GITHUB_REPO_URL = "https://github.com/Mikey-SI/everylane-macau"
 GITHUB_DEMO_URL = "https://mikey-si.github.io/everylane-macau/"
 
 TERRA = RGBColor(0xBE, 0x4A, 0x3A)
@@ -214,8 +215,8 @@ def add_image(name, caption, width=6.35, before=4, after=8):
 
 
 # ====================== TITLE ======================
-para("「千模百煉」AI 開發者系列之學生競賽", 11, GREY, align=WD_ALIGN_PARAGRAPH.CENTER, after=2)
-para("參賽作品概念設計書", 12, AZUL, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, after=10)
+para("QwenPaw 創新挑戰賽 · 初賽", 11, GREY, align=WD_ALIGN_PARAGRAPH.CENTER, after=2)
+para("項目策劃書", 12, AZUL, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, after=10)
 
 p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 r = p.add_run("街知巷聞"); r.bold = True; r.font.size = Pt(30); r.font.color.rgb = TERRA; _cjk(r, SERIF_FONT)
@@ -226,14 +227,15 @@ para("澳門深度遊 AI 智能體 —— 唔止大三巴，帶你行勻澳門�
      align=WD_ALIGN_PARAGRAPH.CENTER, after=14)
 
 table([
-    ["參賽方向", "澳門文旅專題（兼及舊區活化）"],
-    ["作品形式", "Web 應用（可運行網站）＋ 基於 Qwen / QwenPaw 的 ReAct AI 智能體"],
+    ["選定主題", "澳門智慧文旅 × 舊區活化 × 旅遊承載平衡"],
+    ["作品形式", "QwenPaw AI Agent ＋ EveryLane Skill ＋ stdio MCP ＋ 可運行 Web 產品"],
+    ["當前狀態", "已部署、已調優、已完成真實 Session、公網運行及六輪回歸"],
     ["公網實例（真實 Qwen）", PAGES_URL],
+    ["代碼倉庫（GitHub）", GITHUB_REPO_URL],
     ["靜態備用演示", GITHUB_DEMO_URL],
     ["團隊名稱", "愛拼才會贏"],
-    ["參賽者 / 隊長", "施天益（SITINIEK，學號 dc227126）"],
-    ["指導教師", "（待定）"],
-    ["日期", "2026 年 6 月"],
+    ["隊長 / 唯一成員", "施天益（SI TIN IEK，學號 dc227126）"],
+    ["提交日期", "2026 年 8 月 9 日"],
 ], widths=[1.6, 4.7])
 
 add_image("product_hero.png", "網站首頁視覺：以澳門舊城色系呈現「文旅 × 舊區活化」定位", width=6.35, after=10)
@@ -254,6 +256,15 @@ bullet("預測各景點人流，並把遊客由逼爆的熱點，智能導流到
 bullet("計算順路的步行路線、估算人均預算，遇到限制衝突會自動改線。")
 para("一句話：阿濠唔係一個只會聊天的問答機械人，而係一個識得規劃、調用工具、多步執行、"
      "甚至失敗自動恢復的智能體 —— 把「揾景點、查資料、砌行程」呢啲繁瑣工作一手包辦。", color=INK, bold=False)
+h2("初賽交付狀態（2026-08-09）")
+table([
+    ["交付節點", "已完成、可核對的結果"],
+    ["QwenPaw 部署", "QwenPaw 2.0.0 本地運行；Default Agent 已啟用專用 Skill 與 MCP"],
+    ["模型與會話", "qwen3.7-plus 已啟用；真實 Session、工具調用記錄已導出並脫敏"],
+    ["產品", "公網可直接使用；health 顯示 real_llm=true、70 POI"],
+    ["工程驗證", "641 後端、99 瀏覽器、64 API/安全、32 倉庫交付測試通過"],
+    ["提交證據", "控制台/Skill/MCP/對話/公網截圖、官方 Agent 備份、脫敏 Session 齊備"],
+], widths=[1.55, 4.75], header=True, head_fill="BE4A3A")
 
 # ====================== 二 ======================
 h1("二、", "為什麼做這個（痛點與價值）")
@@ -275,10 +286,11 @@ bullet("以程式抓取 Wikipedia / Wikimedia Commons 的真實景點坐標與�
 bullet("人手整理開放時間、休息日、費用、人流特徵、舊區 / 本地小店標記，共 70 個景點。")
 h2("步驟 2：以 Qwen + QwenPaw 構建 ReAct 智能體")
 bullet("QwenPaw 2.0.0 已實際啟動，Default Agent 已開啟 Plan Mode，everylane-macau Skill 已啟用；")
-bullet("已完成主辦方 Token Plan OpenAI 相容配置與 qwen3.7-plus 模型白名單校驗；隊伍 Key 由隊長在 QwenPaw 密鑰頁安全貼入後啟用，驅動 ReAct「思考-行動-觀察」迴圈；")
+bullet("主辦方 Token Plan 的 qwen3.7-plus 已在 QwenPaw 與公網服務啟用；公網 health 實測 real_llm=true；")
 bullet("透過 EveryLane Macau MCP 接入 7 種細粒度工具及 1 個完整流程比較工具：")
 para("　　搜尋景點 · 查天氣 · 核實開放時間 · 預測人流 · 舊區導流 · 規劃步行路線 · 估算預算", size=10, color=AZUL, bold=True)
 bullet("設定阿濠人設 Prompt（粵語、親切、本地街坊味），並要求所有結論基於工具返回的真實數據。")
+bullet("已用「鄭家大屋星期三」場景真實執行 QwenPaw Session；過程包含工具調用、休息日識別、替代決策與最終回答。")
 add_image("qwenpaw/03_everylane_mcp_connected.png",
           "QwenPaw 實際部署證據：EveryLane Macau Tools MCP 客戶端已連接並啟用",
           width=6.35, after=8)
@@ -286,8 +298,8 @@ h2("步驟 3：實時可視化 + 測試優化")
 bullet("前端以 Server-Sent Events 實時展示智能體的規劃、工具調用、改線過程，並以地圖 + 時間軸呈現行程；")
 bullet("反覆測試多種情境（不同興趣 / 人數 / 預算 / 日期），校正路線合理性與失敗恢復邏輯。")
 para("所需資源：一台個人電腦 + 大會提供的 Token Plan 團隊 Key。網站亦保留不含模型憑證的"
-     "穩定示範引擎，在無網絡或額度異常時仍可調用同一知識庫完成路演；QwenPaw 接入證據、"
-     "MCP 測試與截圖另見《開發過程證明》。", color=GREY)
+     "策展備用模式，在網絡或額度異常時仍可展示同一知識庫與產品流程；正式公網則使用真實 Qwen。"
+     "QwenPaw 接入截圖、脫敏 Session、官方 Agent 備份與 MCP 測試另見《開發過程證明》。", color=GREY)
 
 # ====================== 四 ======================
 doc.add_page_break()
@@ -315,26 +327,38 @@ bullet("獨家定位「導流引擎」：主動將遊客由人潮熱點分流到
 bullet("每一項結論（開放時間、人流、步行距離、預算）都列明、可核對，唔係空泛建議。", "結果可驗證　")
 bullet("實時流式展示智能體「諗嘢 / 用工具 / 改線」全過程，評審一眼睇懂其能力。", "過程可視化　")
 bullet("阿濠用澳門粵語口吻講古、講路線，仲支援普通話 / 英文 / 葡文 / 日文多語言。", "在地 + 多語　")
+h2("與一般旅遊聊天機械人的差異")
+table([
+    ["評審視角", "一般旅遊聊天機械人", "街知巷聞"],
+    ["工作方式", "單輪生成建議文字", "Plan → MCP Tool → Observe → 修正 → 提交"],
+    ["異常處理", "休息景點可能照排", "換點、錯峰、縮短、重算後才提交"],
+    ["城市價值", "流量續推熱門榜單", "主動導向舊區與本地商戶"],
+    ["可驗證性", "只有最終答案", "工具軌跡、地圖、核對面板、Session 可查"],
+], widths=[1.15, 2.45, 2.75], header=True)
 
 # ====================== 六 ======================
-doc.add_page_break()
 h1("六、", "計劃時間表")
 table([
     ["時間", "任務"],
-    ["7 月上旬（已完成）", "完成 70 個景點知識庫與 70 / 70 相片；部署 QwenPaw 2.0.0、Skill 與 MCP"],
-    ["7 月中旬（進行中）", "接入主辦方 Token Plan；完善 ReAct 工具鏈、多日分區、失敗恢復與五輪測試"],
-    ["7 月下旬", "前端體驗打磨（多日總覽、地圖、時間軸、多語言）；加入收藏 / 匯出 PDF"],
-    ["8 月上旬", "邀請 20+ 位同學與遊客試用，收集反饋；接入真實天氣 API"],
-    ["8 月中旬", "優化迭代：人流模型校正、商戶端原型（精選商戶 / 引流統計）"],
-    ["8 月下旬", "撰寫實踐文章、製作路演 Demo 與展示材料"],
+    ["7 月上旬（完成）", "建立 70 POI 知識庫與 70 / 70 圖片；完成單日 / 多日穩定規劃器"],
+    ["7 月中旬（完成）", "部署 QwenPaw 2.0.0、EveryLane Skill、stdio MCP 及 7+1 工具鏈"],
+    ["7 月下旬（完成）", "接入 qwen3.7-plus；完成五語言 Web、地圖、時間軸、PDF 與公網部署"],
+    ["8 月 1–9 日（完成）", "真實 QwenPaw Session、官方 Agent 備份、證據脫敏、六輪回歸與提交材料"],
+    ["晉級後第 1 階段", "20+ 位遊客可用性測試；校正人流模型；加入即時天氣與無障礙資料"],
+    ["晉級後第 2 階段", "3–5 間舊區商戶小規模到店碼試點；驗證導流、到訪與轉化"],
 ], widths=[1.4, 4.9], header=True, head_fill="BE4A3A")
 
 # ====================== 七 ======================
 h1("七、", "預期效果與價值")
-bullet("覆蓋 70 個澳門景點，當中 25 個為舊區老街 / 活化片區、20 間為本地小店；")
-bullet("智能體能就任意合理需求，輸出一日或 2–5 日多日深度遊，並確保每日鎖定可步行片區；")
-bullet("每份行程平均納入 ≥ 3 個舊區老街 / 本地小店，先量化導流覆蓋與本地消費估算；商戶試點再用一次性到店碼核銷驗證實際轉化；")
-bullet("試用者中 80% 認同「比自己上網查更慳時間、更有在地味」。")
+h2("初賽已實現、可立即驗證")
+bullet("公網覆蓋 70 個澳門 POI，當中 25 個舊區點、20 個本地商戶點，70 / 70 有圖片；")
+bullet("支援一日及 2–5 日分區深度遊；每站提供時間、人流、開放、估算距離、預算與導流理由；")
+bullet("真實 qwen3.7-plus 單日 ReAct 規劃可調用工具並處理休息日；多日模式每日使用同一套真實工具核驗；")
+bullet("自動化測試結果：641 後端、99 瀏覽器、64 API/安全、32 倉庫交付均為 PASS；8 個 MCP 工具通過協議測試。")
+h2("晉級後驗證目標（目標值，不冒充現有成績）")
+bullet("20+ 位本地居民 / 遊客完成可用性測試；任務完成率目標 ≥ 90%，80% 受試者認同更省時、更有在地味；")
+bullet("每份合適行程平均納入 ≥ 3 個舊區 / 本地商戶點；以一次性到店碼核銷量度實際到訪與轉化；")
+bullet("在不增加熱門點過載的前提下，以導流覆蓋率、路線可行率、商戶到訪率三個指標評估成效。")
 para("社會與商業價值：本作品不只是 AI 應用，更是一個可持續的「舊區導流引擎」——"
      "為小店帶客流、為遊客帶體驗、為城市帶平衡，具清晰的 B 端變現路徑"
      "（商戶精選訂閱 / 引流分成、酒店與旅行社 API、文旅數據儀表板）。", bold=False)
@@ -348,14 +372,31 @@ bullet("不收集個人身分資料、無需登入即可使用；景點相片均
 
 # ====================== 九 ======================
 h1("九、", "分工與技術說明")
-para("本作品由參賽者施天益（SITINIEK，學號 dc227126）獨立完成，涵蓋以下範疇：")
+para("本作品由參賽者施天益（SI TIN IEK，學號 dc227126）獨立完成。參賽者為澳門大學"
+     "計算機相關專業學生，具 AI、全端開發、資料工程及 Web 安全實作經驗；曾參與 AIA 實習，"
+     "並獲 NewStar CTF 2025 二等獎。履歷資料只用於能力說明，提交材料不公開電話、電郵或出生日期。")
 table([
     ["範疇", "內容"],
     ["產品 / 創意", "舊區導流定位、情境設計、商業模式"],
     ["資料工程", "景點知識庫建構、Wikipedia/Commons 資料抓取與校正"],
     ["智能體 / 後端", "QwenPaw Skill、MCP（7 工具 + 1 流程工具）、ReAct、Token Plan、FastAPI / SSE"],
     ["前端 / 設計", "互動網站、地圖與時間軸、智能體過程可視化"],
+    ["品質 / 安全", "六輪回歸、API 邊界、並發、安全頭、憑證脫敏與提交一致性檢查"],
 ], widths=[1.8, 4.5], header=True)
+para("一人團隊的風險以自動化回歸、可重現腳本、Git 版本管理、脫敏 Session 與官方 Agent 備份降低；"
+     "評審可由公網、GitHub、開發證明和證據包交叉核對。", color=GREY)
+
+# ====================== 十 ======================
+h1("十、", "與初賽要求逐項對照")
+table([
+    ["官方要求", "本項目對應內容", "核對材料"],
+    ["問題分析", "熱門景點過載、舊區及小店客流不足、遊客查證成本高", "本策劃書第二章"],
+    ["技術方案", "QwenPaw 2.0 + Skill + MCP 7+1 工具 + Qwen + FastAPI/SSE", "本策劃書第三至四章"],
+    ["預期成果", "已實現指標與晉級後量化目標分開陳述", "本策劃書第七章"],
+    ["基礎部署", "本地 QwenPaw、啟用 Skill/MCP、真實模型與 Session", "開發過程證明 / 截圖 / Session"],
+    ["場景設計與調優", "休息日恢復、熱點錯峰、少步行、低預算、多日去重、五語言", "開發過程證明第三章"],
+    ["團隊與動機", "施天益一人團隊；以 AI 改善澳門旅遊客流失衡", "團隊介紹 PPT / ≤3 分鐘視頻"],
+], widths=[1.35, 3.25, 1.75], header=True, head_fill="BE4A3A")
 para("我們相信，Qwen 與 QwenPaw 讓「諗到」就能「做到」——"
      "把對澳門舊區的關懷，變成一個真正幫到遊客同街坊的智能體。", bold=True, color=TERRA, before=6)
 para("— 完 —", align=WD_ALIGN_PARAGRAPH.CENTER, color=GREY, before=10)

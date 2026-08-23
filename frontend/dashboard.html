@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>成效儀表板 · 街知巷聞 EveryLane Macau — 複賽試點</title>
+<meta name="description" content="複賽試點成效儀表板：導流覆蓋率、路線可行率、商戶到訪率、可用性測試、人流模型校正、匿名化區域熱度與一次性到店碼核銷。" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=20260823-semi" />
+<link rel="stylesheet" href="dashboard.css?v=20260823-semi" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23C0473B'/%3E%3Cpath d='M16 5l8 7v15h-5v-8h-6v8H5V12z' fill='%23F8EFDD'/%3E%3C/svg%3E">
+</head>
+<body class="dash-body">
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="./">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" width="34" height="34">
+          <rect width="40" height="40" rx="10" fill="var(--terracotta)"/>
+          <path d="M20 7l11 9v17h-7V22h-8v11H9V16z" fill="#F8EFDD"/>
+          <circle cx="20" cy="17" r="2.4" fill="var(--terracotta)"/>
+        </svg>
+      </span>
+      <span class="brand-txt">
+        <strong>街知巷聞</strong>
+        <em>EveryLane&nbsp;Macau</em>
+      </span>
+    </a>
+    <nav class="nav-links">
+      <a href="./">返回首頁</a>
+      <a href="#targets">指標對照</a>
+      <a href="#merchants">商戶試點</a>
+      <a href="#b2b">B 端 API</a>
+    </nav>
+    <div class="nav-right">
+      <span class="badge badge-stage">複賽 · 試點成效</span>
+    </div>
+  </div>
+</header>
+
+<section class="dhero">
+  <div class="dhero-in">
+    <p class="eyebrow">複賽交付 · 計劃書第七章指標逐項呈現</p>
+    <h1>由推薦走向可歸因：<span class="hl">舊區導流成效儀表板</span></h1>
+    <p class="lede">
+      試點窗口 <b id="pilotWindow">2026-08-11 至 2026-08-31</b> ·
+      覆蓋 <b>可用性測試</b>、<b>一次性到店碼核銷</b>、<b>人流模型校正</b> 與 <b>匿名化區域熱度</b>。
+    </p>
+    <p class="data-note" id="dataNote">
+      數據標註：本頁為複賽示範數據（賽規：數據可以不用真實，但呈現效果須達到計劃書的指標）；
+      指標口徑與《項目策劃書》第七章一致，到店碼發碼／核銷為真實可操作功能。
+    </p>
+  </div>
+</section>
+
+<main class="dmain">
+
+  <!-- KPI band -->
+  <section id="kpis" class="dsection">
+    <div class="dsection-head">
+      <h2>三大成效指標 × 可用性核心數字</h2>
+      <p>計劃書承諾：「以導流覆蓋率、路線可行率、商戶到訪率三個指標評估成效」。</p>
+    </div>
+    <div class="kpi-grid" id="kpiGrid"></div>
+  </section>
+
+  <!-- proposal target mapping -->
+  <section id="targets" class="dsection">
+    <div class="dsection-head">
+      <h2>計劃書指標對照 · 逐項達成</h2>
+      <p>《項目策劃書》第七章「晉級後驗證目標」與計劃時間表第 1／2 階段的逐項對照。</p>
+    </div>
+    <div class="panelbox">
+      <table class="target-table" id="targetTable" aria-label="計劃書指標對照表">
+        <thead><tr><th>計劃書條文</th><th>目標</th><th>試點呈現</th><th>狀態</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- usability -->
+  <section id="usability" class="dsection">
+    <div class="dsection-head">
+      <h2>可用性測試 · 23 位受試者</h2>
+      <p>11 位本地居民 + 12 位遊客，每人完成 12 項規劃任務（單日／多日／改線／預算／多語言）。</p>
+    </div>
+    <div class="two-col">
+      <div class="panelbox" id="usabilityBars"></div>
+      <div class="panelbox usability-facts" id="usabilityFacts"></div>
+    </div>
+  </section>
+
+  <!-- funnel -->
+  <section id="funnel" class="dsection">
+    <div class="dsection-head">
+      <h2>到店碼轉化漏斗 · 由行程到消費</h2>
+      <p>每份行程的舊區／商戶站點可領取一次性到店碼；核銷即代表真實到訪。</p>
+    </div>
+    <div class="panelbox" id="funnelBox"></div>
+  </section>
+
+  <!-- heat -->
+  <section id="heat" class="dsection">
+    <div class="dsection-head">
+      <h2>匿名化區域熱度 · 文旅數據儀表板</h2>
+      <p>只統計區域粒度的匿名熱度指數（0–100），不涉及任何個人資料 —— 計劃書 B 端變現路徑之一。</p>
+    </div>
+    <div class="two-col">
+      <div class="panelbox" id="zoneBars"></div>
+      <div class="panelbox" id="dailyChart"></div>
+    </div>
+  </section>
+
+  <!-- model calibration -->
+  <section id="model" class="dsection">
+    <div class="dsection-head">
+      <h2>人流模型校正 · 由估算走向可信</h2>
+      <p>以試點觀測樣本回校人流模型（計劃書晉級後第 1 階段承諾）。</p>
+    </div>
+    <div class="two-col">
+      <div class="panelbox" id="calChart"></div>
+      <div class="panelbox" id="calFacts"></div>
+    </div>
+  </section>
+
+  <!-- merchants -->
+  <section id="merchants" class="dsection">
+    <div class="dsection-head">
+      <h2>舊區商戶試點 · 5 間老字號</h2>
+      <p>半島 2 間、氹仔 2 間、路環 1 間 —— 一次性到店碼核銷，驗證導流、到訪與轉化（計劃書第 2 階段）。</p>
+    </div>
+    <div class="merchant-grid" id="merchantGrid"></div>
+
+    <div class="panelbox redeem-box" id="redeemBox">
+      <h3>🎟️ 到店碼核銷演示機（真實可操作）</h3>
+      <p class="redeem-sub">流程：遊客在行程頁領碼 → 到店出示 → 商戶核銷一次即失效。可在此即場體驗完整閉環。</p>
+      <div class="redeem-row">
+        <label>試點商戶
+          <select id="merchantSelect" aria-label="選擇試點商戶"></select>
+        </label>
+        <button class="btn btn-ghost" id="issueBtn" type="button">① 模擬遊客領碼</button>
+        <span class="code-chip hidden" id="issuedCode"></span>
+      </div>
+      <div class="redeem-row">
+        <input id="redeemInput" maxlength="10" placeholder="輸入到店碼，如 EL-XXXX-XX" aria-label="到店碼" />
+        <button class="btn btn-primary" id="redeemBtn" type="button">② 商戶核銷</button>
+      </div>
+      <p class="redeem-result hidden" id="redeemResult" role="status"></p>
+    </div>
+  </section>
+
+  <!-- B2B -->
+  <section id="b2b" class="dsection">
+    <div class="dsection-head">
+      <h2>B 端變現 · 酒店與旅行社 API</h2>
+      <p>計劃書商業價值路徑：商戶精選訂閱／引流分成 · 酒店與旅行社 API · 文旅數據儀表板。</p>
+    </div>
+    <div class="two-col">
+      <div class="panelbox b2b-box">
+        <h3>POST /api/v1/itinerary</h3>
+        <p>一個請求返回完整可驗證行程（站點、時間軸、路線、預算、舊區歸因），供酒店禮賓部／旅行社系統直接嵌入。</p>
+        <pre class="code-block">curl -X POST http://47.79.228.128/api/v1/itinerary \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: el-demo-2026" \
+  -d '{"query": "帶爸媽玩一日，歷史美食，唔想行太遠", "lang": "zh-HK"}'</pre>
+        <p class="b2b-note">演示金鑰 <code>el-demo-2026</code> · 完整說明見 <a href="api.html">API 文檔</a>。</p>
+      </div>
+      <div class="panelbox b2b-box">
+        <h3>三條變現路徑的儀表板對應</h3>
+        <ul class="b2b-list">
+          <li><b>商戶精選訂閱／引流分成</b> — 上方到店碼核銷數據即按效果計費的結算依據。</li>
+          <li><b>酒店與旅行社 API</b> — 左側 v1 API 已可調用，返回含舊區歸因的行程 JSON。</li>
+          <li><b>文旅數據儀表板</b> — 本頁匿名化區域熱度即政府／業界訂閱版的雛形。</li>
+        </ul>
+        <p class="b2b-note">下一步（決賽前）：商戶自助後台、結算報表與更長觀測窗口。</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div>
+      <strong>街知巷聞 · EveryLane Macau</strong>
+      <p>「千模百煉」AI 開發者系列之學生競賽 · 複賽 · 澳門文旅 × 舊區活化</p>
+    </div>
+    <div class="foot-meta">
+      <p>隊伍：愛拼才會贏 · 參賽者：施天益（SI TIN IEK，學號 dc227126）</p>
+      <p><a href="./">規劃行程</a> · <a href="api.html">B 端 API 文檔</a> · <a href="https://github.com/Mikey-SI/everylane-macau">GitHub</a></p>
+      <p class="ethics">AI 倫理與數據：本頁試點數據為複賽示範數據並已明確標示；區域熱度經匿名化；不收集個人身分資料。</p>
+    </div>
+  </div>
+</footer>
+
+<script src="dashboard.js?v=20260823-semi"></script>
+</body>
+</html>

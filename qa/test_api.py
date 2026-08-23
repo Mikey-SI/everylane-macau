@@ -151,6 +151,71 @@ def main():
     check(len(clean) == len(set(clean)), "Qwen guard deduplicates stops", clean)
     check(bool(changes), "Qwen guard records recovery reasons")
 
+    # ---- 複賽 pilot: impact dashboard endpoints -------------------------
+    response = client.get("/api/impact/summary")
+    check(response.status_code == 200, "impact summary 200")
+    summary = response.json()
+    check(summary.get("targets_met") is True, "all proposal targets met", summary)
+    check(len(summary["proposal_targets"]) == 9, "9 proposal targets mapped",
+          len(summary["proposal_targets"]))
+    check(summary["usability"]["participants"] >= 20
+          and summary["usability"]["completion_pct"] >= 90
+          and summary["usability"]["agree_save_time_pct"] >= 80,
+          "usability meets proposal targets", summary["usability"])
+    check(summary["funnel"]["avg_old_local_stops"] >= 3,
+          "avg old/local stops >= 3", summary["funnel"]["avg_old_local_stops"])
+
+    heat = client.get("/api/impact/heat").json()
+    check(len(heat["zones"]) == 6, "heat zones 6", len(heat["zones"]))
+    check(len(heat["daily"]["dates"]) == 21, "heat daily 21 days")
+    hotspots = [z for z in heat["zones"] if z["kind"] == "hotspot"]
+    check(all(z["after"] <= z["before"] for z in hotspots),
+          "hotspots do not overload after diversion", hotspots)
+
+    merchants = client.get("/api/impact/merchants").json()
+    check(len(merchants["merchants"]) == 5, "merchant pilot has 5 shops")
+    check(sum(m["issued"] for m in merchants["merchants"]) == merchants["totals"]["issued"]
+          and sum(m["redeemed"] for m in merchants["merchants"]) == merchants["totals"]["redeemed"],
+          "merchant totals consistent", merchants["totals"])
+
+    # ---- one-time visit codes: full loop --------------------------------
+    issued = client.post("/api/codes/issue", json={"poi_id": "wong_chi_kei"})
+    check(issued.status_code == 200, "visit code issued")
+    code = issued.json()["code"]
+    check(len(code) == 10 and code.startswith("EL-"), "visit code format", code)
+    check(client.post("/api/codes/issue", json={"poi_id": "ruins_st_paul"}).status_code == 400,
+          "no visit code for hotspots")
+    check(client.post("/api/codes/issue", json={"poi_id": "nope"}).status_code == 404,
+          "no visit code for unknown POI")
+    first = client.post("/api/codes/redeem", json={"code": code}).json()
+    second = client.post("/api/codes/redeem", json={"code": code}).json()
+    check(first["status"] == "redeemed", "visit code redeems once", first)
+    check(second["status"] == "already_redeemed", "visit code cannot be reused", second)
+    bad = client.post("/api/codes/redeem", json={"code": "EL-XXXX-XX"}).json()
+    check(bad["status"] == "invalid", "unknown visit code rejected", bad)
+
+    # ---- B2B itinerary API ----------------------------------------------
+    check(client.post("/api/v1/itinerary", json={"query": "一日遊"}).status_code == 401,
+          "B2B API requires X-API-Key")
+    b2b = client.post("/api/v1/itinerary",
+                      json={"query": "帶爸媽玩一日，歷史美食", "lang": "zh-HK",
+                            "today": "2026-08-26"},
+                      headers={"X-API-Key": "el-demo-2026"})
+    check(b2b.status_code == 200, "B2B API 200 with demo key")
+    payload = b2b.json()
+    check(payload["engine"] == "deterministic-tools", "B2B deterministic engine")
+    check(payload["attribution"]["old_district_stops"]
+          + payload["attribution"]["local_business_stops"] >= 3,
+          "B2B itinerary includes >=3 old/local stops", payload["attribution"])
+    check("sk-sp-" not in json.dumps(payload, ensure_ascii=False),
+          "B2B response contains no secrets")
+
+    # ---- semifinal pages served ------------------------------------------
+    for page in ("/dashboard.html", "/api.html", "/dashboard.js", "/dashboard.css"):
+        check(client.get(page).status_code == 200, f"semifinal page served {page}")
+    stop = client.get("/api/plan", params={"q": "氹仔半日遊", "today": "2026-08-26"})
+    check("accessibility" in stop.text, "plan stops carry accessibility info")
+
     print(f"API/ROBUSTNESS PASS {passes} FAIL {len(fails)}")
     for failure in fails:
         print("FAIL:", failure)

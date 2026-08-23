@@ -65,11 +65,12 @@ table(
     doc,
     [
         ["正式隊伍名稱", "愛拼才會贏"],
-        ["參賽者 / 隊長", "施天益（SITINIEK）"],
+        ["參賽者 / 隊長", "施天益（SI TIN IEK）"],
         ["學號", "dc227126"],
         ["作品名稱", "街知巷聞 · EveryLane Macau"],
         ["QwenPaw 版本", "2.0.0（Windows 本地部署）"],
-        ["證明日期", "2026 年 7 月 11 日"],
+        ["證明日期", "2026 年 8 月 9 日"],
+        ["代碼倉庫（GitHub）", "https://github.com/Mikey-SI/everylane-macau"],
         ["公網實例（真實 Qwen）", "http://47.79.228.128/"],
         ["靜態備用演示", "https://mikey-si.github.io/everylane-macau/"],
     ],
@@ -78,11 +79,12 @@ table(
     firstcol=True,
 )
 
+page_break(doc)
 image(
     doc,
     os.path.join(QPAW, "01_qwenpaw_console.png"),
     "QwenPaw 2.0.0 本地控制台已成功啟動（127.0.0.1:8088）",
-    width=6.35,
+    width=5.2,
 )
 
 # 1
@@ -103,7 +105,7 @@ table(
         ["智能體", "Default Agent；Plan Mode 已啟用", "agent.json / 控制台"],
         ["專用技能", "everylane-macau（local，Enabled）", "Skills 頁面截圖"],
         ["MCP 客戶端", "EveryLane Macau Tools（stdio，Enabled）", "MCP 頁面截圖"],
-        ["模型接入", "支援 Token Plan OpenAI-compatible 協議", ".env.example / 連接診斷腳本"],
+        ["模型接入", "Token Plan · qwen3.7-plus 已啟用", "Console 模型標籤 / 真實會話"],
     ],
     widths=[1.15, 3.0, 2.2],
 )
@@ -113,7 +115,6 @@ bullet(doc, "API Key 只進入 QwenPaw 密鑰儲存或本機 .env；Git 忽略 .
 bullet(doc, "所有證明截圖避開 API Key 欄位；測試輸出只顯示「Key loaded: yes (masked)」。")
 bullet(doc, "sk-sp Token Plan Key 與普通 DashScope Key 分流校驗，避免因 Base URL 不匹配出現 401。")
 
-page_break(doc)
 h1(doc, "二、", "真正接入：Skill + MCP 八項能力")
 image(
     doc,
@@ -172,6 +173,7 @@ table(
     widths=[1.4, 2.25, 2.7],
 )
 
+page_break(doc)
 h2(doc, "代表性 ReAct 軌跡")
 table(
     doc,
@@ -188,17 +190,17 @@ table(
     widths=[0.6, 3.0, 2.75],
 )
 
-page_break(doc)
-h1(doc, "四、", "五輪測試生命周期與量化結果")
+h1(doc, "四、", "六輪測試生命周期與量化結果")
 table(
     doc,
     [
         ["輪次", "測試 → 發現 → 修復", "最終結果"],
-        ["1 後端正確性", "解析、開放、路線、多日、圖片、預算、人流", "531 PASS / 0 FAIL / 0 WARN"],
-        ["2 前端體驗", "五語言、自由輸入、圖片、手機、列印、SSE", "99 PASS / 0 FAIL"],
-        ["3 健壯安全", "注入、超長、穿越、並發、安全頭、Qwen 防線", "64 PASS / 0 FAIL"],
+        ["1 後端正確性", "解析、開放、路線、多日、圖片、預算、人流", "641 PASS / 0 FAIL"],
+        ["2 前端體驗", "五語言、自由輸入、圖片、手機、列印、SSE", "113 PASS / 0 FAIL"],
+        ["3 健壯安全", "注入、超長、穿越、並發、安全頭、Qwen 防線", "91 PASS / 0 FAIL"],
         ["4 QwenPaw", "版本、Skill、MCP 協議、8 工具、失敗恢復", "MCP E2E PASS"],
-        ["5 最終回歸", "後端 + 前端 + API + MCP + 文檔一致性", "見最終 QA 報告"],
+        ["5 最終回歸", "後端 + 前端 + API + MCP + 文檔一致性", "全套件 0 FAIL"],
+        ["6 公網 / 交付", "真實 Qwen 六場景、桌面手機、倉庫交付", "41 Repo PASS；Live PASS"],
     ],
     widths=[1.25, 3.5, 1.6],
 )
@@ -227,12 +229,12 @@ table(
     [
         ["層級", "實作"],
         ["QwenPaw 運行時", "QwenPaw 2.0.0 Console / Default Agent / Plan Mode"],
-        ["模型", "Token Plan：qwen3.7-plus（配置就緒；Key 由隊長在密鑰頁安全貼入）"],
+        ["模型", "Token Plan：qwen3.7-plus（已啟用；Key 只在本機安全儲存）"],
         ["行為層", "EveryLane Skill：阿濠人設、流程、約束、輸出規格"],
         ["工具層", "stdio MCP：7 個細粒度工具 + 1 個整體比較工具"],
         ["領域層", "70 POI 澳門知識庫、開放、人流、地理、預算"],
         ["產品層", "FastAPI SSE + 五語言 Web + Leaflet 地圖 + PDF"],
-        ["驗證層", "自动化 QA + 五輪生命周期报告"],
+        ["驗證層", "自動化 QA + 六輪生命周期報告 + 公網實測"],
     ],
     widths=[1.45, 4.9],
     header=False,
@@ -241,7 +243,8 @@ table(
 para(
     doc,
     "可重現步驟：安裝 QwenPaw → 在模型頁加入主辦方 Token Plan Key（截圖須打碼）"
-    "→ 啟用 EveryLane Skill 與 MCP → 輸入指定情境 → 查看逐步工具調用與最終行程。"
+    "→ 選擇 qwen3.7-plus → 啟用 EveryLane Skill 與 MCP → 輸入指定情境"
+    "→ 查看逐步工具調用、失敗恢復與最終行程。"
 )
 para(
     doc,
@@ -249,16 +252,24 @@ para(
     color=GREY,
 )
 
-h1(doc, "六、", "結論")
-runs(
+h1(doc, "六、", "證據閉環與提交包")
+table(
     doc,
     [
-        ("目前已具備初賽要求的 ", {}),
-        ("QwenPaw 基礎部署、場景設計、智能體調優與開發過程證明", {"bold": True, "color": TERRA}),
-        ("。核心競爭力不是一般旅遊問答，而是可驗證的多工具 ReAct 流程，以及把熱門客流導向舊區小店的可量化社會與商業價值。", {}),
+        ["證據", "實際內容", "安全處理"],
+        ["截圖", "Console、Skill、MCP、模型標籤及公網結果", "不拍密鑰輸入欄"],
+        ["真實會話", "星期三休息日、工具調用與替代決策", "畫面不含 Token"],
+        ["Session", "session / chat JSON 與工具記錄", "正則掃描並脫敏"],
+        ["Agent / 工程", "官方備份、GitHub、公網 real_llm=true", "不含 credentials / secrets"],
     ],
+    widths=[1.3, 3.2, 1.85],
 )
-para(doc, "— 完 —", align=WD_ALIGN_PARAGRAPH.CENTER, color=GREY, before=12)
+para(
+    doc,
+    "證據包位置：05_提交證據_QwenPaw/；代碼倉庫提供 Skill、MCP Server、後端、前端與測試，"
+    "可由截圖 → Session → 源碼 → 公網結果四向交叉核對。",
+    color=GREY,
+)
 
 doc.save(OUT)
 print("Saved:", OUT)

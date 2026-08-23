@@ -8,7 +8,8 @@
 sessions_redacted/
   - console__default_evidence-*.json  本輪完整 session（已脱敏）
   - api_chat_*.json                   對話導出（含 check_opening 等工具）
-07_QwenPaw_Agent备份_官方导出.zip  控制台 Backups 官方導出（不含 secrets）
+07_QwenPaw_Agent备份_官方导出.zip  控制台 Backups 官方導出之提交副本
+  - 已額外移除 credentials.yaml；不含 API Key / secrets
 07_QwenPaw_Agent备份_脱敏.zip      Skill+MCP 打包（備用）
 
 視頻：../團隊介紹視頻_QwenPaw與網站演示_無旁白.mp4（約 2:59，無旁白，可後期配音）

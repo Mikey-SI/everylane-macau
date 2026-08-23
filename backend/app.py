@@ -15,6 +15,7 @@ from fastapi.staticfiles import StaticFiles
 import config
 import kb
 import agent
+import impact
 
 _BACKEND = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_BACKEND)
@@ -83,6 +84,10 @@ def plan(
         "X-Accel-Buffering": "no",
         "Connection": "keep-alive",
     })
+
+
+# ---- 複賽 pilot: impact dashboard, visit codes, B2B API --------------------
+app.include_router(impact.router)
 
 
 # ---- static frontend -----------------------------------------------------
