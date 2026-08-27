@@ -20,6 +20,7 @@ docs/_scan_secrets.py
 docs/_ppt_from_video/
 docs/_evidence_video_build/
 docs/_ui_probe/
+docs/assets/semifinal/_pdf_pages/
 docs/_capture_log.txt
 docs/_fixup_log.txt
 # never commit live credentials or local QwenPaw secret stores

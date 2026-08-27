@@ -28,11 +28,11 @@ def check(ok, label, detail=""):
         fails.append(f"{label}: {detail}")
 
 
-def sse_events(query, lang="zh-HK", today="2026-07-11"):
+def sse_events(query, lang="zh-HK", today="2026-07-11", mode="auto"):
     with client.stream(
         "GET",
         "/api/plan",
-        params={"q": query, "lang": lang, "today": today},
+        params={"q": query, "lang": lang, "today": today, "mode": mode},
     ) as response:
         lines = list(response.iter_lines())
         events = []
@@ -50,6 +50,8 @@ def main():
     check(data["poi_count"] == 70, "health POI count", data)
     check(data["old_district"] == 25 and data["local_business"] == 20,
           "health impact counts", data)
+    check("verified-tools-fast" in data["planning_modes"],
+          "health advertises judge fast mode", data["planning_modes"])
     for header in [
         "x-content-type-options", "x-frame-options", "referrer-policy",
         "permissions-policy", "content-security-policy",
@@ -74,6 +76,15 @@ def main():
           "unsupported language rejected")
     check(client.get("/api/plan", params={"q": "test", "today": "x" * 33}).status_code == 422,
           "today length limited")
+    check(client.get("/api/plan", params={"q": "test", "mode": "unsafe"}).status_code == 422,
+          "unsupported planning mode rejected")
+
+    system = client.get("/api/system/status")
+    check(system.status_code == 200, "live system status 200")
+    system_data = system.json()
+    check(system_data["data_class"] == "live_runtime"
+          and system_data["resilience"]["automatic_verified_tools_fallback"] is True,
+          "runtime evidence separated and resilient", system_data)
 
     # Static path traversal must never serve backend files.
     check(client.get("/../backend/config.py").status_code == 404,
@@ -128,6 +139,20 @@ def main():
     check(all(out[1]["totals"]["stops"] >= 3 for out in outputs),
           "concurrent results all valid")
 
+    # Judge mode: same real tools, deterministic completion and explicit engine.
+    response, fast_events = sse_events(
+        "我想去鄭家大屋同附近嘅歷史老街，星期三去", mode="fast"
+    )
+    fast_types = [e["type"] for e in fast_events]
+    fast_itinerary = next(e["itinerary"] for e in fast_events if e["type"] == "result")
+    check(response.status_code == 200 and fast_types[-1] == "done",
+          "judge fast mode completes")
+    check(fast_itinerary["engine"] == "verified-tools",
+          "judge fast mode engine disclosed", fast_itinerary.get("engine"))
+    check(any(e.get("type") == "runtime" and e.get("engine") == "verified-tools"
+              for e in fast_events),
+          "judge fast mode emits runtime provenance")
+
     # Deterministic guard for real-Qwen proposals.
     params = {
         "date": "2026-07-15", "people": 2, "low_walk": True, "budget": 200,
@@ -178,6 +203,16 @@ def main():
           and sum(m["redeemed"] for m in merchants["merchants"]) == merchants["totals"]["redeemed"],
           "merchant totals consistent", merchants["totals"])
 
+    evidence = client.get("/api/impact/evidence")
+    check(evidence.status_code == 200, "auditable evidence JSON 200")
+    evidence_data = evidence.json()
+    classes = {row["id"] for row in evidence_data["data_classes"]}
+    check(classes == {"live_runtime", "simulated_pilot"},
+          "evidence separates real and simulated data", classes)
+    check("merchant_visit_pct" in evidence_data["formulas"]
+          and evidence_data["source_code"]["pilot_single_source_of_truth"] == "backend/impact.py",
+          "evidence exports formulas and source lineage")
+
     # ---- one-time visit codes: full loop --------------------------------
     issued = client.post("/api/codes/issue", json={"poi_id": "wong_chi_kei"})
     check(issued.status_code == 200, "visit code issued")
@@ -187,11 +222,13 @@ def main():
           "no visit code for hotspots")
     check(client.post("/api/codes/issue", json={"poi_id": "nope"}).status_code == 404,
           "no visit code for unknown POI")
-    first = client.post("/api/codes/redeem", json={"code": code}).json()
-    second = client.post("/api/codes/redeem", json={"code": code}).json()
+    denied = client.post("/api/codes/redeem", json={"code": code, "pin": "0000"}).json()
+    check(denied["status"] == "denied", "wrong merchant PIN rejected", denied)
+    first = client.post("/api/codes/redeem", json={"code": code, "pin": "2580"}).json()
+    second = client.post("/api/codes/redeem", json={"code": code, "pin": "2580"}).json()
     check(first["status"] == "redeemed", "visit code redeems once", first)
     check(second["status"] == "already_redeemed", "visit code cannot be reused", second)
-    bad = client.post("/api/codes/redeem", json={"code": "EL-XXXX-XX"}).json()
+    bad = client.post("/api/codes/redeem", json={"code": "EL-XXXX-XX", "pin": "2580"}).json()
     check(bad["status"] == "invalid", "unknown visit code rejected", bad)
 
     # ---- B2B itinerary API ----------------------------------------------

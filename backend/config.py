@@ -36,5 +36,14 @@ USE_REAL_LLM = bool(QWEN_API_KEY)
 
 # Agent loop safety limits (mirrors QwenPaw's "Agent 迭代次数管理")
 MAX_AGENT_STEPS = int(os.getenv("MAX_AGENT_STEPS", "12"))
+MAX_AGENT_STEPS = MAX_AGENT_STEPS
+QWEN_MODEL = QWEN_MODEL
+# A competition demo must never inherit the OpenAI SDK's 10-minute default.
+# One stalled provider call fails fast into the verified deterministic toolchain.
+QWEN_TIMEOUT_S = max(10.0, float(os.getenv("QWEN_TIMEOUT_S", "45")))
+QWEN_MAX_RETRIES = max(0, int(os.getenv("QWEN_MAX_RETRIES", "0")))
+AGENT_DEADLINE_S = max(QWEN_TIMEOUT_S, float(os.getenv("AGENT_DEADLINE_S", "110")))
+QWEN_CONCURRENCY = max(1, int(os.getenv("QWEN_CONCURRENCY", "1")))
+PLAN_RATE_PER_MIN = max(4, int(os.getenv("PLAN_RATE_PER_MIN", "12")))
 
 APP_TITLE = "街知巷聞 · EveryLane Macau"

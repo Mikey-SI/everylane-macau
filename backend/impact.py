@@ -149,11 +149,13 @@ def _daily_series():
         weekend = 1.10 if d.weekday() >= 5 else 1.0
         hs = (91 - 9.0 * t) * weekend + rng.uniform(-1.6, 1.6)
         od = (38 + 13.0 * t) * weekend + rng.uniform(-1.4, 1.4)
-        it = int((1247 / n) * (0.82 + 0.38 * t) * weekend + rng.uniform(-3, 3))
+        it = int((FUNNEL["itineraries"] / n) * (0.82 + 0.38 * t) * weekend + rng.uniform(-3, 3))
         dates.append(d.isoformat())
         hotspot.append(round(min(100, hs), 1))
         old_district.append(round(min(100, od), 1))
         itineraries.append(max(20, it))
+    drift = FUNNEL["itineraries"] - sum(itineraries)
+    itineraries[-1] = max(20, itineraries[-1] + drift)
     return {"dates": dates, "hotspot_index": hotspot,
             "old_district_index": old_district, "itineraries": itineraries}
 
@@ -244,8 +246,12 @@ def _load_codes():
 def _save_codes():
     try:
         os.makedirs(os.path.dirname(_CODE_STORE), exist_ok=True)
-        with open(_CODE_STORE, "w", encoding="utf-8") as f:
+        tmp = _CODE_STORE + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
             json.dump(_CODES, f, ensure_ascii=False)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, _CODE_STORE)
     except Exception:
         pass  # persistence is best-effort; the in-memory loop still works
 
@@ -257,8 +263,12 @@ class IssueBody(BaseModel):
     poi_id: str = Field(max_length=64)
 
 
+DEMO_MERCHANT_PIN = "2580"
+
+
 class RedeemBody(BaseModel):
     code: str = Field(max_length=16)
+    pin: str = Field(default="", max_length=8)
 
 
 @router.post("/api/codes/issue")
@@ -297,6 +307,9 @@ def redeem_code(body: RedeemBody):
     if not _CODE_RE.match(code):
         return {"status": "invalid", "code": code,
                 "message": "格式不正確：到店碼形如 EL-XXXX-XX"}
+    if (body.pin or "").strip() != DEMO_MERCHANT_PIN:
+        return {"status": "denied", "code": code,
+                "message": "商戶 PIN 不正確。評審演示 PIN：2580"}
     with _CODES_LOCK:
         rec = _CODES.get(code)
         if not rec:
@@ -313,6 +326,66 @@ def redeem_code(body: RedeemBody):
     return {"status": "redeemed", "code": code, "poi_id": rec["poi_id"], "name": name,
             "redeemed_at": rec["redeemed_at"],
             "message": f"核銷成功：{name}（此碼隨即失效）"}
+
+
+# --------------------------------------------------------------------------
+# evidence / data-lineage export — lets judges audit every claim
+# --------------------------------------------------------------------------
+@router.get("/api/impact/evidence")
+def impact_evidence():
+    with _CODES_LOCK:
+        live_codes = len(_CODES)
+        live_redeemed = sum(1 for rec in _CODES.values() if rec.get("redeemed"))
+    return {
+        "schema_version": "semifinal-evidence-v1",
+        "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+        "competition_rule": "數據可以不用真實，但呈現效果須達到計劃書的指標",
+        "data_classes": [
+            {
+                "id": "live_runtime",
+                "label": "真實・即時可操作",
+                "items": [
+                    "Qwen / 可重現工具鏈行程規劃",
+                    "Open-Meteo 天氣（不可用時明確回退季節模型）",
+                    "一次性到店碼發碼與不可重複核銷",
+                    "B 端 API、70 POI 知識庫、無障礙標註、自動化測試",
+                ],
+                "verify": ["/api/health", "/api/system/status", "/api/codes/issue",
+                           "/api/codes/redeem", "/api/v1/itinerary"],
+            },
+            {
+                "id": "simulated_pilot",
+                "label": "示範・確定性生成",
+                "items": [
+                    "23 人可用性測試呈現值",
+                    "1,247 份行程的轉化漏斗",
+                    "21 日區域熱度、1,860 筆模型校正樣本、5 間商戶累計值",
+                ],
+                "verify": ["/api/impact/summary", "/api/impact/heat",
+                           "/api/impact/merchants"],
+                "seed": 20260902,
+                "note": "只用於按賽規呈現計劃書指標，不宣稱為真實田野研究。",
+            },
+        ],
+        "formulas": {
+            "diversion_coverage_pct": "含舊區/商戶行程數 ÷ 全部行程數 × 100",
+            "route_feasible_pct": "通過開放/步行/預算核驗的行程數 ÷ 全部行程數 × 100",
+            "merchant_visit_pct": "已核銷一次性到店碼 ÷ 已發出到店碼 × 100",
+            "mae": "mean(abs(predicted_crowd_index - observed_crowd_index))",
+        },
+        "live_code_store_since_last_reset": {
+            "issued": live_codes,
+            "redeemed": live_redeemed,
+            "contains_personal_data": False,
+        },
+        "proposal_targets": PROPOSAL_TARGETS,
+        "source_code": {
+            "pilot_single_source_of_truth": "backend/impact.py",
+            "dashboard_renderer": "frontend/dashboard.js",
+            "automated_checks": ["qa/test_backend.py", "qa/test_api.py",
+                                 "qa/test_frontend.py", "qa/test_repo.py"],
+        },
+    }
 
 
 # --------------------------------------------------------------------------

@@ -14,7 +14,7 @@ import urllib.request
 import datetime as dt
 
 import kb
-from geo import haversine_m, walk_minutes, order_by_nearest
+from geo import haversine_m, walk_minutes, order_by_nearest, pedestrian_leg
 
 WEEKDAY_ZH = ["週一", "週二", "週三", "週四", "週五", "週六", "週日"]
 
@@ -280,18 +280,19 @@ def compute_route(poi_ids, optimize=True, start_id=None, **_):
         pts = [pts[i] for i in order]
     legs, total_m = [], 0.0
     for a, b in zip(pts, pts[1:]):
-        d = haversine_m(a["lat"], a["lng"], b["lat"], b["lng"])
-        total_m += d
+        leg = pedestrian_leg(a, b)
+        total_m += leg["meters"]
         legs.append({"from": a["name"], "to": b["name"],
-                     "distance_m": round(d), "walk_min": walk_minutes(d)})
+                     "distance_m": leg["meters"], "walk_min": leg["walk_min"],
+                     "via": leg["via"], "method": leg["method"]})
     return {
         "ordered_ids": [p["id"] for p in pts],
         "ordered_names": [p["name"] for p in pts],
         "legs": legs,
         "total_walk_min": sum(l["walk_min"] for l in legs),
         "total_km": round(total_m / 1000.0, 2),
-        "method": "great_circle_distance_with_1.25_old_town_factor",
-        "note": "估算步行距離；實際道路、樓梯及無障礙繞行以現場導航為準",
+        "method": "old_town_lane_anchors_not_osm",
+        "note": "以澳門舊城巷道錨點（議事亭、福隆新街、官也街等）折算步行；並非 OSM 逐路口導航",
     }
 
 
@@ -362,7 +363,7 @@ TOOL_SCHEMAS = [
             "near_poi_id": {"type": "string"}}, "required": ["near_poi_id"]}}},
     {"type": "function", "function": {
         "name": "compute_route",
-        "description": "以景點坐標和舊城巷道係數估算一組景點的步行順序、每段距離與時間；結果為規劃估算，非逐路口導航。",
+        "description": "以澳門舊城巷道錨點折算一組景點的步行順序、每段距離與時間；結果為規劃估算，非 OSM 逐路口導航。",
         "parameters": {"type": "object", "properties": {
             "poi_ids": {"type": "array", "items": {"type": "string"}},
             "optimize": {"type": "boolean", "description": "是否最近鄰優化排序，預設true"},

@@ -38,7 +38,7 @@
 - 支援一日及 2–5 日分區行程；
 - 五輪 QA 生命周期與初賽開發過程證明已建立。
 
-## 複賽完成狀態（2026-08-23）
+## 複賽完成狀態（2026-08-24）
 
 複賽要求「完成部署可實際使用的作品，呈現效果須達到計劃書的指標」。在初賽基礎上新增：
 
@@ -49,7 +49,10 @@
 - **酒店/旅行社 B 端 API** `POST /api/v1/itinerary`（X-API-Key 鑑權，演示金鑰 `el-demo-2026`，文檔見 `/api.html`）；
 - **即時天氣**：接入 Open-Meteo 實時預報（行程頁「實時天氣」徽章，異常自動回退估算模型）；
 - **無障礙資料**：70/70 POI 標註是否無梯級 + 具體提示（行程站點徽章）；
-- 試點成效數據為示範數據並在頁面明確標註（符合賽規），指標口徑與計劃書一致；
+- **90 秒評審快速演示**：同一知識庫與 7 項工具穩定重現休息日改線、舊區導流與條件核對；
+- **Qwen 路演保護**：45 秒單次逾時、110 秒整體時間預算，受限時由工具鏈接管，介面明示實際引擎；
+- **可審計證據鏈**：`/api/system/status` 顯示真實運行狀態；`/api/impact/evidence` 匯出數據分類、公式、種子、來源與核驗端點；
+- 試點成效數據為示範數據並在頁面與 API 明確標註（符合賽規），不宣稱為真實田野研究；
 - 說明文檔：`docs/複賽說明文檔_街知巷聞.pdf`。
 
 ## 架構
@@ -136,12 +139,12 @@ python qa/test_api.py
 & "$env:USERPROFILE\.qwenpaw-venv\Scripts\python.exe" qa\test_qwenpaw_mcp.py
 ```
 
-当前结果（复赛，2026-08-23）：
+当前结果（复赛，2026-08-26）：
 
-- 后端：641 PASS / 0 FAIL / 0 WARN
-- 浏览器：113 PASS / 0 FAIL（含成效仪表板与到店码闭环）
-- API / 安全：91 PASS / 0 FAIL（含 impact / codes / B 端 API）
-- 仓库交付：41 PASS / 0 FAIL（`python qa/test_repo.py`）
+- 后端：647 PASS / 0 FAIL / 0 WARN
+- 浏览器：119 PASS / 0 FAIL（含 90 秒评审模式、证据链与到店码闭环）
+- API / 安全：102 PASS / 0 FAIL（含 runtime / evidence / impact / codes+PIN / B 端 API）
+- 仓库交付：50 PASS / 0 FAIL（`python qa/test_repo.py`）
 - QwenPaw MCP：8 tools / protocol / failure recovery / route / planner PASS
 
 测试报告在 [`qa/reports/`](qa/reports/)。
@@ -149,11 +152,14 @@ python qa/test_api.py
 ## 比赛材料
 
 - `docs/複賽說明文檔_街知巷聞.pdf`（**复赛**：指标对照 + 评审动线 + 数据口径）
+- `docs/實踐文章_街知巷聞_EveryLaneMacau.pdf`（**复赛更新版**：设计、实作、证据、限制与 AI 伦理）
+- `docs/決賽路演_10分鐘_街知巷聞.pptx` / `.pdf`
+- `docs/決賽路演_10分鐘講稿_街知巷聞.md`
+- `docs/評審問答_冠軍版_街知巷聞.md`
 - `docs/概念計劃書_街知巷聞_EveryLaneMacau.pdf`
 - `docs/開發過程證明_QwenPaw_街知巷聞.pdf`
 - `docs/團隊介紹視頻_3分鐘.mp4`（2:48，1080p，旁白 + 字幕）
 - `docs/團隊介紹視頻腳本_3分鐘.md`
-- `docs/實踐文章_街知巷聞_EveryLaneMacau.pdf`
 
 ## 数据与伦理
 

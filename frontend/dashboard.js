@@ -56,6 +56,11 @@
       ],
       totals: { issued: 3152, redeemed: 1318, rate_pct: 41.8, est_local_spend_mop: 118620 },
     },
+    system: {
+      ok: true, data_class: "static_backup", engine: "GitHub Pages 備用演示",
+      uptime_s: null, metrics: { plans_completed: null, success_rate_pct: null },
+      resilience: { automatic_verified_tools_fallback: true },
+    },
   };
 
   let liveApi = true;              // flips to false when the API is unreachable
@@ -164,6 +169,35 @@
     });
   }
 
+  function formatUptime(seconds) {
+    if (seconds == null) return "靜態備用";
+    const s = Math.max(0, Number(seconds) || 0);
+    const d = Math.floor(s / 86400);
+    const h = Math.floor((s % 86400) / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    return d ? `${d}日 ${h}時` : (h ? `${h}時 ${m}分` : `${m}分`);
+  }
+
+  function renderSystem(sys) {
+    const live = sys && sys.data_class === "live_runtime";
+    const metrics = (sys && sys.metrics) || {};
+    const badge = $("#runtimeBadge");
+    badge.textContent = live ? "● 公網即時" : "靜態備用";
+    badge.classList.toggle("ok", live);
+    const engine = (sys && sys.engine ? sys.engine : "verified-tools").replace("qwen:", "Qwen ");
+    const vals = [
+      [engine, "推理引擎"],
+      [formatUptime(sys && sys.uptime_s), "服務運行時間"],
+      [metrics.plans_completed == null ? "—" : fmt(metrics.plans_completed), "本進程完成規劃"],
+      [metrics.success_rate_pct == null ? "待累積" : metrics.success_rate_pct + "%", "成功率"],
+    ];
+    $("#runtimeGrid").innerHTML = vals.map(([v, label]) =>
+      `<div><b>${esc(v)}</b><span>${esc(label)}</span></div>`).join("");
+    if (!live) {
+      $(".evidence-download").href = "http://47.79.228.128/api/impact/evidence";
+    }
+  }
+
   function renderTargets(sm) {
     const tb = $("#targetTable tbody");
     tb.innerHTML = "";
@@ -212,7 +246,7 @@
       `<div class="fstep"><span class="fs-label">${esc(s.label)}</span>` +
       `<span class="fs-bar" style="width:${s.pct}%"></span>` +
       `<span class="fs-val">${typeof s.val === "number" ? fmt(s.val) : esc(s.val)}<span>${esc(s.unit)}</span></span></div>`
-    ).join("") + `</div>`;
+    ).join("") + `</div><p class="funnel-note">導流覆蓋以行程為分母；到店碼核銷以發碼數為分母，兩者不可直接連成同一漏斗。</p>`;
   }
 
   function renderZones(heat) {
@@ -323,13 +357,15 @@
 
   async function redeemCode() {
     const code = ($("#redeemInput").value || "").trim().toUpperCase();
+    const pin = ($("#merchantPin") && $("#merchantPin").value || "").trim();
     if (!code) { showRedeem("bad", "請先輸入到店碼（可按「模擬遊客領碼」取得）"); return; }
+    if (pin !== "2580") { showRedeem("bad", "商戶 PIN 不正確。評審演示 PIN：2580"); return; }
     let res = null;
     if (liveApi) {
       try {
         const r = await fetch("/api/codes/redeem", {
           method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code }),
+          body: JSON.stringify({ code, pin }),
         });
         if (r.ok) res = await r.json();
       } catch (e) { /* fall back below */ }
@@ -355,22 +391,25 @@
 
   // ---------- boot ----------
   async function boot() {
-    let summary, heat, merchants;
+    let summary, heat, merchants, system;
     try {
-      [summary, heat, merchants] = await Promise.all([
+      [summary, heat, merchants, system] = await Promise.all([
         getJSON("/api/impact/summary"),
         getJSON("/api/impact/heat"),
         getJSON("/api/impact/merchants"),
+        getJSON("/api/system/status"),
       ]);
     } catch (e) {
       liveApi = false;
       summary = FALLBACK.summary;
       heat = FALLBACK.heat;
       merchants = FALLBACK.merchants;
+      system = FALLBACK.system;
     }
     if (summary.pilot && summary.pilot.start) {
       $("#pilotWindow").textContent = `${summary.pilot.start} 至 ${summary.pilot.end}`;
     }
+    renderSystem(system);
     renderKpis(summary);
     renderTargets(summary);
     renderUsability(summary);

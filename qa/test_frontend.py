@@ -237,6 +237,14 @@ def test_dashboard(browser):
     page.on("pageerror", lambda exc: errors.append(str(exc)))
     page.goto(LIVE + "dashboard.html", wait_until="networkidle")
     page.wait_for_selector(".kpi", timeout=10_000)
+    page.wait_for_selector("#runtimeBadge.ok", timeout=10_000)
+    check("公網即時" in page.locator("#runtimeBadge").inner_text(),
+          "仪表板区分真实运行数据")
+    check(page.locator(".lineage-row.real").count() == 1
+          and page.locator(".lineage-row.demo").count() == 1,
+          "仪表板清晰区分真实与示范数据")
+    check(page.locator("a[href='/api/impact/evidence']").count() == 1,
+          "仪表板提供可审计证据 JSON")
     check(page.locator(".kpi").count() == 6, "仪表板 6 张 KPI 卡",
           page.locator(".kpi").count())
     check(page.locator("#targetTable tbody tr").count() == 9, "计划书指标对照 9 行")
@@ -252,6 +260,7 @@ def test_dashboard(browser):
     page.wait_for_selector("#issuedCode:not(.hidden)", timeout=8_000)
     code = page.locator("#issuedCode").inner_text().replace("🎟️", "").strip()
     check(code.startswith("EL-"), "核销机领码成功", code)
+    page.fill("#merchantPin", "2580")
     page.click("#redeemBtn")
     page.wait_for_selector(".redeem-result.ok", timeout=8_000)
     page.click("#redeemBtn")
@@ -261,6 +270,17 @@ def test_dashboard(browser):
     page.goto(LIVE, wait_until="domcontentloaded")
     check(page.locator(".nav-links a[href='dashboard.html']").count() == 1,
           "主页导航含成效仪表板入口")
+    check(page.locator(".proof-strip").count() == 0,
+          "主页已移除复赛成果带")
+    check(page.locator("#judgeDemoBtn").count() == 1,
+          "主页保留 90 秒评审快速演示")
+    page.click("#judgeDemoBtn")
+    wait_result(page)
+    check("可重現工具鏈" in page.locator("#result .r-meta").inner_text()
+          or "可复现工具链" in page.locator("#result .r-meta").inner_text(),
+          "90 秒评审模式透明标注运行引擎")
+    check(page.locator("#trace .tr").count() >= 8,
+          "90 秒评审模式完整展示工具轨迹")
     check(not errors, "仪表板无控制台/Page Error", " | ".join(errors))
     page.close()
 

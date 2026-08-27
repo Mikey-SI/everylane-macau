@@ -88,6 +88,13 @@ def main():
         "frontend/api.html",
         "docs/複賽說明文檔_街知巷聞.docx",
         "docs/複賽說明文檔_街知巷聞.pdf",
+        "docs/make_final_pitch.py",
+        "docs/決賽路演_10分鐘_街知巷聞.pptx",
+        "docs/決賽路演_10分鐘_街知巷聞.pdf",
+        "docs/決賽路演_10分鐘講稿_街知巷聞.md",
+        "docs/評審問答_冠軍版_街知巷聞.md",
+        "docs/專業評委評分與冠軍改進報告_街知巷聞.md",
+        "docs/assets/semifinal/00_home_proof.png",
     ]
     for rel in required:
         check((ROOT / rel).is_file(), f"deliverable exists: {rel}")
@@ -130,6 +137,9 @@ def main():
             "docs/複賽說明文檔_街知巷聞.pdf": [
                 "愛拼才會贏", "施天益", "導流覆蓋率", "路線可行率", "商戶到訪率",
                 "一次性到店碼", "el-demo-2026", "47.79.228.128",
+            ],
+            "docs/決賽路演_10分鐘_街知巷聞.pdf": [
+                "愛拼才會贏", "街知巷聞", "QwenPaw", "到店碼", "641",
             ],
         }
         for rel, needles in pdf_expect.items():

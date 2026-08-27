@@ -40,7 +40,11 @@ def get_client():
         return None
     if _client is None:
         from openai import OpenAI
-        _client = OpenAI(api_key=config.QWEN_API_KEY, base_url=config.QWEN_BASE_URL)
+        # Explicit per-request timeout: without it the SDK waits up to 600s.
+        # A stuck call must fail into the verified toolchain during a live demo.
+        _client = OpenAI(api_key=config.QWEN_API_KEY, base_url=config.QWEN_BASE_URL,
+                         timeout=config.QWEN_TIMEOUT_S,
+                         max_retries=config.QWEN_MAX_RETRIES)
     return _client
 
 
@@ -205,13 +209,18 @@ def parse_request(text, override_lang=None, today=None):
     m = re.search(r"(?:mop|澳門元|澳门元|蚊|元|塊|块|hkd|港幣|港币)\s*\$?\s*(\d{2,5})", low)
     if not m:
         m = re.search(r"(\d{2,5})\s*(?:mop|澳門元|澳门元|蚊|元|塊|块|港幣|港币)", low)
+    if not m:
+        m = re.search(r"(?:預算|预算|budget)\s*\$?\s*(\d{2,5})", low)
     if m:
         budget = int(m.group(1))
     cheap = any(k in low for k in ["唔想太貴", "不想太贵", "平", "便宜", "經濟", "经济", "budget", "cheap"])
 
-    low_walk = any(k in low for k in ["唔想行太多", "不想走太多", "行得少", "少走路", "腳痛", "脚痛",
-                                      "唔想行太遠", "輪椅", "轮椅", "老人家", "長者", "长者",
-                                      "行動不便", "行动不便", "唔想行咁多", "less walk", "easy walk"])
+    low_walk = any(k in low for k in [
+        "唔想行太多", "不想走太多", "行得少", "少走路", "少行路", "少行路", "腳痛", "脚痛",
+        "唔想行太遠", "輪椅", "轮椅", "老人家", "長者", "长者",
+        "行動不便", "行动不便", "唔想行咁多", "唔想行斜路", "不想走斜路",
+        "less walk", "easy walk", "low walk",
+    ])
 
     half_day = any(k in low for k in ["半日", "半天", "half day", "幾個鐘", "几个钟", "兩三個鐘", "两三个钟"])
 

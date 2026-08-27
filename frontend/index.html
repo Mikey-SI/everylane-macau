@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css" />
-<link rel="stylesheet" href="styles.css?v=20260823-semi" />
+<link rel="stylesheet" href="styles.css?v=20260826-c2" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23C0473B'/%3E%3Cpath d='M16 5l8 7v15h-5v-8h-6v8H5V12z' fill='%23F8EFDD'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -67,6 +67,7 @@
     <div class="hero-cta">
       <a class="btn btn-primary" href="#planner">開始規劃我的澳門深度遊 →</a>
       <a class="btn btn-ghost" href="#how">睇下個 AI 點樣諗</a>
+      <button class="btn btn-judge" id="judgeDemoBtn" type="button">90 秒評審快速演示</button>
     </div>
     <div class="hero-stats" id="heroStats">
       <div><strong id="hsPoi">—</strong><span>個真實澳門景點</span></div>
@@ -92,7 +93,10 @@
     <div class="chips" id="sampleChips"></div>
     <div class="planner-actions">
       <div class="hint">⌘/Ctrl + Enter 快速出發</div>
-      <button id="planBtn" class="btn btn-primary btn-go">出發 · 規劃行程</button>
+      <div class="planner-btns">
+        <button id="cancelBtn" class="btn btn-ghost hidden" type="button">取消規劃</button>
+        <button id="planBtn" class="btn btn-primary btn-go">出發 · 規劃行程</button>
+      </div>
     </div>
   </div>
 </section>
@@ -117,6 +121,7 @@
       <div id="resultEmpty" class="result-empty" role="status" aria-live="polite">
         <div class="spinner" id="resultSpinner"></div>
         <p id="resultEmptyText">阿濠正在落手規劃，行程即將喺度生成…</p>
+        <p id="planProgress" class="plan-progress"></p>
         <button id="retryBtn" class="btn btn-ghost hidden" type="button"></button>
       </div>
       <div id="result" class="result hidden" aria-live="polite"></div>
@@ -175,6 +180,6 @@
 </footer>
 
 <script src="assets/vendor/leaflet/leaflet.js"></script>
-<script src="app.js?v=20260823-semi"></script>
+<script src="app.js?v=20260824-c1"></script>
 </body>
 </html>

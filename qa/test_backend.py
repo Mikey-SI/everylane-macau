@@ -122,9 +122,10 @@ def test_parse():
     d = dt.date.fromisoformat(p["date"])
     check(d.weekday() == 5, "解析：weekend → 週六", p["date"])
 
-    p = parse_request("預算 500 蚊，唔想行太多路", today=base)
-    check(p["budget"] == 500, "解析：預算 500 蚊", str(p["budget"]))
-    check(p["low_walk"], "解析：唔想行太多路 → low_walk", str(p["low_walk"]))
+    p = parse_request("預算300，少行路，途經福隆新街", today=base)
+    check(p["budget"] == 300, "解析：預算300 無貨幣單位", str(p["budget"]))
+    check(p["low_walk"], "解析：少行路 → low_walk", str(p["low_walk"]))
+    check("rua_felicidade" in p["requested_ids"], "解析：途經福隆新街", str(p["requested_ids"]))
 
     p = parse_request("我想去鄭家大屋同附近嘅歷史老街，星期三去", today=base)
     check("mandarin_house" in p["requested_ids"], "解析：指名鄭家大屋", str(p["requested_ids"]))
@@ -302,6 +303,19 @@ def test_behaviours():
     check(not T.check_opening(poi_id="nope")["open"], "工具：check_opening 未知 id 安全", "")
     r = T.compute_route(poi_ids=[])
     check(r.get("legs") == [], "工具：compute_route 空列表安全", str(r))
+    from geo import pedestrian_leg, haversine_m
+    a, b = kb.get("senado_square"), kb.get("ruins_st_paul")
+    check(bool(a and b), "KB：議事亭與大三巴存在", "")
+    if a and b:
+        leg = pedestrian_leg(a, b)
+        check(leg["walk_min"] >= 1, "geo：巷道步行分鐘", str(leg))
+        check(leg["meters"] >= haversine_m(a["lat"], a["lng"], b["lat"], b["lng"]) * 0.99,
+              "geo：巷道距離不短於直線", str(leg))
+    r2 = T.compute_route(poi_ids=["senado_square", "rua_felicidade", "ruins_st_paul"], optimize=False)
+    method = r2.get("method") or ""
+    check("lane" in method or "anchor" in method or "osm" in method,
+          "工具：compute_route 巷道方法", method)
+    check(all("via" in lg for lg in r2.get("legs") or []), "工具：legs 含 via", str(r2.get("legs")))
     b = T.estimate_budget(poi_ids=["ruins_st_paul"], people=0)
     check(b["people"] == 1, "工具：estimate_budget 人數下限 1", str(b["people"]))
     c = T.predict_crowd(poi_id="ruins_st_paul", datetime="garbage")

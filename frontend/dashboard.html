@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260823-semi" />
-<link rel="stylesheet" href="dashboard.css?v=20260823-semi" />
+<link rel="stylesheet" href="styles.css?v=20260824-c1" />
+<link rel="stylesheet" href="dashboard.css?v=20260824-c1" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23C0473B'/%3E%3Cpath d='M16 5l8 7v15h-5v-8h-6v8H5V12z' fill='%23F8EFDD'/%3E%3C/svg%3E">
 </head>
 <body class="dash-body">
@@ -31,6 +31,7 @@
     </a>
     <nav class="nav-links">
       <a href="./">返回首頁</a>
+      <a href="#evidence">真實性口徑</a>
       <a href="#targets">指標對照</a>
       <a href="#merchants">商戶試點</a>
       <a href="#b2b">B 端 API</a>
@@ -57,6 +58,49 @@
 </section>
 
 <main class="dmain">
+
+  <!-- judge walkthrough strip -->
+  <section class="judge-path" aria-label="評審 5 分鐘動線">
+    <span class="jp-kicker">評審 5 分鐘動線</span>
+    <ol class="jp-steps">
+      <li><a href="./#planner">首頁按「90 秒評審快速演示」</a></li>
+      <li>行程內任一商戶站點領取一次性到店碼</li>
+      <li><a href="#merchants">回本頁核銷機：貼碼 + 商戶 PIN <b>2580</b>，核銷兩次（第二次被拒）</a></li>
+      <li><a href="#evidence">看真實／示範口徑並下載證據 JSON</a></li>
+    </ol>
+  </section>
+
+  <!-- live runtime evidence: deliberately separate from simulated pilot KPIs -->
+  <section id="evidence" class="dsection">
+    <div class="dsection-head">
+      <h2>真實系統實證 × 示範數據口徑</h2>
+      <p>先分清「現在正在真實運行」與「按賽規呈現的試點數據」；評審可直接打開 API 核驗。</p>
+    </div>
+    <div class="evidence-grid">
+      <div class="panelbox runtime-box">
+        <div class="evidence-title">
+          <h3>真實・即時運行</h3>
+          <span class="live-dot" id="runtimeBadge">連線中</span>
+        </div>
+        <div class="runtime-grid" id="runtimeGrid">
+          <div><b>—</b><span>推理引擎</span></div>
+          <div><b>—</b><span>服務運行時間</span></div>
+          <div><b>—</b><span>本進程完成規劃</span></div>
+          <div><b>—</b><span>成功率</span></div>
+        </div>
+        <p class="evidence-note">來源：<code>/api/system/status</code> · 服務重啟後重新計數，不混入下方示範 KPI。</p>
+      </div>
+      <div class="panelbox lineage-box">
+        <div class="evidence-title">
+          <h3>數據血緣與限制</h3>
+          <a class="evidence-download" href="/api/impact/evidence" download="everylane-semifinal-evidence.json">下載可審計 JSON</a>
+        </div>
+        <div class="lineage-row real"><b>真實可操作</b><span>Qwen／工具鏈規劃、Open-Meteo、到店碼核銷、B 端 API、70 POI 與自動化測試</span></div>
+        <div class="lineage-row demo"><b>示範數據</b><span>可用性、累計轉化、區域熱度與模型校正；確定性生成並按賽規明確標註</span></div>
+        <p class="evidence-note">不宣稱示範數據為真實田野研究；公式、種子、來源檔與核驗端點均包含於證據 JSON。</p>
+      </div>
+    </div>
+  </section>
 
   <!-- KPI band -->
   <section id="kpis" class="dsection">
@@ -136,7 +180,7 @@
 
     <div class="panelbox redeem-box" id="redeemBox">
       <h3>🎟️ 到店碼核銷演示機（真實可操作）</h3>
-      <p class="redeem-sub">流程：遊客在行程頁領碼 → 到店出示 → 商戶核銷一次即失效。可在此即場體驗完整閉環。</p>
+      <p class="redeem-sub">流程：遊客在行程頁領碼 → 到店出示 → 商戶輸入 PIN 核銷一次即失效。評審演示 PIN：<b>2580</b>。</p>
       <div class="redeem-row">
         <label>試點商戶
           <select id="merchantSelect" aria-label="選擇試點商戶"></select>
@@ -146,6 +190,7 @@
       </div>
       <div class="redeem-row">
         <input id="redeemInput" maxlength="10" placeholder="輸入到店碼，如 EL-XXXX-XX" aria-label="到店碼" />
+        <input id="merchantPin" maxlength="4" placeholder="商戶 PIN（演示 2580）" aria-label="商戶 PIN" inputmode="numeric" />
         <button class="btn btn-primary" id="redeemBtn" type="button">② 商戶核銷</button>
       </div>
       <p class="redeem-result hidden" id="redeemResult" role="status"></p>
@@ -195,6 +240,6 @@
   </div>
 </footer>
 
-<script src="dashboard.js?v=20260823-semi"></script>
+<script src="dashboard.js?v=20260824-c1"></script>
 </body>
 </html>

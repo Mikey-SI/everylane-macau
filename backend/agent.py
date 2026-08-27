@@ -15,12 +15,16 @@ assembler:
 """
 import json
 import datetime as dt
+import logging
+import time
 
 import config
 import kb
 import tools as T
 from llm import get_client, parse_request, LANG_NAME
-from geo import walk_minutes, haversine_m
+from geo import walk_minutes, haversine_m, pedestrian_leg
+
+logger = logging.getLogger("everylane.agent")
 
 
 def _hm(m):
@@ -111,7 +115,7 @@ def _simulate_packed(ids, date, start_min):
         cursor += p["visit_min"]
         if i < len(ids) - 1:
             nxt = kb.get(ids[i + 1])
-            cursor += walk_minutes(haversine_m(p["lat"], p["lng"], nxt["lat"], nxt["lng"]))
+            cursor += pedestrian_leg(p, nxt)["walk_min"]
     return packed
 
 
@@ -164,7 +168,7 @@ def _make_open_schedule(ids, date, start_min, max_wait=30):
             continue
         if previous:
             a = kb.get(previous)
-            cursor += walk_minutes(haversine_m(a["lat"], a["lng"], p["lat"], p["lng"]))
+            cursor += pedestrian_leg(a, p)["walk_min"]
         arrive = cursor
         if arrive < p["open_min"]:
             wait = p["open_min"] - arrive
@@ -270,7 +274,8 @@ def assemble(params, ordered_ids, diversions, lang, why_map=None, notes=None):
             leg = legs.get(key)
             if leg:
                 walk_next = {"min": leg["walk_min"], "km": round(leg["distance_m"] / 1000, 2),
-                             "to": name_seq[idx + 1]}
+                             "to": name_seq[idx + 1],
+                             "via": leg.get("via") or []}
                 total_walk += leg["walk_min"]
         cost = p["cost_mop"] * people
         total_cost += cost
@@ -338,8 +343,8 @@ def assemble(params, ordered_ids, diversions, lang, why_map=None, notes=None):
         f"about {walk_km} km on foot, roughly MOP {total_cost}.")
 
     distance_note = (
-        "步行距離以景點坐標直線距離加 25% 舊城巷道係數估算，"
-        "實際路程請以現場道路及無障礙安排為準。"
+        "步行距離以舊城巷道錨點（議事亭、福隆新街、官也街等）折算，"
+        "不是 OSM 逐路口導航；實際樓梯與無障礙繞行請以現場為準。"
     )
     if distance_note not in notes:
         notes.append(distance_note)
@@ -453,7 +458,8 @@ def _combine_days(params, day_its, lang):
 # --------------------------------------------------------------------------
 # OFFLINE BRAIN — scripted planner using the real tools
 # --------------------------------------------------------------------------
-def _offline(params, lang):
+def _offline(params, lang, engine="verified-tools", runtime_note=None,
+             emit_runtime=True):
     date = params["date"]
     interests = params["interests"]
     people = params["people"]
@@ -463,6 +469,13 @@ def _offline(params, lang):
     def in_cluster(p):
         return kb.get(p["id"])["district"] in cluster and p["id"] not in excl
 
+    if emit_runtime:
+        yield ev(
+            "runtime",
+            engine=engine,
+            label="可重現工具鏈",
+            note=runtime_note or "使用同一知識庫、7 項真實工具與確定性安全核對；結果可重現。",
+        )
     yield ev("status", stage="start", text=f"阿濠開始規劃（{LANG_NAME.get(lang, lang)}）…")
     yield ev("plan", steps=[
         "理解需求：日期、人數、興趣、預算、步行偏好",
@@ -671,6 +684,7 @@ def _offline(params, lang):
 
     yield ev("status", stage="assemble", text="整合行程、核對所有限制條件…")
     itinerary = assemble(params, ids, diversions, lang, notes=notes)
+    itinerary["engine"] = engine
     yield ev("result", itinerary=itinerary)
     yield ev("done")
 
@@ -685,10 +699,16 @@ def _multi_day_districts(params):
     return [None, "taipa", "coloane", "guia", "inner_harbour"][:params.get("days", 1)]
 
 
-def _offline_multi(params, lang):
+def _offline_multi(params, lang, engine="verified-tools", runtime_note=None):
     days = max(2, min(int(params.get("days", 2)), 5))
     base_date = dt.date.fromisoformat(params["date"])
     districts = _multi_day_districts(params)
+    yield ev(
+        "runtime",
+        engine=engine,
+        label="多日可重現工具鏈",
+        note=runtime_note or "逐日使用同一知識庫與 7 項工具核驗，確保分區合理、結果可重現。",
+    )
     yield ev("status", stage="multi_day", text=f"偵測到 {days} 日行程，阿濠會每日鎖定一個片區，避免跨島亂跑。")
     yield ev("plan", steps=[
         "將多日需求拆成每日一個可步行片區",
@@ -717,7 +737,7 @@ def _offline_multi(params, lang):
                     "coloane": "路環慢活", "guia": "松山/新口岸",
                     "inner_harbour": "內港/媽閣"}.get(dp["district"], dp["district"])
         yield ev("status", stage=f"day_{i + 1}", text=f"Day {i + 1}：規劃 {day_name}（{dp['date']}）")
-        for e in _offline(dp, lang):
+        for e in _offline(dp, lang, engine=engine, emit_runtime=False):
             if e["type"] == "result":
                 it = e["itinerary"]
                 it["day_no"] = i + 1
@@ -730,7 +750,9 @@ def _offline_multi(params, lang):
                 yield e
 
     yield ev("status", stage="assemble", text="合併多日行程，計算總步行、總預算與總導流成效…")
-    yield ev("result", itinerary=_combine_days(params, day_its, lang))
+    itinerary = _combine_days(params, day_its, lang)
+    itinerary["engine"] = engine
+    yield ev("result", itinerary=itinerary)
     yield ev("done")
 
 
@@ -831,6 +853,13 @@ def _sanitize_qwen_ids(params, proposed_ids):
 
 def _qwen(params, lang):
     client = get_client()
+    started = time.monotonic()
+    yield ev(
+        "runtime",
+        engine="qwen:" + config.QWEN_MODEL,
+        label=f"Qwen {config.QWEN_MODEL}",
+        note="真實 Qwen function calling；所有事實仍由工具返回並經確定性安全核對。",
+    )
     yield ev("status", stage="start", text=f"阿濠（Qwen {config.QWEN_MODEL}）開始規劃…")
     messages = [
         {"role": "system", "content": _system_prompt(params, lang)},
@@ -846,14 +875,32 @@ def _qwen(params, lang):
     }
 
     for step in range(config.MAX_AGENT_STEPS):
+        remaining = config.AGENT_DEADLINE_S - (time.monotonic() - started)
+        if remaining <= 3:
+            yield ev("thought", text="Qwen 已完成部分決策，但現場時間預算已到；由可重現工具鏈接手完成，避免路演等待。")
+            yield from _offline(
+                params,
+                lang,
+                engine="fallback-tools",
+                runtime_note="Qwen 時間預算到達後自動接管；沿用同一知識庫、工具與安全核對。",
+            )
+            return
         try:
             resp = client.chat.completions.create(
                 model=config.QWEN_MODEL, messages=messages,
-                tools=all_tools, tool_choice="auto", temperature=0.4,
+                tools=all_tools, tool_choice="auto", temperature=0.2,
+                max_tokens=1200,
+                timeout=min(config.QWEN_TIMEOUT_S, remaining),
             )
         except Exception as e:
-            yield ev("thought", text=f"模型呼叫出錯（{e}），切換到離線規劃引擎繼續完成任務。")
-            yield from _offline(params, lang)
+            logger.warning("Qwen call failed; using verified tools: %s", type(e).__name__)
+            yield ev("thought", text="Qwen 服務回應逾時或受限；已由可重現工具鏈接手，行程仍會完整產出。")
+            yield from _offline(
+                params,
+                lang,
+                engine="fallback-tools",
+                runtime_note="Qwen 暫時不可用後自動接管；不使用模型杜撰，全部結論仍由工具核驗。",
+            )
             return
         msg = resp.choices[0].message
         if msg.content:
@@ -918,13 +965,19 @@ def _qwen(params, lang):
 
     if not final_ids:
         yield ev("thought", text="未取得最終結構化行程，改用離線規劃引擎完成。")
-        yield from _offline(params, lang)
+        yield from _offline(
+            params, lang, engine="fallback-tools",
+            runtime_note="Qwen 未在步數上限內提交結構化結果；由可重現工具鏈安全完成。",
+        )
         return
 
     final_ids, safety_changes = _sanitize_qwen_ids(params, final_ids)
     if len(final_ids) < 3:
         yield ev("thought", text="模型行程經安全核對後不足 3 站，改用穩定規劃引擎重建。")
-        yield from _offline(params, lang)
+        yield from _offline(
+            params, lang, engine="fallback-tools",
+            runtime_note="Qwen 初稿未通過最少站點核對；由可重現工具鏈重建。",
+        )
         return
     if safety_changes:
         notes.extend(safety_changes)
@@ -933,6 +986,7 @@ def _qwen(params, lang):
 
     yield ev("status", stage="assemble", text="整合行程、核對所有限制條件…")
     itinerary = assemble(params, final_ids, diversions, lang, why_map=why_map, notes=notes)
+    itinerary["engine"] = "qwen:" + config.QWEN_MODEL
     if title:
         itinerary["title"] = title
     if summary:
@@ -944,32 +998,51 @@ def _qwen(params, lang):
 # --------------------------------------------------------------------------
 # public entry
 # --------------------------------------------------------------------------
-def run(text, language=None, today=None):
+def run(text, language=None, today=None, mode="auto"):
     params = parse_request(text, override_lang=language, today=today)
     lang = params["language"]
+    if mode == "fast":
+        run_engine = "verified-tools"
+    elif params.get("days", 1) > 1:
+        run_engine = "verified-tools"
+    elif config.USE_REAL_LLM:
+        run_engine = "qwen:" + config.QWEN_MODEL
+    else:
+        run_engine = "verified-tools"
     yield ev("params", params={
         "language": lang, "language_name": LANG_NAME.get(lang, lang),
         "date": params["date"], "people": params["people"],
         "interests": params["interests"], "budget": params["budget"],
         "low_walk": params["low_walk"], "half_day": params["half_day"],
         "days": params.get("days", 1),
-        "engine": "qwen:" + config.QWEN_MODEL if config.USE_REAL_LLM else "offline-demo",
+        "engine": run_engine,
     })
     try:
+        if mode == "fast":
+            yield ev(
+                "thought",
+                text="評審快速演示：使用與正式模式相同的知識庫、天氣、開放、人流、導流、路線與預算工具，確保 90 秒內可完整核驗。",
+            )
+            yield from _offline(
+                params,
+                lang,
+                engine="verified-tools",
+                runtime_note="評審快速演示模式；Qwen 服務保持在線，自訂問題可切回真實 Qwen。",
+            )
+            return
         if params.get("days", 1) > 1:
-            if config.USE_REAL_LLM:
-                yield ev(
-                    "thought",
-                    text=(
-                        "多日模式：每日鎖定片區後，由同一套已核實工具（天氣/開放/人流/導流/路線/預算）"
-                        "組裝可步行行程；避免跨日重複景點，並在最終合併總覽。"
-                    ),
-                )
-            yield from _offline_multi(params, lang)
+            yield ev(
+                "thought",
+                text=(
+                    "多日模式：每日鎖定片區後，由同一套已核實工具（天氣/開放/人流/導流/路線/預算）"
+                    "組裝可步行行程；避免跨日重複景點，並在最終合併總覽。"
+                ),
+            )
+            yield from _offline_multi(params, lang, engine="verified-tools")
             return
         if config.USE_REAL_LLM:
             yield from _qwen(params, lang)
         else:
-            yield from _offline(params, lang)
+            yield from _offline(params, lang, engine="verified-tools")
     except Exception as e:
         yield ev("error", text=f"規劃過程發生錯誤：{type(e).__name__}: {e}")

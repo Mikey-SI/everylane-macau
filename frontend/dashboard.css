@@ -24,6 +24,30 @@
 .two-col .panelbox{margin-top:1.1rem;}
 @media (max-width:900px){ .two-col{grid-template-columns:1fr;} }
 
+/* live runtime evidence + data lineage */
+.evidence-grid{display:grid; grid-template-columns:1fr 1fr; gap:1.1rem;}
+.evidence-grid .panelbox{margin-top:1.1rem;}
+.evidence-title{display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:.8rem;}
+.evidence-title h3{margin:0;}
+.live-dot{font-size:.72rem; font-weight:800; color:var(--muted); background:var(--bg-2);
+  border:1px solid var(--line-2); border-radius:999px; padding:.25em .7em;}
+.live-dot.ok{color:var(--green); background:#e6f3ec; border-color:#b9dcc7;}
+.runtime-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:.55rem;}
+.runtime-grid>div{background:var(--bg-2); border:1px solid var(--line); border-radius:var(--radius-sm); padding:.7rem;}
+.runtime-grid b{display:block; color:var(--azulejo); font-family:var(--serif); font-size:1.05rem; line-height:1.15; word-break:break-word;}
+.runtime-grid span{display:block; color:var(--muted); font-size:.7rem; margin-top:.3rem;}
+.evidence-note{font-size:.75rem; color:var(--muted); line-height:1.55; margin-top:.7rem;}
+.evidence-note code{background:var(--bg-2); border-radius:5px; padding:.08em .35em;}
+.evidence-download{font-size:.74rem; font-weight:800; color:var(--azulejo); border:1px solid #AEC4D2;
+  border-radius:999px; padding:.3em .75em; white-space:nowrap;}
+.lineage-row{display:grid; grid-template-columns:92px 1fr; gap:.7rem; align-items:start;
+  border-radius:var(--radius-sm); padding:.65rem .75rem; margin:.5rem 0; font-size:.82rem; line-height:1.5;}
+.lineage-row.real{background:#EAF4EE; color:#245C39;}
+.lineage-row.demo{background:#FFF3DB; color:#745318;}
+.lineage-row b{font-size:.78rem;}
+@media (max-width:900px){ .evidence-grid{grid-template-columns:1fr;} }
+@media (max-width:600px){ .runtime-grid{grid-template-columns:repeat(2,1fr);} }
+
 /* KPI cards */
 .kpi-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1rem; margin-top:1.1rem;}
 .kpi{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
@@ -117,6 +141,18 @@
 .merchant .m-weeklabel{font-size:.7rem; color:var(--muted);}
 
 /* redeem machine */
+.judge-path{display:flex; align-items:center; gap:1rem; flex-wrap:wrap; margin:0 0 1.6rem;
+  padding:.75rem 1.1rem; border:1.5px solid var(--gold-soft); border-radius:var(--radius);
+  background:#FFFDF7; box-shadow:var(--shadow-sm);}
+.jp-kicker{font-size:.78rem; font-weight:900; letter-spacing:.08em; color:var(--terracotta);
+  white-space:nowrap; text-transform:uppercase;}
+.jp-steps{display:flex; gap:.4rem 1.4rem; flex-wrap:wrap; margin:0; padding:0 0 0 1.1rem;
+  font-size:.86rem; color:var(--ink-2); counter-reset:jp;}
+.jp-steps li{margin:0;}
+.jp-steps a{color:var(--ink-2); text-decoration:underline; text-decoration-color:var(--gold-soft); text-underline-offset:3px;}
+.jp-steps a:hover{color:var(--terracotta);}
+.jp-steps b{color:var(--terracotta);}
+
 .redeem-box{margin-top:1.3rem; border:1.5px solid var(--gold-soft); background:linear-gradient(180deg,#FFFDF7,#FCF6E9);}
 .redeem-sub{font-size:.86rem; color:var(--ink-2); margin-bottom:.8rem;}
 .redeem-row{display:flex; align-items:center; gap:.7rem; flex-wrap:wrap; margin:.55rem 0;}
@@ -124,6 +160,7 @@
 .redeem-row select,.redeem-row input{font-family:var(--sans); font-size:.92rem; padding:.5em .8em;
   border:1.5px solid var(--line-2); border-radius:var(--radius-sm); background:var(--surface); color:var(--ink);}
 .redeem-row input{letter-spacing:.08em; font-weight:700; text-transform:uppercase; width:220px; max-width:100%;}
+.redeem-row #merchantPin{width:170px; letter-spacing:.12em;}
 .redeem-result{font-size:.92rem; font-weight:700; border-radius:var(--radius-sm); padding:.6rem .85rem; margin-top:.4rem;}
 .redeem-result.ok{background:#e6f3ec; color:var(--green);}
 .redeem-result.warn{background:#fbf0da; color:#8a6420;}
@@ -138,3 +175,4 @@
 .b2b-list li{margin-bottom:.45rem;}
 
 .foot a{text-decoration:underline; text-underline-offset:3px;}
+.funnel-note{font-size:.78rem; color:var(--muted); margin-top:.7rem; line-height:1.5;}

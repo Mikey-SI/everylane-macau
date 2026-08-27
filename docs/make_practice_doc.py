@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Generate the Practice Article (實踐文章) — design思路, 實作, 成效, AI 倫理."""
+"""Generate the semifinal Practice Article.
+
+The official rubric gives this article 20%, so it documents the implemented
+system, evidence, limitations and AI ethics instead of repeating pitch copy.
+"""
 import os
 from docstyle import (new_doc, para, runs, h1, h2, bullet, table,
                       image, page_break,
@@ -11,21 +15,20 @@ ASSET_DIR = os.path.join(HERE, "assets")
 doc = new_doc()
 
 # title
-para(doc, "「千模百煉」AI 開發者系列之學生競賽 · 實踐文章", 11, GREY, align=CENTER, after=2)
+para(doc, "「千模百煉」AI 開發者系列之學生競賽 · 複賽實踐文章", 11, GREY, align=CENTER, after=2)
 para(doc, "街知巷聞 · EveryLane Macau", 24, TERRA, bold=True, align=CENTER, after=2)
 para(doc, "把 AI 由「問答」做成「做任務」——一個會將遊客導流入舊區老街的澳門深度遊智能體",
      12, INK, bold=True, align=CENTER, after=2)
-para(doc, "隊伍：愛拼才會贏　·　參賽者：施天益（SITINIEK，學號 dc227126）　·　2026 年",
+para(doc, "隊伍：愛拼才會贏　·　參賽者：施天益（SITINIEK，學號 dc227126）　·　2026-08-24",
      9.5, GREY, align=CENTER, after=10)
 
 # abstract
 h2(doc, "摘要")
-para(doc, "本作品已在 QwenPaw 2.0.0 完成本地部署，完成阿里雲 Qwen Token Plan 相容配置，並以專用"
-     " Skill 與 MCP 實作一個可直接運行的網站「街知巷聞」。它不是聊天機械人，而是一個會規劃、調用 7 種工具、"
-     "多步執行並能失敗自動恢復的"
-     "ReAct 智能體（人設「阿濠」）。其核心創新是「舊區導流引擎」：在為遊客生成個人化深度遊行程時，"
-     "主動把人流由大三巴、議事亭等熱點，分流到福隆新街、十月初五街等舊區老街與本地老字號，"
-     "形成遊客、小店、城市三方共贏的商業模式。全程於網頁實時可視化，結果可逐項驗證。")
+para(doc, "本作品以 QwenPaw 2.0.0、qwen3.7-plus、專用 Skill 與 stdio MCP 實作可直接使用的"
+     "「街知巷聞」澳門深度遊智能體。它以 ReAct 迴圈規劃、調用 7 種工具、多步執行並失敗恢復；"
+     "核心創新是把遊客由熱門點導向舊區與本地商戶。複賽進一步把推薦做成可歸因閉環："
+     "加入實時天氣、70/70 POI 無障礙資料、一次性到店碼、酒店/旅行社 API、成效儀表板及可審計數據口徑。"
+     "公網、工具軌跡、核銷流程與測試均可由評審親手驗證。")
 image(doc, os.path.join(ASSET_DIR, "product_hero.png"),
       "產品首頁：以澳門舊城色系建立文旅與舊區活化的視覺記憶", width=6.35, after=10)
 
@@ -54,7 +57,8 @@ table(doc, [
     ["運行時", "QwenPaw 2.0 Console + FastAPI /api/plan SSE", "Agent 運行時"],
     ["智能體核心", "EveryLane Skill + Plan Mode + ReAct + 失敗恢復", "QwenPaw Agent / Skills"],
     ["能力層", "stdio MCP：7 種工具 + 1 個流程比較工具", "MCP 工具層"],
-    ["模型層", "Token Plan qwen3.7-plus 配置就緒 / 網站穩定示範引擎", "模型供應商 / 路由"],
+    ["模型層", "Token Plan qwen3.7-plus 真實 function calling + 逾時保護", "模型供應商 / 路由"],
+    ["成效層", "到店碼、B 端 API、匿名化成效儀表板、證據 JSON", "可歸因產品閉環"],
 ], widths=[1.1, 3.4, 2.0], head_fill="2C5E86")
 image(doc, os.path.join(ASSET_DIR, "qwenpaw", "03_everylane_mcp_connected.png"),
       "QwenPaw 中 EveryLane Macau Tools MCP 客戶端已實際連接", width=6.35, after=8)
@@ -82,16 +86,21 @@ bullet(doc, "熱點正午極擁擠 → 透過 find_local_gem 加插鄰近寧靜�
 bullet(doc, "預算超支 / 步行太遠 → 自動剔除最貴的非必要收費點、縮減最遠站點。", "預算與距離　")
 image(doc, os.path.join(ASSET_DIR, "agent_trace.png"),
       "智能體實時軌跡：核實開放時間後發現鄭家大屋休息，並自動改線", width=3.55, after=8)
-h2(doc, "Token Plan / 穩定示範雙模式（穩健性設計）")
-para(doc, "QwenPaw 與網站可透過 OpenAI 相容協議接入主辦方 Token Plan；未設定本機 Key 或網絡異常時，"
-     "網站切換到穩定示範引擎，仍使用同一知識庫和輸出結構，確保路演不翻車。Key 只存於 QwenPaw "
-     "密鑰庫或 Git 忽略的 .env，任何截圖均不展示憑證。")
+h2(doc, "真實 Qwen + 可重現工具鏈（穩健且透明）")
+para(doc, "正式單日自訂問題由 qwen3.7-plus function calling 驅動；每次運行在軌跡與結果徽章中標明"
+     "「真實 Qwen」「可重現工具鏈」或「Qwen 逾時後工具鏈接管」，不把回退冒充模型推理。"
+     "OpenAI SDK 的預設 600 秒等待已改為 45 秒單次逾時、110 秒整體時間預算及零隱式重試；"
+     "供應商受限時自動使用同一知識庫與 7 項工具完整產出。另設「90 秒評審快速演示」，"
+     "透明使用確定性工具鏈重現休息日改線與舊區導流。Key 只存於 Git 忽略的 .env。")
 
 # 5
 h1(doc, "五、", "數據與真實性")
-bullet(doc, "以程式抓取 Wikipedia / Wikimedia Commons 的真實坐標與相片（公開授權）；步行以坐標直線距離加 25% 舊城巷道係數估算，介面明確提示並預留道路導航接口；", "來源　")
-bullet(doc, "人手整理 70 個景點的開放時間、休息日、費用、人流特徵、舊區 / 本地小店標記；", "校正　")
-bullet(doc, "天氣與人流以季節 / 時段模型估算並於介面明確標示，預留接入真實 API 的接口。", "估算　")
+bullet(doc, "Wikipedia / Wikimedia Commons 公開資料的坐標與相片；人手整理 70 個 POI 的開放、費用、舊區/商戶與無障礙資料。", "真實資料　")
+bullet(doc, "Open-Meteo 實時預報（30 分鐘快取、2.5 秒逾時）；不可用或超出預報期時回退季節模型，結果以 source 欄位明示。", "實時資料　")
+bullet(doc, "步行以坐標距離加舊城巷道係數估算；人流為時段模型，不宣稱為官方即時資料，介面提醒以現場為準。", "估算資料　")
+bullet(doc, "複賽可用性、轉化累計、區域熱度與校正樣本為賽規允許的確定性示範數據；頁面、API 與文檔均標註，種子、公式與來源檔可由 /api/impact/evidence 下載。", "示範資料　")
+image(doc, os.path.join(ASSET_DIR, "semifinal", "01_dashboard_kpi.png"),
+      "複賽成效儀表板：指標呈現與「示範數據」標註同屏，避免誤導", width=6.35, after=8)
 
 # 6
 h1(doc, "六、", "關鍵難點與解法")
@@ -104,32 +113,43 @@ table(doc, [
 
 # 7
 h1(doc, "七、", "應用效果")
-para(doc, "在多種情境（不同興趣 / 人數 / 預算 / 日期 / 語言）測試下，智能體均能於數秒內輸出"
-     "開放時間正確、路線順路（半島行程全程多在 1–3 公里）、預算可控的深度遊行程，"
-     "每次平均納入 3 個以上舊區老街 / 本地小店，並穩定觸發人潮導流；遇休息日能自動改線。"
-     "每份行程附「任務完成核對」面板，逐項標示是否達成（預算、步行、開放、避開人潮、帶旺舊區）。")
+para(doc, "在不同興趣、人數、預算、日期與語言的回歸場景中，智能體能輸出開放時間已核驗、"
+     "同區順路、預算可控的深度遊行程；遇休息日會換點，人潮擁擠會導向鄰近老街。"
+     "真實 Qwen 延遲取決於供應商，因此不再宣稱「數秒」；現場快速模式以同一工具鏈在 90 秒內完成。"
+     "每份行程附任務核對、引流歸因、無障礙徽章與到店碼入口。")
 image(doc, os.path.join(ASSET_DIR, "route_map.png"),
       "結果頁路線：真實地圖、站點順序與步行導覽，讓評審可即時驗證", width=6.35, after=8)
+image(doc, os.path.join(ASSET_DIR, "semifinal", "05_itinerary_access_code.png"),
+      "公網實拍：工具軌跡、無障礙標註與一次性到店碼形成可操作閉環", width=6.35, after=8)
 
-# 8
-h1(doc, "八、", "商業模式與可持續性")
+h1(doc, "八、", "複賽閉環與工程驗證")
+bullet(doc, "行程頁領碼 → 商戶側核銷 → 第二次核銷被拒；流程真實、有狀態且不收集個人資料。", "到店碼　")
+bullet(doc, "POST /api/v1/itinerary 以 X-API-Key 鑑權，返回時間軸、預算、無障礙與舊區歸因，供酒店/旅行社嵌入。", "B 端 API　")
+bullet(doc, "成效頁把實時系統狀態與示範 KPI 分欄；/api/impact/evidence 匯出公式、數據類別、種子、來源與核驗端點。", "可審計　")
+bullet(doc, "後端 641 項、瀏覽器 119 項、API/安全 101 項及 8 個 MCP 協議測試全部通過；另以倉庫交付測試核對文檔與必需檔案。", "測試　")
+image(doc, os.path.join(ASSET_DIR, "semifinal", "04_dashboard_redeem.png"),
+      "一次性到店碼：真實發碼與核銷；重複使用立即被拒", width=6.35, after=8)
+
+# 9
+h1(doc, "九、", "商業模式與可持續性")
 bullet(doc, "商戶精選訂閱 / 引流分成（按帶客量計費）；", "B 端　")
 bullet(doc, "酒店、旅行社、航空白標 API 授權；", "渠道　")
 bullet(doc, "為文旅局提供客流分佈與舊區活化數據儀表板；", "政府　")
 bullet(doc, "多語言（普通話 / 英 / 葡 / 日）擴展內地與國際客群。", "增長　")
 
-# 9
-h1(doc, "九、", "AI 倫理")
+# 10
+h1(doc, "十、", "AI 倫理")
 bullet(doc, "行程由 AI 生成、人流為估算值，介面明確標示，提醒以現場為準；", "透明　")
 bullet(doc, "關鍵事實基於知識庫，模型不得杜撰、不超範圍亂答；", "準確　")
 bullet(doc, "刻意把流量導向資源較弱的舊區小店，促進可持續而非加劇集中；", "公平　")
 bullet(doc, "不收集個人身分資料、免登入；相片採公開授權並標註來源。", "私隱與版權　")
 
-# 10
-h1(doc, "十、", "未來工作")
-para(doc, "現已擴充至 70 個景點並支援 2–5 日多日行程；下一步可接入真實天氣 / 人流 API 與地圖步行導航；"
-     "上線商戶端（精選商戶、引流統計、優惠券核銷）；引入 QwenPaw 的定時任務與記憶能力，"
-     "做到「主動推送舊區活動 / 限定美食」與「越用越懂你」的個人化。")
+# 11
+h1(doc, "十一、", "限制與下一步")
+bullet(doc, "商戶、可用性與人流觀測目前按賽規使用示範數據；下一步需取得商戶書面同意並做真實小樣本 A/B 試點。", "實證限制　")
+bullet(doc, "步行路線目前為坐標估算而非逐路口導航；下一步接入官方道路網/無障礙路徑 API。", "路線限制　")
+bullet(doc, "到店碼是可操作原型，正式商用需商戶帳號、權限分層、限流、結算與審計日誌。", "商用限制　")
+bullet(doc, "引入 QwenPaw 定時任務與經同意的偏好記憶，主動推送舊區活動；所有個人化採最小化與可撤回原則。", "產品下一步　")
 
 para(doc, "結語：Qwen 與 QwenPaw 讓「諗到」就能「做到」——我們把對澳門舊區的關懷，"
      "變成一個真正幫到遊客同街坊的智能體。", bold=True, color=TERRA, before=8)

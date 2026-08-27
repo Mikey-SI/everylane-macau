@@ -176,6 +176,94 @@ def page_break(doc):
     doc.add_page_break()
 
 
+def _set_run_border(p, color="BE4A3A", sz="18"):
+    pPr = p._p.get_or_add_pPr()
+    pbdr = OxmlElement("w:pBdr")
+    bottom = OxmlElement("w:bottom")
+    bottom.set(qn("w:val"), "single")
+    bottom.set(qn("w:sz"), sz)
+    bottom.set(qn("w:space"), "1")
+    bottom.set(qn("w:color"), color)
+    pbdr.append(bottom)
+    pPr.append(pbdr)
+
+
+def _add_field(paragraph, instr):
+    run = paragraph.add_run()
+    r = run._r
+    begin = OxmlElement("w:fldChar"); begin.set(qn("w:fldCharType"), "begin")
+    text = OxmlElement("w:instrText"); text.set(qn("xml:space"), "preserve"); text.text = instr
+    sep = OxmlElement("w:fldChar"); sep.set(qn("w:fldCharType"), "separate")
+    end = OxmlElement("w:fldChar"); end.set(qn("w:fldCharType"), "end")
+    r.append(begin); r.append(text); r.append(sep); r.append(end)
+
+
+def header_footer(doc, header_left="街知巷聞 · EveryLane Macau", header_right="複賽說明文檔",
+                  footer_left="http://47.79.228.128/"):
+    """Cover has no running header; subsequent pages get a thin header + page numbers."""
+    for sec in doc.sections:
+        sec.different_first_page_header_footer = True
+        sec.header_distance = Mm(8)
+        sec.footer_distance = Mm(8)
+
+        hp = sec.header.paragraphs[0]
+        hp.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        hp.paragraph_format.space_after = Pt(2)
+        r = hp.add_run(header_left)
+        r.bold = True; r.font.size = Pt(8.5); r.font.color.rgb = TERRA; cjk(r)
+        r2 = hp.add_run("　　" + header_right)
+        r2.font.size = Pt(8.5); r2.font.color.rgb = GREY; cjk(r2)
+        _set_run_border(hp, "E0CBA8", "8")
+
+        fp = sec.footer.paragraphs[0]
+        fp.alignment = CENTER
+        fp.paragraph_format.space_before = Pt(2)
+        r = fp.add_run(footer_left + "  ·  ")
+        r.font.size = Pt(8); r.font.color.rgb = GREY; cjk(r)
+        r = fp.add_run("第 ")
+        r.font.size = Pt(8); r.font.color.rgb = GREY; cjk(r)
+        _add_field(fp, " PAGE ")
+        r = fp.add_run(" / ")
+        r.font.size = Pt(8); r.font.color.rgb = GREY
+        _add_field(fp, " NUMPAGES ")
+        r = fp.add_run(" 頁")
+        r.font.size = Pt(8); r.font.color.rgb = GREY; cjk(r)
+
+
+def callout(doc, title, body):
+    t = doc.add_table(rows=1, cols=1)
+    t.alignment = WD_TABLE_ALIGNMENT.CENTER
+    cell = t.cell(0, 0)
+    _shade(cell, "F4EAD8")
+    _cell_margin(cell, top=90, start=140, bottom=90, end=140)
+    cell.text = ""
+    p = cell.paragraphs[0]
+    p.paragraph_format.space_after = Pt(2)
+    r = p.add_run(title)
+    r.bold = True; r.font.size = Pt(10.5); r.font.color.rgb = TERRA; cjk(r)
+    p2 = cell.add_paragraph()
+    p2.paragraph_format.space_after = Pt(0)
+    r2 = p2.add_run(body)
+    r2.font.size = Pt(10); r2.font.color.rgb = INK; cjk(r2)
+    for border in ("top", "left", "bottom", "right"):
+        tc = cell._tc.get_or_add_tcPr()
+        # keep a gold-tinted grid via table style; extra shade is enough
+        _ = border
+    doc.add_paragraph().paragraph_format.space_after = Pt(6)
+    return t
+
+
+def _clear_cell_borders(cell):
+    tc = cell._tc
+    tcPr = tc.get_or_add_tcPr()
+    tcBorders = OxmlElement("w:tcBorders")
+    for edge in ("top", "left", "bottom", "right"):
+        el = OxmlElement(f"w:{edge}")
+        el.set(qn("w:val"), "nil")
+        tcBorders.append(el)
+    tcPr.append(tcBorders)
+
+
 def image(doc, filename, caption, width=6.35, before=4, after=8):
     """Add a centred image with a compact caption if the file exists."""
     if not os.path.exists(filename):
@@ -188,6 +276,51 @@ def image(doc, filename, caption, width=6.35, before=4, after=8):
     p.paragraph_format.keep_with_next = True
     r = p.add_run()
     r.add_picture(filename, width=Inches(width))
-    cap = para(doc, "圖：" + caption, size=8.8, color=GREY, italic=True, align=CENTER, after=after)
+    cap = para(doc, "圖：" + caption, size=8.6, color=GREY, italic=True, align=CENTER, after=after)
     cap.paragraph_format.keep_together = True
     return p
+
+
+def two_images(doc, left, left_cap, right, right_cap, width=3.12):
+    """Side-by-side screenshots with captions — skips missing files."""
+    files = [(left, left_cap), (right, right_cap)]
+    files = [(f, c) for f, c in files if os.path.exists(f)]
+    if not files:
+        return None
+    if len(files) == 1:
+        return image(doc, files[0][0], files[0][1], width=6.3)
+    t = doc.add_table(rows=2, cols=2)
+    t.alignment = WD_TABLE_ALIGNMENT.CENTER
+    t.autofit = False
+    for ci, (fn, cap) in enumerate(files):
+        img_cell = t.cell(0, ci)
+        cap_cell = t.cell(1, ci)
+        img_cell.width = Inches(width + 0.12)
+        cap_cell.width = Inches(width + 0.12)
+        _clear_cell_borders(img_cell)
+        _clear_cell_borders(cap_cell)
+        _cell_margin(img_cell, top=40, start=40, bottom=20, end=40)
+        _cell_margin(cap_cell, top=0, start=40, bottom=60, end=40)
+        img_cell.text = ""
+        p = img_cell.paragraphs[0]
+        p.alignment = CENTER
+        p.paragraph_format.space_after = Pt(0)
+        p.add_run().add_picture(fn, width=Inches(width))
+        cap_cell.text = ""
+        p2 = cap_cell.paragraphs[0]
+        p2.alignment = CENTER
+        r = p2.add_run("圖：" + cap)
+        r.italic = True; r.font.size = Pt(8.2); r.font.color.rgb = GREY; cjk(r)
+    doc.add_paragraph().paragraph_format.space_after = Pt(4)
+    return t
+
+
+def qr_with_caption(doc, filename, caption, width=1.28):
+    if not os.path.exists(filename):
+        return None
+    p = doc.add_paragraph()
+    p.alignment = CENTER
+    p.paragraph_format.space_before = Pt(4)
+    p.paragraph_format.space_after = Pt(1)
+    p.add_run().add_picture(filename, width=Inches(width))
+    return para(doc, caption, size=8.4, color=GREY, italic=True, align=CENTER, after=8)
