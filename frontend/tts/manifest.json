@@ -1,0 +1,133 @@
+{
+  "model": "qwen-audio-3.0-tts-plus",
+  "voice": "longanlufeng",
+  "voice_name_zh": "龙安鲁风",
+  "files": {
+    "ruins_st_paul": {
+      "zh-HK": "ruins_st_paul.zh-HK.mp3",
+      "zh": "ruins_st_paul.zh.mp3",
+      "en": "ruins_st_paul.en.mp3",
+      "pt": "ruins_st_paul.pt.mp3",
+      "ja": "ruins_st_paul.ja.mp3"
+    },
+    "travessa_paixao": {
+      "zh-HK": "travessa_paixao.zh-HK.mp3",
+      "zh": "travessa_paixao.zh.mp3",
+      "en": "travessa_paixao.en.mp3",
+      "pt": "travessa_paixao.pt.mp3",
+      "ja": "travessa_paixao.ja.mp3"
+    },
+    "rua_estalagens": {
+      "zh-HK": "rua_estalagens.zh-HK.mp3",
+      "zh": "rua_estalagens.zh.mp3",
+      "en": "rua_estalagens.en.mp3",
+      "pt": "rua_estalagens.pt.mp3",
+      "ja": "rua_estalagens.ja.mp3"
+    },
+    "rua_cinco": {
+      "zh-HK": "rua_cinco.zh-HK.mp3",
+      "zh": "rua_cinco.zh.mp3",
+      "en": "rua_cinco.en.mp3",
+      "pt": "rua_cinco.pt.mp3",
+      "ja": "rua_cinco.ja.mp3"
+    },
+    "rua_felicidade": {
+      "zh-HK": "rua_felicidade.zh-HK.mp3",
+      "zh": "rua_felicidade.zh.mp3",
+      "en": "rua_felicidade.en.mp3",
+      "pt": "rua_felicidade.pt.mp3",
+      "ja": "rua_felicidade.ja.mp3"
+    },
+    "lou_kau_mansion": {
+      "zh-HK": "lou_kau_mansion.zh-HK.mp3",
+      "zh": "lou_kau_mansion.zh.mp3",
+      "en": "lou_kau_mansion.en.mp3",
+      "pt": "lou_kau_mansion.pt.mp3",
+      "ja": "lou_kau_mansion.ja.mp3"
+    },
+    "wong_chi_kei": {
+      "zh-HK": "wong_chi_kei.zh-HK.mp3",
+      "zh": "wong_chi_kei.zh.mp3",
+      "en": "wong_chi_kei.en.mp3",
+      "pt": "wong_chi_kei.pt.mp3",
+      "ja": "wong_chi_kei.ja.mp3"
+    },
+    "st_francis_coloane": {
+      "zh-HK": "st_francis_coloane.zh-HK.mp3",
+      "zh": "st_francis_coloane.zh.mp3",
+      "en": "st_francis_coloane.en.mp3",
+      "pt": "st_francis_coloane.pt.mp3",
+      "ja": "st_francis_coloane.ja.mp3"
+    },
+    "lord_stow": {
+      "zh-HK": "lord_stow.zh-HK.mp3",
+      "zh": "lord_stow.zh.mp3",
+      "en": "lord_stow.en.mp3",
+      "pt": "lord_stow.pt.mp3",
+      "ja": "lord_stow.ja.mp3"
+    },
+    "coloane_village": {
+      "zh-HK": "coloane_village.zh-HK.mp3",
+      "zh": "coloane_village.zh.mp3",
+      "en": "coloane_village.en.mp3",
+      "pt": "coloane_village.pt.mp3",
+      "ja": "coloane_village.ja.mp3"
+    },
+    "tam_kung_temple": {
+      "zh-HK": "tam_kung_temple.zh-HK.mp3",
+      "zh": "tam_kung_temple.zh.mp3",
+      "en": "tam_kung_temple.en.mp3",
+      "pt": "tam_kung_temple.pt.mp3",
+      "ja": "tam_kung_temple.ja.mp3"
+    },
+    "senado_square": {
+      "zh-HK": "senado_square.zh-HK.mp3",
+      "zh": "senado_square.zh.mp3",
+      "en": "senado_square.en.mp3",
+      "pt": "senado_square.pt.mp3",
+      "ja": "senado_square.ja.mp3"
+    },
+    "yee_shun_milk": {
+      "zh-HK": "yee_shun_milk.zh-HK.mp3",
+      "zh": "yee_shun_milk.zh.mp3",
+      "en": "yee_shun_milk.en.mp3",
+      "pt": "yee_shun_milk.pt.mp3",
+      "ja": "yee_shun_milk.ja.mp3"
+    },
+    "rua_cunha": {
+      "zh-HK": "rua_cunha.zh-HK.mp3",
+      "zh": "rua_cunha.zh.mp3",
+      "en": "rua_cunha.en.mp3",
+      "pt": "rua_cunha.pt.mp3",
+      "ja": "rua_cunha.ja.mp3"
+    },
+    "taipa_houses": {
+      "zh-HK": "taipa_houses.zh-HK.mp3",
+      "zh": "taipa_houses.zh.mp3",
+      "en": "taipa_houses.en.mp3",
+      "pt": "taipa_houses.pt.mp3",
+      "ja": "taipa_houses.ja.mp3"
+    },
+    "tai_lei_loi": {
+      "zh-HK": "tai_lei_loi.zh-HK.mp3",
+      "zh": "tai_lei_loi.zh.mp3",
+      "en": "tai_lei_loi.en.mp3",
+      "pt": "tai_lei_loi.pt.mp3",
+      "ja": "tai_lei_loi.ja.mp3"
+    },
+    "mok_yi_kei": {
+      "zh-HK": "mok_yi_kei.zh-HK.mp3",
+      "zh": "mok_yi_kei.zh.mp3",
+      "en": "mok_yi_kei.en.mp3",
+      "pt": "mok_yi_kei.pt.mp3",
+      "ja": "mok_yi_kei.ja.mp3"
+    },
+    "a_ma_temple": {
+      "zh-HK": "a_ma_temple.zh-HK.mp3",
+      "zh": "a_ma_temple.zh.mp3",
+      "en": "a_ma_temple.en.mp3",
+      "pt": "a_ma_temple.pt.mp3",
+      "ja": "a_ma_temple.ja.mp3"
+    }
+  }
+}

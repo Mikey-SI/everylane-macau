@@ -9,8 +9,10 @@ _shots/
 _test_output.txt
 backend/_test_output.txt
 backend/data/raw_scraped.json
+backend/data/tts_cache/
 logs/
 qa/_*.txt
+qa/_*.py
 deploy/_*.txt
 .DS_Store
 # Office / temp / local secrets

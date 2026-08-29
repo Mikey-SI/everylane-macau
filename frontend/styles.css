@@ -279,11 +279,33 @@ section{scroll-margin-top:74px;}
 .tl-blurb{color:var(--muted); font-size:.86rem;}
 .tl-tags{margin-top:.4rem; display:flex; flex-wrap:wrap; gap:.3rem;}
 .tl-tags .mini{font-size:.7rem; color:var(--muted); background:var(--surface-2); border:1px solid var(--line); padding:.15em .5em; border-radius:6px;}
-.story{margin-top:.5rem;}
-.story summary{cursor:pointer; font-size:.84rem; color:var(--azulejo); font-weight:700; list-style:none;}
-.story summary::before{content:"🗣️ "; }
-.story[open] summary{color:var(--terracotta);}
-.story p{margin-top:.4rem; font-size:.88rem; color:var(--ink-2); background:var(--surface-2); border-left:3px solid var(--gold); padding:.6rem .8rem; border-radius:0 8px 8px 0;}
+.story{margin-top:.55rem;}
+.story-head{display:flex; flex-wrap:wrap; align-items:center; gap:.4rem;}
+.story-play,.story-more{
+  cursor:pointer; font:inherit; font-size:.84rem; font-weight:700;
+  border-radius:999px; padding:.28rem .75rem; line-height:1.2;
+}
+.story-play{
+  color:#fff; background:linear-gradient(135deg,#c45c4a,#a53b30);
+  border:0; box-shadow:var(--shadow-sm);
+}
+.story-play:hover{filter:brightness(1.06);}
+.story-play.is-playing{background:linear-gradient(135deg,#2f6f6a,var(--azulejo));}
+.story-play.is-loading{filter:saturate(.85);}
+.story-voice{
+  font-size:.72rem; font-weight:700; color:#8a6420; background:#F5EBCF;
+  border-radius:999px; padding:.22em .65em;
+}
+.story-play .story-ic{margin-right:.2rem;}
+.story-more{
+  color:var(--azulejo); background:transparent;
+  border:1px solid var(--line); 
+}
+.story-more:hover,.story-more.is-open{color:var(--terracotta); border-color:var(--terracotta);}
+.story-body{margin-top:.45rem; font-size:.88rem; color:var(--ink-2); background:var(--surface-2); border-left:3px solid var(--gold); padding:.6rem .8rem; border-radius:0 8px 8px 0;}
+@media print{
+  .story-play{display:none !important;}
+}
 .tl-tip{margin-top:.4rem; font-size:.82rem; color:#8a6420; background:#FAF1D9; border-radius:8px; padding:.4rem .6rem;}
 .tl-walk{display:flex; align-items:center; gap:.5rem; color:var(--muted); font-size:.8rem; padding:.3rem 0 .8rem 74px;}
 .tl-walk::before{content:""; width:2px; height:18px; background:var(--line-2); margin-left:14px;}

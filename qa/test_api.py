@@ -13,6 +13,7 @@ sys.path.insert(0, BACKEND)
 from fastapi.testclient import TestClient  # noqa: E402
 
 import agent  # noqa: E402
+import tts  # noqa: E402
 from app import app  # noqa: E402
 
 client = TestClient(app)
@@ -152,6 +153,9 @@ def main():
     check(any(e.get("type") == "runtime" and e.get("engine") == "verified-tools"
               for e in fast_events),
           "judge fast mode emits runtime provenance")
+    blob = json.dumps(fast_events, ensure_ascii=False)
+    check("qwen-audio-3.0-tts-plus" in blob and "longanlufeng" in blob,
+          "judge fast mode discloses packed Qwen male TTS")
 
     # Deterministic guard for real-Qwen proposals.
     params = {
@@ -252,6 +256,35 @@ def main():
         check(client.get(page).status_code == 200, f"semifinal page served {page}")
     stop = client.get("/api/plan", params={"q": "氹仔半日遊", "today": "2026-08-26"})
     check("accessibility" in stop.text, "plan stops carry accessibility info")
+
+    # ---- 阿濠讲古 TTS ----------------------------------------------------
+    health_headers = client.get("/api/health").headers
+    check("media-src 'self' blob:" in health_headers["content-security-policy"],
+          "CSP allows same-origin and blob audio")
+    check(client.get("/api/health").json().get("story_tts") is tts.available(),
+          "health story_tts matches key presence")
+    check(client.get("/api/story/audio", params={"poi_id": "nope"}).status_code == 404,
+          "story audio unknown poi 404")
+    check(client.get("/api/story/audio",
+                     params={"poi_id": "ruins_st_paul", "lang": "xx"}).status_code == 422,
+          "story audio rejects bad lang")
+    story = tts.story_text("ruins_st_paul", "zh-HK")
+    check("三巴" in story, "story text loaded for ruins")
+    cache_file = tts.cache_path("ruins_st_paul", "zh-HK", story)
+    os.makedirs(os.path.dirname(cache_file), exist_ok=True)
+    with open(cache_file, "wb") as fh:
+        fh.write(b"ID3" + b"\x00" * 200)
+    hit = client.get("/api/story/audio",
+                     params={"poi_id": "ruins_st_paul", "lang": "zh-HK"})
+    check(hit.status_code == 200 and hit.headers["content-type"].startswith("audio/"),
+          "cached story audio 200", f"{hit.status_code} {hit.headers.get('content-type')}")
+    check(hit.content[:3] == b"ID3", "cached audio bytes returned")
+    os.remove(cache_file)
+    if not tts.available():
+        miss = client.get("/api/story/audio",
+                          params={"poi_id": "ruins_st_paul", "lang": "zh-HK"})
+        check(miss.status_code == 503, "story audio without key/cache is 503",
+              miss.status_code)
 
     print(f"API/ROBUSTNESS PASS {passes} FAIL {len(fails)}")
     for failure in fails:

@@ -14,13 +14,14 @@ import time
 from collections import defaultdict, deque
 
 from fastapi import FastAPI, Query, Request
-from fastapi.responses import StreamingResponse, FileResponse, JSONResponse
+from fastapi.responses import StreamingResponse, FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 import config
 import kb
 import agent
 import impact
+import tts
 
 _BACKEND = os.path.dirname(os.path.abspath(__file__))
 _ROOT = os.path.dirname(_BACKEND)
@@ -81,6 +82,7 @@ async def security_headers(request: Request, call_next):
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
         "img-src 'self' data: https://*.tile.openstreetmap.org; "
         "connect-src 'self'; font-src 'self' data: https://fonts.gstatic.com; "
+        "media-src 'self' blob:; "
         "object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
     )
     return response
@@ -96,12 +98,38 @@ def health():
         "old_district": sum(1 for p in kb.all_pois() if p["old_district"]),
         "local_business": sum(1 for p in kb.all_pois() if p["local_business"]),
         "planning_modes": ["qwen-react", "verified-tools-fast"],
+        "story_tts": tts.available(),
     }
 
 
 @app.get("/api/pois")
 def pois():
     return kb.all_pois()
+
+
+@app.get("/api/story/audio")
+def story_audio(
+    poi_id: str = Query(..., min_length=1, max_length=80, pattern=r"^[a-z0-9_]+$"),
+    lang: str = Query("zh-HK", pattern=r"^(zh-HK|zh|en|pt|ja)$"),
+):
+    """阿濠讲古男声。缓存命中直接返回；否则用队伍 Token Plan 现合成。"""
+    try:
+        data, mime = tts.ensure_audio(poi_id, lang)
+    except tts.NotFound:
+        return JSONResponse({"error": "not found"}, status_code=404)
+    except tts.Unavailable:
+        return JSONResponse({"error": "tts-unavailable"}, status_code=503)
+    except tts.SynthError:
+        logger.exception("story tts failed")
+        return JSONResponse({"error": "tts-failed"}, status_code=502)
+    except Exception:
+        logger.exception("story tts crashed")
+        return JSONResponse({"error": "tts-failed"}, status_code=502)
+    return Response(
+        content=data,
+        media_type=mime,
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
 
 
 @app.get("/api/system/status")

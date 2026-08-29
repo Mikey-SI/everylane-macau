@@ -37,10 +37,30 @@ def text_files():
 def main():
     pois = json.loads((ROOT / "backend/data/pois.json").read_text(encoding="utf-8"))
     check(len(pois) == 70, "POI count exactly 70")
+    stories = json.loads((ROOT / "frontend" / "stories.json").read_text(encoding="utf-8"))
+    check(len(stories) == 70, "frontend stories.json has 70 POIs")
+    check(set(stories) == {p["id"] for p in pois}, "story ids match POI ids")
+    check(all(all((stories[i].get(lang) or "").strip() for lang in ("zh-HK", "zh", "en", "pt", "ja")) for i in stories),
+          "every story has five languages")
     check(len(tools.TOOLS) == 7, "granular tool count exactly 7")
     check(all(p["image"] for p in pois), "all POIs have image paths")
     check(all((ROOT / "frontend" / p["image"]).is_file() for p in pois),
           "all POI image files exist")
+
+    pack = json.loads((ROOT / "frontend/tts/manifest.json").read_text(encoding="utf-8"))
+    check(pack.get("model") == "qwen-audio-3.0-tts-plus", "packed TTS is qwen-audio-3.0-tts-plus")
+    check(pack.get("voice") == "longanlufeng", "packed TTS voice is longanlufeng")
+    judge_pois = [
+        "ruins_st_paul", "travessa_paixao", "rua_estalagens",
+        "rua_cinco", "rua_felicidade", "lou_kau_mansion",
+    ]
+    langs = ("zh-HK", "zh", "en", "pt", "ja")
+    for poi_id in judge_pois:
+        for lang in langs:
+            name = ((pack.get("files") or {}).get(poi_id) or {}).get(lang)
+            audio = ROOT / "frontend/tts" / name if name else None
+            check(bool(name) and audio.is_file() and audio.stat().st_size > 10_000,
+                  f"packed judge audio {poi_id} {lang}")
 
     # No production credential (placeholder text is allowed).
     secret_re = re.compile(r"sk-sp-[A-Za-z0-9_./+=-]{20,}")

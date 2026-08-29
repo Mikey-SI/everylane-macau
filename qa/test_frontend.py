@@ -157,6 +157,11 @@ def test_static(browser):
           "未知自由输入使用中性经典路线", page.locator(".r-title").inner_text())
     check("全隊總預算" in page.locator(".stats").inner_text(), "预算口径标为全队总额")
     check(page.locator(".impact-panel").count() == 1, "显示可归因导流成效面板")
+    cards = page.locator(".tl-card").count()
+    check(cards > 0 and page.locator(".story-play").count() == cards,
+          "每个站点都有听阿濠讲古按钮",
+          f"cards={cards} plays={page.locator('.story-play').count()}")
+    check(page.locator(".story-more").count() == cards, "每个站点都有讲古全文")
 
     # Multi-day dates are consecutive and all three day headings localized.
     page.locator("#sampleChips .chip").nth(1).click()
@@ -279,6 +284,10 @@ def test_dashboard(browser):
     check("可重現工具鏈" in page.locator("#result .r-meta").inner_text()
           or "可复现工具链" in page.locator("#result .r-meta").inner_text(),
           "90 秒评审模式透明标注运行引擎")
+    check("qwen-audio-3.0-tts-plus" in page.locator("#trace").inner_text()
+          and "longanlufeng" in page.locator("#trace").inner_text(),
+          "90 秒评审轨迹标明预存千问男声")
+    check(page.locator(".story-voice").count() >= 1, "90 秒评审站点标注龙安鲁风")
     check(page.locator("#trace .tr").count() >= 8,
           "90 秒评审模式完整展示工具轨迹")
     check(not errors, "仪表板无控制台/Page Error", " | ".join(errors))

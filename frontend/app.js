@@ -47,7 +47,7 @@
       diversionTitle: "智能導流 · 由人潮熱點帶你去舊區老街", constraintsTitle: "任務完成核對 · 每項條件都已驗證", constraintsStatic: "場景核對 · 預設演示數據（天氣/人流為估算）", staticBanner: "策展演示模式：6 個預設場景，天氣與人流為模擬估算；點擊下方樣例後按「出發」開始。", staticEngine: "● 策展演示", staticEngineTitle: "GitHub Pages 靜態演示：6 個預設場景，非即時 Qwen 推理。", errorPlan: "連接失敗，未能取得行程。請檢查網絡後重試，或使用上方樣例進入演示模式。", retryPlan: "重試規劃", cancelPlan: "取消規劃", walkEstimate: "步行時間以舊城巷道錨點折算，並非 OSM 逐路口導航", via: "經", codeFail: "到店碼未能由伺服器發出，請重試。", mapOrderNote: "巷道錨點折線（非 OSM 逐路口導航）",
       daysOverview: "多日分區總覽 · 每日一個可步行主題", fullMap: "全程地圖 · 多日分區路線", routeMap: "路線地圖 · 順路而行",
       timeline: "行程時間軸", notes: "貼士", print: "列印 / 儲存成 PDF", replan: "再規劃一次",
-      dayStops: "站", dayWalk: "步行", dayBudget: "預算", dayOld: "舊區", dayLocal: "小店", walk: "步行", minutes: "分鐘", crowd: "人流：", wait: "約等", minShort: "分", free: "免費", approx: "約 MOP ", ahouSays: "阿濠話：", story: "聽阿濠講古",
+      dayStops: "站", dayWalk: "步行", dayBudget: "預算", dayOld: "舊區", dayLocal: "小店", walk: "步行", minutes: "分鐘", crowd: "人流：", wait: "約等", minShort: "分", free: "免費", approx: "約 MOP ", ahouSays: "阿濠話：", story: "聽阿濠講古", storyListen: "聽阿濠講", storyStop: "停低", storyPlaying: "阿濠講緊…", storyLoading: "阿濠開聲緊…", storyVoice: "千問男聲 · 龍安魯風",
       tool: { get_weather: "查天氣", search_attractions: "搜尋景點", check_opening: "核實開放時間", predict_crowd: "預測人流", find_local_gem: "搵本地老街", compute_route: "規劃步行路線", estimate_budget: "估算預算", submit_itinerary: "提交行程" },
       samples: ["我下星期三想帶爸媽嚟澳門玩一日，鍾意歷史文化同地道美食，預算唔想太貴，又唔想行太多路", "幫我安排澳門三日兩夜，想玩半島世遺、氹仔美食同路環慢活", "情侶星期六想行下舊區老街、影靚相，順便試下街頭小食", "我想去鄭家大屋同附近嘅歷史老街，星期三去", "氹仔半日遊，主打地道美食", "First time in Macau this weekend, we love history, old streets and street food"],
     },
@@ -66,7 +66,7 @@
       judgeDemo: "90 秒评审快速演示",
       fastProgress: "评审快速模式 · 正在逐项调用并核验 7 项工具", qwenProgress: "真实 Qwen ReAct 规划中",
       runtimeQwen: "真实 Qwen 推理", runtimeVerified: "可复现工具链", runtimeFallback: "Qwen 超时保护 · 工具链接管",
-      language: "语言", people: "人", interests: "兴趣", budget: "预算 MOP", lowWalk: "少走路", daysTrip: "日行程", actionPlan: "行动计划", recovery: "自动改线", noPrompt: "请先写下你想怎么玩", stops: "个站点", walkDistance: "估算步行", budgetPer: "全队总预算", oldLanes: "旧区景点", localShops: "本地商户点", localSpend: "本地消费估算", impactTitle: "旧区导流成效 · 从推荐走向可归因", impactPilot: "目前为行程估算；商户试点将使用一次性到店码 / 优惠码核销，量度实际到访与转化。", diversionTitle: "智能导流 · 从人潮热点带你去旧区老街", constraintsTitle: "任务完成核对 · 每项条件都已验证", constraintsStatic: "场景核对 · 预设演示数据（天气/人流为估算）", staticBanner: "策展演示模式：6 个预设场景，天气与人流为模拟估算；点击样例后按「出发」开始。", staticEngine: "● 策展演示", staticEngineTitle: "GitHub Pages 静态演示：6 个预设场景，非实时 Qwen 推理。", errorPlan: "连接失败，未能取得行程。请检查网络后重试，或使用上方样例进入演示模式。", retryPlan: "重试规划", cancelPlan: "取消规划", walkEstimate: "步行时间以旧城巷道锚点折算，并非 OSM 逐路口导航", via: "经", codeFail: "到店码未能由服务器发出，请重试。", mapOrderNote: "巷道锚点折线（非 OSM 逐路口导航）", daysOverview: "多日分区总览 · 每日一个可步行主题", fullMap: "全程地图 · 多日分区路线", routeMap: "路线地图 · 顺路而行", timeline: "行程时间轴", notes: "贴士", print: "打印 / 保存为 PDF", replan: "再规划一次", dayStops: "站", dayWalk: "步行", dayBudget: "预算", dayOld: "旧区", dayLocal: "小店", walk: "步行", minutes: "分钟", crowd: "人流：", wait: "约等", minShort: "分", free: "免费", approx: "约 MOP ", ahouSays: "阿濠说：", story: "听阿濠讲故事",
+      language: "语言", people: "人", interests: "兴趣", budget: "预算 MOP", lowWalk: "少走路", daysTrip: "日行程", actionPlan: "行动计划", recovery: "自动改线", noPrompt: "请先写下你想怎么玩", stops: "个站点", walkDistance: "估算步行", budgetPer: "全队总预算", oldLanes: "旧区景点", localShops: "本地商户点", localSpend: "本地消费估算", impactTitle: "旧区导流成效 · 从推荐走向可归因", impactPilot: "目前为行程估算；商户试点将使用一次性到店码 / 优惠码核销，量度实际到访与转化。", diversionTitle: "智能导流 · 从人潮热点带你去旧区老街", constraintsTitle: "任务完成核对 · 每项条件都已验证", constraintsStatic: "场景核对 · 预设演示数据（天气/人流为估算）", staticBanner: "策展演示模式：6 个预设场景，天气与人流为模拟估算；点击样例后按「出发」开始。", staticEngine: "● 策展演示", staticEngineTitle: "GitHub Pages 静态演示：6 个预设场景，非实时 Qwen 推理。", errorPlan: "连接失败，未能取得行程。请检查网络后重试，或使用上方样例进入演示模式。", retryPlan: "重试规划", cancelPlan: "取消规划", walkEstimate: "步行时间以旧城巷道锚点折算，并非 OSM 逐路口导航", via: "经", codeFail: "到店码未能由服务器发出，请重试。", mapOrderNote: "巷道锚点折线（非 OSM 逐路口导航）", daysOverview: "多日分区总览 · 每日一个可步行主题", fullMap: "全程地图 · 多日分区路线", routeMap: "路线地图 · 顺路而行", timeline: "行程时间轴", notes: "贴士", print: "打印 / 保存为 PDF", replan: "再规划一次", dayStops: "站", dayWalk: "步行", dayBudget: "预算", dayOld: "旧区", dayLocal: "小店", walk: "步行", minutes: "分钟", crowd: "人流：", wait: "约等", minShort: "分", free: "免费", approx: "约 MOP ", ahouSays: "阿濠说：", story: "听阿濠讲故事", storyListen: "听阿濠讲", storyStop: "停下", storyPlaying: "阿濠正在讲…", storyLoading: "阿濠正在开口…", storyVoice: "千问男声 · 龙安鲁风",
       tool: { get_weather: "查天气", search_attractions: "搜索景点", check_opening: "核实开放时间", predict_crowd: "预测人流", find_local_gem: "找本地老街", compute_route: "规划步行路线", estimate_budget: "估算预算", submit_itinerary: "提交行程" },
       samples: ["我下星期三想带爸妈来澳门玩一天，喜欢历史文化和地道美食，预算不想太贵，又不想走太多路", "帮我安排澳门三天两夜，想玩半岛世遗、氹仔美食和路环慢生活", "情侣星期六想逛旧区老街、拍照，顺便吃街头小吃", "我想去郑家大屋和附近的历史老街，星期三去", "氹仔半日游，主打地道美食", "First time in Macau this weekend, we love history, old streets and street food"],
     },
@@ -85,7 +85,7 @@
       judgeDemo: "90-sec Judge Demo",
       fastProgress: "Judge mode · calling and verifying all 7 tools", qwenProgress: "Live Qwen ReAct planning",
       runtimeQwen: "Live Qwen reasoning", runtimeVerified: "Reproducible toolchain", runtimeFallback: "Qwen timeout guard · tools took over",
-      language: "Language", people: "people", interests: "Interests", budget: "Budget MOP", lowWalk: "Less walking", daysTrip: "days", actionPlan: "Action Plan", recovery: "Auto Reroute", noPrompt: "Please describe how you want to travel", stops: "stops", walkDistance: "estimated walk", budgetPer: "total group budget", oldLanes: "old lanes", localShops: "local shops", localSpend: "estimated local spend", impactTitle: "Old-District Impact · From Recommendation to Attribution", impactPilot: "These are itinerary estimates. Merchant pilots will use one-time visit / offer codes to measure actual arrivals and conversion.", diversionTitle: "Smart Diversion · From Crowded Hotspots to Old Lanes", constraintsTitle: "Task Checks · Every Condition Verified", constraintsStatic: "Scenario Checks · Preset demo data (weather/crowd estimated)", staticBanner: "Curated demo mode: 6 preset scenarios with simulated weather and crowd estimates. Pick a sample, then press Go.", staticEngine: "● Curated Demo", staticEngineTitle: "GitHub Pages static demo: 6 preset scenarios, not live Qwen reasoning.", errorPlan: "Connection failed — itinerary not received. Check your network and retry, or use a sample above.", retryPlan: "Retry planning", cancelPlan: "Cancel planning", walkEstimate: "Walk times use old-town lane anchors, not OSM turn-by-turn routing", via: "via", codeFail: "The visit code could not be issued by the server. Please retry.", mapOrderNote: "Lane-anchor polyline (not OSM turn-by-turn)", daysOverview: "Multi-Day Overview · One Walkable Theme per Day", fullMap: "Full Map · Multi-Day District Routes", routeMap: "Route Map · Walkable Order", timeline: "Itinerary Timeline", notes: "Tips", print: "Print / Save Result as PDF", replan: "Plan Again", dayStops: "stops", dayWalk: "walk", dayBudget: "budget", dayOld: "old areas", dayLocal: "shops", walk: "Walk", minutes: "min", crowd: "Crowd: ", wait: "wait about ", minShort: "min", free: "Free", approx: "Approx. MOP ", ahouSays: "Ah-Hou says: ", story: "Hear Ah-Hou’s story",
+      language: "Language", people: "people", interests: "Interests", budget: "Budget MOP", lowWalk: "Less walking", daysTrip: "days", actionPlan: "Action Plan", recovery: "Auto Reroute", noPrompt: "Please describe how you want to travel", stops: "stops", walkDistance: "estimated walk", budgetPer: "total group budget", oldLanes: "old lanes", localShops: "local shops", localSpend: "estimated local spend", impactTitle: "Old-District Impact · From Recommendation to Attribution", impactPilot: "These are itinerary estimates. Merchant pilots will use one-time visit / offer codes to measure actual arrivals and conversion.", diversionTitle: "Smart Diversion · From Crowded Hotspots to Old Lanes", constraintsTitle: "Task Checks · Every Condition Verified", constraintsStatic: "Scenario Checks · Preset demo data (weather/crowd estimated)", staticBanner: "Curated demo mode: 6 preset scenarios with simulated weather and crowd estimates. Pick a sample, then press Go.", staticEngine: "● Curated Demo", staticEngineTitle: "GitHub Pages static demo: 6 preset scenarios, not live Qwen reasoning.", errorPlan: "Connection failed — itinerary not received. Check your network and retry, or use a sample above.", retryPlan: "Retry planning", cancelPlan: "Cancel planning", walkEstimate: "Walk times use old-town lane anchors, not OSM turn-by-turn routing", via: "via", codeFail: "The visit code could not be issued by the server. Please retry.", mapOrderNote: "Lane-anchor polyline (not OSM turn-by-turn)", daysOverview: "Multi-Day Overview · One Walkable Theme per Day", fullMap: "Full Map · Multi-Day District Routes", routeMap: "Route Map · Walkable Order", timeline: "Itinerary Timeline", notes: "Tips", print: "Print / Save Result as PDF", replan: "Plan Again", dayStops: "stops", dayWalk: "walk", dayBudget: "budget", dayOld: "old areas", dayLocal: "shops", walk: "Walk", minutes: "min", crowd: "Crowd: ", wait: "wait about ", minShort: "min", free: "Free", approx: "Approx. MOP ", ahouSays: "Ah-Hou says: ", story: "Hear Ah-Hou’s story", storyListen: "Listen", storyStop: "Stop", storyPlaying: "Ah-Hou is speaking…", storyLoading: "Ah-Hou is finding his voice…", storyVoice: "Qwen male voice · Longan Lufeng",
       tool: { get_weather: "Weather", search_attractions: "Search POIs", check_opening: "Check Opening", predict_crowd: "Predict Crowd", find_local_gem: "Find Local Gem", compute_route: "Plan Route", estimate_budget: "Estimate Budget", submit_itinerary: "Submit Itinerary" },
       samples: ["Next Wednesday I’m bringing my parents to Macau for one day. We like history and local food, want a modest budget and less walking.", "Plan a 3 days Macau trip with heritage, Taipa food and Coloane slow life", "A couple trip this Saturday: old lanes, photo spots and street food", "I want to visit Mandarin’s House and nearby historic lanes on Wednesday", "Taipa half-day food walk", "First time in Macau this weekend, we love history, old streets and street food"],
     },
@@ -103,7 +103,7 @@
       judgeDemo: "Demo para júri em 90 s",
       fastProgress: "Modo júri · a verificar as 7 ferramentas", qwenProgress: "Planeamento Qwen ReAct em direto",
       runtimeQwen: "Raciocínio Qwen em direto", runtimeVerified: "Ferramentas reproduzíveis", runtimeFallback: "Proteção de timeout · ferramentas assumiram",
-      language: "Idioma", people: "pessoas", interests: "Interesses", budget: "Orçamento MOP", lowWalk: "Menos caminhada", daysTrip: "dias", actionPlan: "Plano de Ação", recovery: "Reencaminhamento", noPrompt: "Descreve como queres viajar", stops: "paragens", walkDistance: "caminhada estimada", budgetPer: "orçamento total do grupo", oldLanes: "ruas antigas", localShops: "lojas locais", localSpend: "consumo local estimado", impactTitle: "Impacto nos Bairros · Da Recomendação à Atribuição", impactPilot: "São estimativas do roteiro. O piloto usará códigos únicos de visita / oferta para medir chegadas e conversão reais.", diversionTitle: "Distribuição Inteligente · Dos Hotspots para Ruas Antigas", constraintsTitle: "Verificação da Tarefa · Condições Confirmadas", constraintsStatic: "Verificação de Cenário · Dados de demonstração (tempo/multidões estimados)", staticBanner: "Modo de demonstração: 6 cenários pré-definidos com tempo e multidões simulados. Escolha um exemplo e prima Ir.", staticEngine: "● Demo Curada", staticEngineTitle: "Demonstração estática GitHub Pages: 6 cenários, não é raciocínio Qwen em tempo real.", errorPlan: "Falha de ligação — roteiro não recebido. Verifique a rede ou use um exemplo acima.", retryPlan: "Tentar novamente", walkEstimate: "Tempos a pé por âncoras das ruelas, não navegação OSM", via: "via", cancelPlan: "Cancelar planeamento", codeFail: "O código de visita não pôde ser emitido pelo servidor. Tente novamente.", mapOrderNote: "Linha por âncoras das ruelas (não é OSM passo a passo)", daysOverview: "Visão Multi-Dia · Um Tema Caminhável por Dia", fullMap: "Mapa Completo · Rotas por Distrito", routeMap: "Mapa da Rota · Ordem Caminhável", timeline: "Linha do Tempo", notes: "Dicas", print: "Imprimir / Guardar Resultado em PDF", replan: "Planear Novamente", dayStops: "paragens", dayWalk: "a pé", dayBudget: "orçamento", dayOld: "bairros antigos", dayLocal: "lojas", walk: "A pé", minutes: "min", crowd: "Multidão: ", wait: "espera aprox. ", minShort: "min", free: "Grátis", approx: "Aprox. MOP ", ahouSays: "Ah-Hou diz: ", story: "Ouvir a história de Ah-Hou",
+      language: "Idioma", people: "pessoas", interests: "Interesses", budget: "Orçamento MOP", lowWalk: "Menos caminhada", daysTrip: "dias", actionPlan: "Plano de Ação", recovery: "Reencaminhamento", noPrompt: "Descreve como queres viajar", stops: "paragens", walkDistance: "caminhada estimada", budgetPer: "orçamento total do grupo", oldLanes: "ruas antigas", localShops: "lojas locais", localSpend: "consumo local estimado", impactTitle: "Impacto nos Bairros · Da Recomendação à Atribuição", impactPilot: "São estimativas do roteiro. O piloto usará códigos únicos de visita / oferta para medir chegadas e conversão reais.", diversionTitle: "Distribuição Inteligente · Dos Hotspots para Ruas Antigas", constraintsTitle: "Verificação da Tarefa · Condições Confirmadas", constraintsStatic: "Verificação de Cenário · Dados de demonstração (tempo/multidões estimados)", staticBanner: "Modo de demonstração: 6 cenários pré-definidos com tempo e multidões simulados. Escolha um exemplo e prima Ir.", staticEngine: "● Demo Curada", staticEngineTitle: "Demonstração estática GitHub Pages: 6 cenários, não é raciocínio Qwen em tempo real.", errorPlan: "Falha de ligação — roteiro não recebido. Verifique a rede ou use um exemplo acima.", retryPlan: "Tentar novamente", walkEstimate: "Tempos a pé por âncoras das ruelas, não navegação OSM", via: "via", cancelPlan: "Cancelar planeamento", codeFail: "O código de visita não pôde ser emitido pelo servidor. Tente novamente.", mapOrderNote: "Linha por âncoras das ruelas (não é OSM passo a passo)", daysOverview: "Visão Multi-Dia · Um Tema Caminhável por Dia", fullMap: "Mapa Completo · Rotas por Distrito", routeMap: "Mapa da Rota · Ordem Caminhável", timeline: "Linha do Tempo", notes: "Dicas", print: "Imprimir / Guardar Resultado em PDF", replan: "Planear Novamente", dayStops: "paragens", dayWalk: "a pé", dayBudget: "orçamento", dayOld: "bairros antigos", dayLocal: "lojas", walk: "A pé", minutes: "min", crowd: "Multidão: ", wait: "espera aprox. ", minShort: "min", free: "Grátis", approx: "Aprox. MOP ", ahouSays: "Ah-Hou diz: ", story: "Ouvir a história de Ah-Hou", storyListen: "Ouvir", storyStop: "Parar", storyPlaying: "Ah-Hou está a falar…", storyLoading: "Ah-Hou está a abrir a voz…", storyVoice: "Voz masculina Qwen · Longan Lufeng",
       tool: { get_weather: "Tempo", search_attractions: "Pesquisar Pontos", check_opening: "Verificar Horário", predict_crowd: "Prever Multidão", find_local_gem: "Alternativa Local", compute_route: "Planear Rota", estimate_budget: "Estimar Orçamento", submit_itinerary: "Submeter Roteiro" },
       samples: ["Na próxima quarta quero levar os meus pais a Macau por um dia, com história, comida local, orçamento moderado e pouca caminhada", "Planeia 3 dias em Macau com património, comida em Taipa e vida lenta em Coloane", "Viagem de casal no sábado: ruas antigas, fotos e comida de rua", "Quero visitar a Casa do Mandarim e ruas históricas próximas na quarta", "Meio dia em Taipa com foco em comida local", "First time in Macau this weekend, we love history, old streets and street food"],
     },
@@ -121,13 +121,232 @@
       judgeDemo: "90秒審査デモ",
       fastProgress: "審査モード · 7ツールを呼び出し検証中", qwenProgress: "Qwen ReActをリアルタイム実行中",
       runtimeQwen: "Qwenリアルタイム推論", runtimeVerified: "再現可能ツールチェーン", runtimeFallback: "Qwenタイムアウト保護 · ツールが継続",
-      language: "言語", people: "人", interests: "興味", budget: "予算 MOP", lowWalk: "歩行少なめ", daysTrip: "日旅程", actionPlan: "行動計画", recovery: "自動変更", noPrompt: "旅行の希望を入力してください", stops: "スポット", walkDistance: "推定歩行", budgetPer: "グループ合計予算", oldLanes: "旧市街", localShops: "地元店", localSpend: "地元消費の推定", impactTitle: "旧市街への効果 · 推薦から計測へ", impactPilot: "現在は旅程上の推定です。店舗実証では一回限りの来店 / 特典コードで実来店と転換を測定します。", diversionTitle: "スマート誘導 · 混雑地から旧市街へ", constraintsTitle: "タスク確認 · 条件を検証済み", constraintsStatic: "シナリオ確認 · プリセットデモ（天気/人流は推定）", staticBanner: "キュレーション・デモ：6つのプリセットシナリオ。天気と人流はシミュレーション。サンプルを選び「出発」を押してください。", staticEngine: "● キュレーションデモ", staticEngineTitle: "GitHub Pages 静的デモ：6シナリオ。リアルタイム Qwen 推論ではありません。", errorPlan: "接続に失敗しました。ネットワークを確認して再試行するか、上のサンプルを使ってください。", retryPlan: "再試行", walkEstimate: "歩行時間は旧市街の巷道アンカーで換算（OSMの逐次ナビではない）", via: "経由", cancelPlan: "計画をキャンセル", codeFail: "来店コードをサーバーから発行できませんでした。再試行してください。", mapOrderNote: "巷道アンカーの折線（OSM逐次ナビではありません）", daysOverview: "複数日概要 · 1日1つの歩けるテーマ", fullMap: "全体地図 · 複数日エリア別ルート", routeMap: "ルート地図 · 歩きやすい順番", timeline: "旅程タイムライン", notes: "ヒント", print: "印刷 / 結果をPDF保存", replan: "もう一度計画", dayStops: "スポット", dayWalk: "歩行", dayBudget: "予算", dayOld: "旧市街", dayLocal: "地元店", walk: "徒歩", minutes: "分", crowd: "人流：", wait: "待ち約", minShort: "分", free: "無料", approx: "約 MOP ", ahouSays: "阿濠より：", story: "阿濠の話を聞く",
+      language: "言語", people: "人", interests: "興味", budget: "予算 MOP", lowWalk: "歩行少なめ", daysTrip: "日旅程", actionPlan: "行動計画", recovery: "自動変更", noPrompt: "旅行の希望を入力してください", stops: "スポット", walkDistance: "推定歩行", budgetPer: "グループ合計予算", oldLanes: "旧市街", localShops: "地元店", localSpend: "地元消費の推定", impactTitle: "旧市街への効果 · 推薦から計測へ", impactPilot: "現在は旅程上の推定です。店舗実証では一回限りの来店 / 特典コードで実来店と転換を測定します。", diversionTitle: "スマート誘導 · 混雑地から旧市街へ", constraintsTitle: "タスク確認 · 条件を検証済み", constraintsStatic: "シナリオ確認 · プリセットデモ（天気/人流は推定）", staticBanner: "キュレーション・デモ：6つのプリセットシナリオ。天気と人流はシミュレーション。サンプルを選び「出発」を押してください。", staticEngine: "● キュレーションデモ", staticEngineTitle: "GitHub Pages 静的デモ：6シナリオ。リアルタイム Qwen 推論ではありません。", errorPlan: "接続に失敗しました。ネットワークを確認して再試行するか、上のサンプルを使ってください。", retryPlan: "再試行", walkEstimate: "歩行時間は旧市街の巷道アンカーで換算（OSMの逐次ナビではない）", via: "経由", cancelPlan: "計画をキャンセル", codeFail: "来店コードをサーバーから発行できませんでした。再試行してください。", mapOrderNote: "巷道アンカーの折線（OSM逐次ナビではありません）", daysOverview: "複数日概要 · 1日1つの歩けるテーマ", fullMap: "全体地図 · 複数日エリア別ルート", routeMap: "ルート地図 · 歩きやすい順番", timeline: "旅程タイムライン", notes: "ヒント", print: "印刷 / 結果をPDF保存", replan: "もう一度計画", dayStops: "スポット", dayWalk: "歩行", dayBudget: "予算", dayOld: "旧市街", dayLocal: "地元店", walk: "徒歩", minutes: "分", crowd: "人流：", wait: "待ち約", minShort: "分", free: "無料", approx: "約 MOP ", ahouSays: "阿濠より：", story: "阿濠の話を聞く", storyListen: "聴く", storyStop: "止める", storyPlaying: "阿濠が話しています…", storyLoading: "阿濠が声を出しています…", storyVoice: "Qwen男性ボイス · 龍安魯風",
       tool: { get_weather: "天気確認", search_attractions: "スポット検索", check_opening: "営業時間確認", predict_crowd: "人流予測", find_local_gem: "地元スポット", compute_route: "徒歩ルート", estimate_budget: "予算見積", submit_itinerary: "旅程提出" },
       samples: ["来週水曜に両親とマカオを1日観光。歴史文化とローカルグルメが好きで、予算控えめ、歩きすぎたくない", "マカオ3日2泊：半島の世界遺産、タイパのグルメ、コロアンのスローライフ", "土曜のカップル旅：旧市街、写真スポット、ストリートフード", "水曜に鄭家大屋と近くの歴史路地へ行きたい", "タイパ半日グルメ散歩", "First time in Macau this weekend, we love history, old streets and street food"],
     },
   };
 
   window.__I18N = I18N; // exposed for automated QA checks
+
+  let STORY_BANK = {};
+  const storyReady = fetch("stories.json")
+    .then((r) => (r.ok ? r.json() : {}))
+    .then((d) => { STORY_BANK = d || {}; })
+    .catch(() => {});
+  let TTS_PACK = { model: "", voice: "", files: {} };
+  const ttsPackReady = fetch("tts/manifest.json")
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => { if (d && d.files) TTS_PACK = d; })
+    .catch(() => {});
+
+  const TTS_LANG = {
+    "zh-HK": ["zh-HK", "zh-YUE", "yue-HK", "yue", "zh-TW"],
+    zh: ["zh-CN", "zh-SG", "cmn-Hans", "zh"],
+    en: ["en-GB", "en-HK", "en-AU", "en-IE", "en-US", "en"],
+    pt: ["pt-PT", "pt-BR", "pt"],
+    ja: ["ja-JP", "ja"],
+  };
+  const MALE_VOICE = /male|nan-male|WanLung|Yunxi|Yunyang|Yunjian|Yunhao|Yunfeng|Yunze|Yunye|Kefu|Keita|Duarte|Daniel|George|Ryan|Guy|Brian|Andrew|Christopher|Steffan|Eric|Chaoxi|Kangkang/i;
+  const FEMALE_VOICE = /female|Tracy|Huihui|Xiaoxiao|Xiaoyi|Xiaoshuang|Xiaochen|Xiaomo|HiuMaan|HiuGaai|Nanami|Haruka|Ayumi|Helena|Raquel|Sonia|Aria|Jenny|Emma|Zira|Susan|Hazel|Ana|Ines|Inês|Francisca|Ivy|Joanna|Kendra|Kimberly|Salli|Nicole|Samantha|Tingting|Yaoyao|MeiJia|Hui\b/i;
+  let speakingPoi = "";
+  let storyUtter = null;
+  let storyAudio = null;
+  let storyObjectUrl = "";
+  let storyFetchCtl = null;
+
+  function storyRecord(s) {
+    if (s && s.story && typeof s.story === "object" && (s.story["zh-HK"] || s.story.zh || s.story.en)) {
+      return s.story;
+    }
+    return (s && s.poi_id && STORY_BANK[s.poi_id]) || {};
+  }
+
+  function pickStory(s) {
+    const rec = storyRecord(s);
+    const lang = langNow();
+    const order = {
+      "zh-HK": ["zh-HK", "zh", "en"],
+      zh: ["zh", "zh-HK", "en"],
+      en: ["en", "zh-HK", "zh"],
+      pt: ["pt", "en", "zh-HK"],
+      ja: ["ja", "en", "zh-HK"],
+    }[lang] || ["en"];
+    for (const k of order) {
+      const text = (rec[k] || "").trim();
+      if (text) return { text, lang: k };
+    }
+    const fallback = (s && s.story_zh || "").trim();
+    return fallback ? { text: fallback, lang: "zh-HK" } : null;
+  }
+
+  function loadVoices() {
+    if (!("speechSynthesis" in window)) return [];
+    return window.speechSynthesis.getVoices() || [];
+  }
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
+    loadVoices();
+  }
+
+  function pickVoice(storyLang) {
+    const voices = loadVoices();
+    const prefs = TTS_LANG[storyLang] || TTS_LANG.en;
+    let best = null, bestScore = -1;
+    for (const v of voices) {
+      const name = v.name || "";
+      if (FEMALE_VOICE.test(name) || FEMALE_VOICE.test(v.voiceURI || "")) continue;
+      const loc = String(v.lang || "").replace("_", "-");
+      const locLow = loc.toLowerCase();
+      let score = 0;
+      const hit = prefs.findIndex((p) => locLow === p.toLowerCase() || locLow.startsWith(p.toLowerCase() + "-") || locLow.startsWith(p.toLowerCase()));
+      if (hit < 0) continue;
+      score += 80 - hit * 6;
+      if (MALE_VOICE.test(name) || /male/i.test(v.voiceURI || "")) score += 28;
+      if (v.localService) score += 4;
+      if (score > bestScore) { bestScore = score; best = v; }
+    }
+    if (best && (MALE_VOICE.test(best.name || "") || /male/i.test(best.voiceURI || ""))) return best;
+    return null;
+  }
+
+  function markStoryBtn(btn, state) {
+    document.querySelectorAll(".story-play").forEach((el) => {
+      el.classList.remove("is-playing", "is-loading");
+      el.setAttribute("aria-pressed", "false");
+      const lab = el.querySelector(".story-play-label");
+      if (lab) lab.textContent = tt("storyListen");
+    });
+    if (!btn || state === "idle") return;
+    btn.classList.toggle("is-loading", state === "loading");
+    btn.classList.toggle("is-playing", state === "playing" || state === "loading");
+    btn.setAttribute("aria-pressed", state === "idle" ? "false" : "true");
+    const lab = btn.querySelector(".story-play-label");
+    if (lab) lab.textContent = tt(state === "loading" ? "storyLoading" : "storyPlaying");
+  }
+
+  function stopStoryVoice() {
+    speakingPoi = "";
+    storyUtter = null;
+    if (storyFetchCtl) {
+      try { storyFetchCtl.abort(); } catch (e) { /* ignore */ }
+      storyFetchCtl = null;
+    }
+    if (storyAudio) {
+      try { storyAudio.pause(); storyAudio.removeAttribute("src"); storyAudio.load(); } catch (e) { /* ignore */ }
+      storyAudio = null;
+    }
+    if (storyObjectUrl) {
+      try { URL.revokeObjectURL(storyObjectUrl); } catch (e) { /* ignore */ }
+      storyObjectUrl = "";
+    }
+    if ("speechSynthesis" in window) {
+      try { window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+    }
+    markStoryBtn(null, "idle");
+  }
+
+  function isStoryPlaying(poiId) {
+    if (speakingPoi !== poiId) return false;
+    if (storyAudio && !storyAudio.paused && !storyAudio.ended) return true;
+    if ("speechSynthesis" in window && window.speechSynthesis.speaking) return true;
+    if (storyFetchCtl) return true;
+    return false;
+  }
+
+  function playBrowserStory(picked, btn, poiId) {
+    if (!picked || !("speechSynthesis" in window)) {
+      stopStoryVoice();
+      return;
+    }
+    const voice = pickVoice(picked.lang);
+    if (!voice) {
+      stopStoryVoice();
+      return;
+    }
+    const u = new SpeechSynthesisUtterance(picked.text);
+    u.voice = voice;
+    u.lang = voice.lang || picked.lang;
+    u.rate = 0.9;
+    u.pitch = 0.92;
+    u.volume = 1;
+    u.onend = () => { if (storyUtter === u) stopStoryVoice(); };
+    u.onerror = () => { if (storyUtter === u) stopStoryVoice(); };
+    storyUtter = u;
+    speakingPoi = poiId;
+    markStoryBtn(btn, "playing");
+    window.speechSynthesis.speak(u);
+  }
+
+  function packedStoryUrl(poiId, lang) {
+    const rec = (TTS_PACK.files || {})[poiId] || {};
+    const name = rec[lang] || rec["zh-HK"] || rec.zh || rec.en;
+    return name ? ("tts/" + name) : "";
+  }
+
+  async function playPackedStory(url, btn, poiId) {
+    const a = new Audio(url);
+    storyAudio = a;
+    speakingPoi = poiId;
+    markStoryBtn(btn, "playing");
+    a.onended = () => { if (storyAudio === a) stopStoryVoice(); };
+    a.onerror = () => { if (storyAudio === a) stopStoryVoice(); };
+    await a.play();
+  }
+
+  async function playQwenStory(picked, btn, poiId) {
+    const ctl = storyFetchCtl || new AbortController();
+    storyFetchCtl = ctl;
+    const url = `/api/story/audio?poi_id=${encodeURIComponent(poiId)}&lang=${encodeURIComponent(picked.lang)}`;
+    const r = await fetch(url, { signal: ctl.signal });
+    if (!r.ok) throw new Error("tts " + r.status);
+    const blob = await r.blob();
+    if (storyFetchCtl === ctl) storyFetchCtl = null;
+    if (!blob || blob.size < 64) throw new Error("empty audio");
+    const obj = URL.createObjectURL(blob);
+    storyObjectUrl = obj;
+    const a = new Audio(obj);
+    storyAudio = a;
+    speakingPoi = poiId;
+    markStoryBtn(btn, "playing");
+    a.onended = () => { if (storyAudio === a) stopStoryVoice(); };
+    a.onerror = () => { if (storyAudio === a) playBrowserStory(picked, btn, poiId); };
+    await a.play();
+  }
+
+  async function playStory(s, btn) {
+    const picked = pickStory(s);
+    if (!picked) return;
+    const poiId = s.poi_id || "";
+    if (isStoryPlaying(poiId)) {
+      stopStoryVoice();
+      return;
+    }
+    stopStoryVoice();
+    speakingPoi = poiId;
+    markStoryBtn(btn, "loading");
+    const body = btn.closest(".story")?.querySelector(".story-body");
+    if (body) body.hidden = false;
+    const packed = packedStoryUrl(poiId, picked.lang);
+    if (packed) {
+      try {
+        await playPackedStory(packed, btn, poiId);
+        return;
+      } catch (e) {
+        if (e && e.name === "AbortError") return;
+      }
+    }
+    if (!staticMode && poiId) {
+      storyFetchCtl = new AbortController();
+      try {
+        await playQwenStory(picked, btn, poiId);
+        return;
+      } catch (e) {
+        if (e && e.name === "AbortError") return;
+      }
+    }
+    playBrowserStory(picked, btn, poiId);
+  }
 
   let map = null, today = macauToday(), es = null, running = false, healthState = null, lastItinerary = null, staticMode = false, staticTimers = [], gotResult = false;
   let planProgressTimer = null, planStartedAt = 0, planMode = "auto";
@@ -181,8 +400,11 @@
 
   // ---------------- boot ----------------
   async function boot() {
+    await storyReady;
+    await ttsPackReady;
     applyStaticI18n();
     $("#lang").addEventListener("change", () => {
+      stopStoryVoice();
       applyStaticI18n();
       if (lastItinerary) renderResult(lastItinerary);
     });
@@ -315,7 +537,10 @@
     node.textContent = `${tt(planMode === "fast" ? "fastProgress" : "qwenProgress")} · ${elapsed}s`;
   }
 
-  function startPlan(mode = "auto") {
+  async function startPlan(mode = "auto") {
+    await storyReady;
+    await ttsPackReady;
+    stopStoryVoice();
     mode = mode === "fast" ? "fast" : "auto";
     if (running) {
       clearStaticTimers();
@@ -971,7 +1196,16 @@
     const secondary = langNow().startsWith("zh") ? (s.name.en || "") : "";
     const blurbText = s.blurb ? (langNow().startsWith("zh") ? (s.blurb.zh || s.blurb.en || "") : (s.blurb.en || s.blurb.zh || "")) : "";
     const blurb = blurbText ? `<div class="tl-blurb">${esc(blurbText)}</div>` : "";
-    const story = s.story_zh ? `<details class="story"><summary>${esc(tt("story"))}</summary><p>${esc(s.story_zh)}</p></details>` : "";
+    const picked = pickStory(s);
+    const playBtn = picked
+      ? `<button type="button" class="story-play" data-poi="${esc(s.poi_id || "")}" aria-pressed="false" aria-label="${esc(tt("story"))}"><span class="story-ic" aria-hidden="true">🔊</span><span class="story-play-label">${esc(tt("storyListen"))}</span></button>`
+      : "";
+    const voiceHint = picked && packedStoryUrl(s.poi_id || "", picked.lang)
+      ? `<span class="story-voice">${esc(tt("storyVoice"))}</span>`
+      : "";
+    const story = picked
+      ? `<div class="story" data-poi="${esc(s.poi_id || "")}"><div class="story-head">${playBtn}${voiceHint}<button type="button" class="story-more">${esc(tt("story"))}</button></div><p class="story-body" hidden>${esc(picked.text)}</p></div>`
+      : "";
     const tip = s.tip ? `<div class="tl-tip">💡 ${esc(s.tip)}</div>` : "";
     const tags = (langNow().startsWith("zh") && s.tags && s.tags.length) ? `<div class="tl-tags">${s.tags.slice(0, 5).map(x => `<span class="mini">${esc(x)}</span>`).join("")}</div>` : "";
     const code = s.local_business
@@ -985,6 +1219,36 @@
       `<div class="tl-badges">${badges.join("")}</div>${why}${blurb}${story}${tip}${tags}${code}` +
       `</div></div></div>`;
     return card;
+  }
+
+  function findStopByPoi(poiId) {
+    const it = lastItinerary;
+    if (!it || !poiId) return null;
+    const lists = [];
+    if (Array.isArray(it.stops)) lists.push(it.stops);
+    (it.days || []).forEach((d) => { if (d && Array.isArray(d.stops)) lists.push(d.stops); });
+    for (const list of lists) {
+      const hit = list.find((s) => s.poi_id === poiId);
+      if (hit) return hit;
+    }
+    return null;
+  }
+
+  function onStoryClick(e) {
+    const more = e.target.closest(".story-more");
+    if (more) {
+      const wrap = more.closest(".story");
+      const body = wrap?.querySelector(".story-body");
+      if (body) {
+        body.hidden = !body.hidden;
+        more.classList.toggle("is-open", !body.hidden);
+      }
+      return;
+    }
+    const btn = e.target.closest(".story-play");
+    if (!btn) return;
+    const stop = findStopByPoi(btn.dataset.poi || "");
+    if (stop) playStory(stop, btn);
   }
 
   // one-time visit code: real API on the live server, local mock on static demo
@@ -1114,6 +1378,7 @@
     showPlanError(tt("cancelPlan"));
   });
   $("#judgeDemoBtn")?.addEventListener("click", startJudgeDemo);
+  $("#result").addEventListener("click", onStoryClick);
   $("#result").addEventListener("click", onVisitCodeClick);
   $("#retryBtn")?.addEventListener("click", () => startPlan(planMode));
   $("#prompt").addEventListener("keydown", (e) => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") startPlan("auto"); });

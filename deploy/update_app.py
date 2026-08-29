@@ -29,7 +29,7 @@ REMOTE_DIR = "/opt/everylane-macau"
 INCLUDE_PREFIXES = ("backend/", "frontend/", "qwenpaw/",
                     "requirements.txt", "README.md", "run.sh")
 EXCLUDE_BITS = ("__pycache__", ".git", ".venv", "node_modules", ".env",
-                "qa/_", ".pyc", "docs/", ".mp4")
+                "qa/_", ".pyc", "docs/", ".mp4", "tts_cache")
 # POI photos (~22 MB) are immutable and already on the server; skip them by
 # default so a code update uploads in seconds. Set EL_INCLUDE_ASSETS=1 to
 # force a full asset sync.

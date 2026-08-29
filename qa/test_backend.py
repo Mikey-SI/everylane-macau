@@ -94,6 +94,10 @@ def test_kb():
             missing_imgs.append(f"{p['id']} -> (無圖)")
         if not p["blurb"].get("zh"):
             check(False, f"KB[{p['id']}]: blurb.zh 為空")
+        st = p.get("story") or {}
+        for sk in ("zh-HK", "zh", "en", "pt", "ja"):
+            if len((st.get(sk) or "").strip()) < 24:
+                check(False, f"KB[{p['id']}]: story.{sk} 缺失或過短")
     check(not missing_imgs, "KB: 所有 POI 圖片存在", "; ".join(missing_imgs[:8]) + (f" 等共{len(missing_imgs)}個" if len(missing_imgs) > 8 else ""))
     old_cnt = sum(1 for p in pois if p["old_district"])
     loc_cnt = sum(1 for p in pois if p["local_business"])

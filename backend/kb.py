@@ -9,6 +9,16 @@ _POIS_PATH = os.path.join(_HERE, "data", "pois.json")
 with open(_POIS_PATH, encoding="utf-8") as f:
     POIS = json.load(f)
 
+_STORIES_PATH = os.path.join(_HERE, "data", "stories.json")
+with open(_STORIES_PATH, encoding="utf-8") as f:
+    STORIES = json.load(f)
+
+for _p in POIS:
+    _st = STORIES.get(_p["id"])
+    if _st:
+        _p["story"] = _st
+        _p["story_zh"] = _st.get("zh-HK") or _p.get("story_zh")
+
 BY_ID = {p["id"]: p for p in POIS}
 
 # Map free-text interests (zh/en) to POI categories/tags for searching.
