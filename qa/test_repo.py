@@ -116,6 +116,16 @@ def main():
     check(not secret_files, "repository has no Token Plan secret", secret_files)
     check(not stale_files, "repository has no stale identity/architecture claims", stale_files)
     check(not (ROOT / ".env").exists(), "local .env not present in repository workspace")
+    score_draft = "docs/專業評委評分與冠軍改進報告_街知巷聞.md"
+    try:
+        import subprocess
+        tracked = subprocess.check_output(
+            ["git", "-c", f"safe.directory={ROOT}", "ls-files", "--", score_draft],
+            cwd=ROOT, text=True, stderr=subprocess.DEVNULL,
+        ).strip()
+    except Exception:
+        tracked = ""
+    check(not tracked, "self-score draft is not published in git")
 
     required = [
         "docs/概念計劃書_街知巷聞_EveryLaneMacau.docx",
@@ -142,7 +152,6 @@ def main():
         "docs/決賽路演_10分鐘_街知巷聞.pdf",
         "docs/決賽路演_10分鐘講稿_街知巷聞.md",
         "docs/評審問答_冠軍版_街知巷聞.md",
-        "docs/專業評委評分與冠軍改進報告_街知巷聞.md",
         "docs/assets/semifinal/00_home_proof.png",
     ]
     for rel in required:

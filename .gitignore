@@ -29,3 +29,5 @@ docs/_fixup_log.txt
 credentials.yaml
 **/credentials.yaml
 .qwenpaw.secret/
+# internal self-score drafts — never publish
+docs/專業評委評分與冠軍改進報告_街知巷聞.md
