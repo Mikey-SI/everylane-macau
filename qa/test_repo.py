@@ -63,6 +63,19 @@ def main():
         check(bool(name) and name.endswith(".zh.mp3")
               and audio.is_file() and audio.stat().st_size > 10_000,
               f"packed Mandarin audio {poi_id}")
+    app_js = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    index_html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    check('option value="zh">简体中文（普通话）' in index_html,
+          "language selector names Simplified Chinese as Mandarin")
+    check('const storyLang = langNow() === "zh" ? "zh" : picked.lang;' in app_js
+          and "pickVoice(storyLang)" in app_js,
+          "browser fallback uses Mandarin voice for Simplified Chinese")
+    check('if (lang === "zh") return rec.zh ? ("tts/" + rec.zh) : "";' in app_js,
+          "packed Simplified Chinese audio never falls back to Cantonese")
+    check('zh: ["zh-CN", "zh-SG", "cmn-CN", "cmn-Hans"]' in app_js
+          and "zh-HK" not in app_js.split("zh: [\"zh-CN\"")[1].split("]")[0],
+          "browser Mandarin prefs exclude Cantonese locales")
+
     judge_pois = [
         "ruins_st_paul", "travessa_paixao", "rua_estalagens",
         "rua_cinco", "rua_felicidade", "lou_kau_mansion",

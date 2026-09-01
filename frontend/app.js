@@ -66,7 +66,7 @@
       judgeDemo: "90 秒评审快速演示",
       fastProgress: "评审快速模式 · 正在逐项调用并核验 7 项工具", qwenProgress: "真实 Qwen ReAct 规划中",
       runtimeQwen: "真实 Qwen 推理", runtimeVerified: "可复现工具链", runtimeFallback: "Qwen 超时保护 · 工具链接管",
-      language: "语言", people: "人", interests: "兴趣", budget: "预算 MOP", lowWalk: "少走路", daysTrip: "日行程", actionPlan: "行动计划", recovery: "自动改线", noPrompt: "请先写下你想怎么玩", stops: "个站点", walkDistance: "估算步行", budgetPer: "全队总预算", oldLanes: "旧区景点", localShops: "本地商户点", localSpend: "本地消费估算", impactTitle: "旧区导流成效 · 从推荐走向可归因", impactPilot: "目前为行程估算；商户试点将使用一次性到店码 / 优惠码核销，量度实际到访与转化。", diversionTitle: "智能导流 · 从人潮热点带你去旧区老街", constraintsTitle: "任务完成核对 · 每项条件都已验证", constraintsStatic: "场景核对 · 预设演示数据（天气/人流为估算）", staticBanner: "策展演示模式：6 个预设场景，天气与人流为模拟估算；点击样例后按「出发」开始。", staticEngine: "● 策展演示", staticEngineTitle: "GitHub Pages 静态演示：6 个预设场景，非实时 Qwen 推理。", errorPlan: "连接失败，未能取得行程。请检查网络后重试，或使用上方样例进入演示模式。", retryPlan: "重试规划", cancelPlan: "取消规划", walkEstimate: "步行时间以旧城巷道锚点折算，并非 OSM 逐路口导航", via: "经", codeFail: "到店码未能由服务器发出，请重试。", mapOrderNote: "巷道锚点折线（非 OSM 逐路口导航）", daysOverview: "多日分区总览 · 每日一个可步行主题", fullMap: "全程地图 · 多日分区路线", routeMap: "路线地图 · 顺路而行", timeline: "行程时间轴", notes: "贴士", print: "打印 / 保存为 PDF", replan: "再规划一次", dayStops: "站", dayWalk: "步行", dayBudget: "预算", dayOld: "旧区", dayLocal: "小店", walk: "步行", minutes: "分钟", crowd: "人流：", wait: "约等", minShort: "分", free: "免费", approx: "约 MOP ", ahouSays: "阿濠说：", story: "听阿濠讲故事", storyListen: "听阿濠讲", storyStop: "停下", storyPlaying: "阿濠正在讲…", storyLoading: "阿濠正在开口…", storyVoice: "千问男声 · 龙安鲁风",
+      language: "语言", people: "人", interests: "兴趣", budget: "预算 MOP", lowWalk: "少走路", daysTrip: "日行程", actionPlan: "行动计划", recovery: "自动改线", noPrompt: "请先写下你想怎么玩", stops: "个站点", walkDistance: "估算步行", budgetPer: "全队总预算", oldLanes: "旧区景点", localShops: "本地商户点", localSpend: "本地消费估算", impactTitle: "旧区导流成效 · 从推荐走向可归因", impactPilot: "目前为行程估算；商户试点将使用一次性到店码 / 优惠码核销，量度实际到访与转化。", diversionTitle: "智能导流 · 从人潮热点带你去旧区老街", constraintsTitle: "任务完成核对 · 每项条件都已验证", constraintsStatic: "场景核对 · 预设演示数据（天气/人流为估算）", staticBanner: "策展演示模式：6 个预设场景，天气与人流为模拟估算；点击样例后按「出发」开始。", staticEngine: "● 策展演示", staticEngineTitle: "GitHub Pages 静态演示：6 个预设场景，非实时 Qwen 推理。", errorPlan: "连接失败，未能取得行程。请检查网络后重试，或使用上方样例进入演示模式。", retryPlan: "重试规划", cancelPlan: "取消规划", walkEstimate: "步行时间以旧城巷道锚点折算，并非 OSM 逐路口导航", via: "经", codeFail: "到店码未能由服务器发出，请重试。", mapOrderNote: "巷道锚点折线（非 OSM 逐路口导航）", daysOverview: "多日分区总览 · 每日一个可步行主题", fullMap: "全程地图 · 多日分区路线", routeMap: "路线地图 · 顺路而行", timeline: "行程时间轴", notes: "贴士", print: "打印 / 保存为 PDF", replan: "再规划一次", dayStops: "站", dayWalk: "步行", dayBudget: "预算", dayOld: "旧区", dayLocal: "小店", walk: "步行", minutes: "分钟", crowd: "人流：", wait: "约等", minShort: "分", free: "免费", approx: "约 MOP ", ahouSays: "阿濠说：", story: "听阿濠讲故事", storyListen: "听阿濠讲", storyStop: "停下", storyPlaying: "阿濠正在讲…", storyLoading: "阿濠正在开口…", storyVoice: "千问普通话男声 · 龙安鲁风",
       tool: { get_weather: "查天气", search_attractions: "搜索景点", check_opening: "核实开放时间", predict_crowd: "预测人流", find_local_gem: "找本地老街", compute_route: "规划步行路线", estimate_budget: "估算预算", submit_itinerary: "提交行程" },
       samples: ["我下星期三想带爸妈来澳门玩一天，喜欢历史文化和地道美食，预算不想太贵，又不想走太多路", "帮我安排澳门三天两夜，想玩半岛世遗、氹仔美食和路环慢生活", "情侣星期六想逛旧区老街、拍照，顺便吃街头小吃", "我想去郑家大屋和附近的历史老街，星期三去", "氹仔半日游，主打地道美食", "First time in Macau this weekend, we love history, old streets and street food"],
     },
@@ -260,14 +260,15 @@
       stopStoryVoice();
       return;
     }
-    const voice = pickVoice(picked.lang);
+    const storyLang = langNow() === "zh" ? "zh" : picked.lang;
+    const voice = pickVoice(storyLang);
     if (!voice) {
       stopStoryVoice();
       return;
     }
     const u = new SpeechSynthesisUtterance(picked.text);
     u.voice = voice;
-    u.lang = voice.lang || picked.lang;
+    u.lang = voice.lang || (storyLang === "zh" ? "zh-CN" : picked.lang);
     u.rate = 0.9;
     u.pitch = 0.92;
     u.volume = 1;
@@ -862,7 +863,7 @@
     };
   }
 
-  const LANG_LABEL = { "zh-HK": "粵語（澳門）", zh: "简体中文", en: "English", pt: "Português", ja: "日本語" };
+  const LANG_LABEL = { "zh-HK": "粵語（澳門）", zh: "简体中文（普通话）", en: "English", pt: "Português", ja: "日本語" };
 
   function addDays(iso, n) {
     const [y, m, d] = iso.split("-").map(Number);
