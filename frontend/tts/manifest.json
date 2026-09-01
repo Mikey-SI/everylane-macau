@@ -2,6 +2,30 @@
   "model": "qwen-audio-3.0-tts-plus",
   "voice": "longanlufeng",
   "voice_name_zh": "龙安鲁风",
+  "profile_version": "20260901-mandarin-v2",
+  "language_modes": {
+    "zh-HK": {
+      "speech": "Cantonese",
+      "locale": "zh-HK"
+    },
+    "zh": {
+      "speech": "Mandarin",
+      "locale": "zh-CN",
+      "cantonese_fallback": false
+    },
+    "en": {
+      "speech": "English",
+      "locale": "en"
+    },
+    "pt": {
+      "speech": "Portuguese",
+      "locale": "pt"
+    },
+    "ja": {
+      "speech": "Japanese",
+      "locale": "ja"
+    }
+  },
   "files": {
     "ruins_st_paul": {
       "zh-HK": "ruins_st_paul.zh-HK.mp3",

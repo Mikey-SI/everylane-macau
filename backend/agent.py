@@ -1020,15 +1020,30 @@ def run(text, language=None, today=None, mode="auto"):
     })
     try:
         if mode == "fast":
+            voice_mode = {
+                "zh-HK": "粵語（Cantonese）",
+                "zh": "普通话（Mandarin）",
+                "en": "English",
+                "pt": "Português",
+                "ja": "日本語",
+            }.get(lang, lang)
             yield ev(
                 "thought",
-                text="評審快速演示：使用與正式模式相同的知識庫、天氣、開放、人流、導流、路線與預算工具，確保 90 秒內可完整核驗。阿濠講古為預存千問男聲：qwen-audio-3.0-tts-plus / longanlufeng（龍安魯風）。",
+                text=(
+                    "評審快速演示：使用與正式模式相同的知識庫、天氣、開放、人流、導流、"
+                    "路線與預算工具，確保 90 秒內可完整核驗。阿濠講古為預存千問男聲："
+                    f"qwen-audio-3.0-tts-plus / longanlufeng（龍安魯風）· {voice_mode}。"
+                ),
             )
             yield from _offline(
                 params,
                 lang,
                 engine="verified-tools",
-                runtime_note="評審快速演示；講古預存 qwen-audio-3.0-tts-plus · longanlufeng。Qwen 規劃保持在線，自訂問題可切回真實推理。",
+                runtime_note=(
+                    "評審快速演示；講古預存 qwen-audio-3.0-tts-plus · "
+                    f"longanlufeng · {voice_mode}。Qwen 規劃保持在線，"
+                    "自訂問題可切回真實推理。"
+                ),
             )
             return
         if params.get("days", 1) > 1:

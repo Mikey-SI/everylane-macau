@@ -34,10 +34,14 @@ MAX_CHARS = 600
 SYNTH_TIMEOUT = 40.0
 HTTP_TIMEOUT = httpx.Timeout(40.0, connect=6.0)
 LANGS = ("zh-HK", "zh", "en", "pt", "ja")
+TTS_PROFILE_VERSION = "20260901-mandarin-v2"
 
 INSTRUCTIONS = {
     "zh-HK": "请用粤语、亲切的澳门街坊男向导口吻讲述。语速稍慢，温暖自然，不要播音腔，像邻里阿濠讲古。",
-    "zh": "请用普通话、亲切的本地男向导口吻讲述。语速稍慢，温暖自然，像邻里阿濠讲故事。",
+    "zh": (
+        "必须使用标准普通话（Mandarin、现代标准汉语）朗读全文，严禁使用粤语、广东话或粤语口音。"
+        "请用亲切的本地男向导口吻，语速稍慢、温暖自然，像邻里阿濠讲故事。"
+    ),
     "en": "Speak as a warm Macau neighbourhood male guide. Slightly slow, friendly, not announcer-like.",
     "pt": "Fala como um guia macaense simpático, voz masculina, ritmo calmo e caloroso.",
     "ja": "親しみやすい澳門の男性ガイドとして、ややゆっくり、温かく自然に話してください。",
@@ -104,7 +108,17 @@ def story_text(poi_id: str, lang: str) -> str:
 
 
 def cache_path(poi_id: str, lang: str, text: str) -> str:
-    digest = hashlib.sha1(text.encode("utf-8")).hexdigest()[:12]
+    model = os.getenv("EL_TTS_MODEL", "qwen-audio-3.0-tts-plus").strip()
+    voice = os.getenv("EL_TTS_VOICE", "longanlufeng").strip()
+    profile = "\0".join((
+        TTS_PROFILE_VERSION,
+        lang,
+        model,
+        voice,
+        INSTRUCTIONS.get(lang, INSTRUCTIONS["zh"]),
+        text,
+    ))
+    digest = hashlib.sha1(profile.encode("utf-8")).hexdigest()[:12]
     safe = re.sub(r"[^a-zA-Z0-9_-]+", "_", f"{poi_id}_{lang}_{digest}")
     return os.path.join(CACHE_DIR, safe + ".bin")
 

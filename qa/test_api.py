@@ -53,6 +53,9 @@ def main():
           "health impact counts", data)
     check("verified-tools-fast" in data["planning_modes"],
           "health advertises judge fast mode", data["planning_modes"])
+    check(data["story_tts_languages"]["zh"] == "Mandarin"
+          and data["story_tts_languages"]["zh-HK"] == "Cantonese",
+          "health separates Mandarin and Cantonese TTS", data["story_tts_languages"])
     for header in [
         "x-content-type-options", "x-frame-options", "referrer-policy",
         "permissions-policy", "content-security-policy",
@@ -156,6 +159,12 @@ def main():
     blob = json.dumps(fast_events, ensure_ascii=False)
     check("qwen-audio-3.0-tts-plus" in blob and "longanlufeng" in blob,
           "judge fast mode discloses packed Qwen male TTS")
+    _, mandarin_fast_events = sse_events(
+        "我想去郑家大屋和附近历史老街，星期三去", lang="zh", mode="fast"
+    )
+    mandarin_fast_blob = json.dumps(mandarin_fast_events, ensure_ascii=False)
+    check("普通话（Mandarin）" in mandarin_fast_blob,
+          "Simplified-Chinese judge mode discloses Mandarin audio")
 
     # Deterministic guard for real-Qwen proposals.
     params = {
@@ -268,6 +277,19 @@ def main():
     check(client.get("/api/story/audio",
                      params={"poi_id": "ruins_st_paul", "lang": "xx"}).status_code == 422,
           "story audio rejects bad lang")
+    mandarin_body = tts._plus_body("这是普通话测试。", "zh")
+    mandarin_input = mandarin_body["input"]
+    check(mandarin_input["language_hints"] == ["zh"]
+          and "标准普通话" in mandarin_input["instruction"]
+          and "严禁使用粤语" in mandarin_input["instruction"],
+          "Simplified Chinese TTS explicitly requires Mandarin", mandarin_input)
+    qwen3_mandarin = tts._qwen3_body("这是普通话测试。", "zh", False)["input"]
+    check(qwen3_mandarin["voice"] == "Ethan"
+          and qwen3_mandarin["language_type"] == "Chinese",
+          "fallback TTS remains Mandarin male", qwen3_mandarin)
+    zh_cache = tts.cache_path("ruins_st_paul", "zh", "同一段文字")
+    yue_cache = tts.cache_path("ruins_st_paul", "zh-HK", "同一段文字")
+    check(zh_cache != yue_cache, "Mandarin and Cantonese caches cannot collide")
     story = tts.story_text("ruins_st_paul", "zh-HK")
     check("三巴" in story, "story text loaded for ruins")
     cache_file = tts.cache_path("ruins_st_paul", "zh-HK", story)

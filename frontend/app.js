@@ -142,7 +142,8 @@
 
   const TTS_LANG = {
     "zh-HK": ["zh-HK", "zh-YUE", "yue-HK", "yue", "zh-TW"],
-    zh: ["zh-CN", "zh-SG", "cmn-Hans", "zh"],
+    // Simplified Chinese must never fall through to a Cantonese zh-HK voice.
+    zh: ["zh-CN", "zh-SG", "cmn-CN", "cmn-Hans"],
     en: ["en-GB", "en-HK", "en-AU", "en-IE", "en-US", "en"],
     pt: ["pt-PT", "pt-BR", "pt"],
     ja: ["ja-JP", "ja"],
@@ -280,6 +281,9 @@
 
   function packedStoryUrl(poiId, lang) {
     const rec = (TTS_PACK.files || {})[poiId] || {};
+    // For Simplified Chinese, silence is safer than accidentally serving
+    // the Cantonese recording. The live API/browser fallback also stays zh-CN.
+    if (lang === "zh") return rec.zh ? ("tts/" + rec.zh) : "";
     const name = rec[lang] || rec["zh-HK"] || rec.zh || rec.en;
     return name ? ("tts/" + name) : "";
   }
@@ -297,7 +301,8 @@
   async function playQwenStory(picked, btn, poiId) {
     const ctl = storyFetchCtl || new AbortController();
     storyFetchCtl = ctl;
-    const url = `/api/story/audio?poi_id=${encodeURIComponent(poiId)}&lang=${encodeURIComponent(picked.lang)}`;
+    const audioLang = langNow() === "zh" ? "zh" : picked.lang;
+    const url = `/api/story/audio?poi_id=${encodeURIComponent(poiId)}&lang=${encodeURIComponent(audioLang)}`;
     const r = await fetch(url, { signal: ctl.signal });
     if (!r.ok) throw new Error("tts " + r.status);
     const blob = await r.blob();
@@ -327,7 +332,8 @@
     markStoryBtn(btn, "loading");
     const body = btn.closest(".story")?.querySelector(".story-body");
     if (body) body.hidden = false;
-    const packed = packedStoryUrl(poiId, picked.lang);
+    const audioLang = langNow() === "zh" ? "zh" : picked.lang;
+    const packed = packedStoryUrl(poiId, audioLang);
     if (packed) {
       try {
         await playPackedStory(packed, btn, poiId);
@@ -352,6 +358,9 @@
   let planProgressTimer = null, planStartedAt = 0, planMode = "auto";
   const langNow = () => $("#lang")?.value || "zh-HK";
   const tt = (key) => (I18N[langNow()] || I18N["zh-HK"])[key] || I18N["zh-HK"][key] || key;
+  const storyVoiceLabel = () => langNow() === "zh"
+    ? "千问普通话男声 · 龙安鲁风"
+    : tt("storyVoice");
   const toolLabel = (name) => ((I18N[langNow()] || I18N["zh-HK"]).tool || {})[name] || name;
 
   function macauToday() {
@@ -1200,8 +1209,8 @@
     const playBtn = picked
       ? `<button type="button" class="story-play" data-poi="${esc(s.poi_id || "")}" aria-pressed="false" aria-label="${esc(tt("story"))}"><span class="story-ic" aria-hidden="true">🔊</span><span class="story-play-label">${esc(tt("storyListen"))}</span></button>`
       : "";
-    const voiceHint = picked && packedStoryUrl(s.poi_id || "", picked.lang)
-      ? `<span class="story-voice">${esc(tt("storyVoice"))}</span>`
+    const voiceHint = picked && packedStoryUrl(s.poi_id || "", langNow() === "zh" ? "zh" : picked.lang)
+      ? `<span class="story-voice">${esc(storyVoiceLabel())}</span>`
       : "";
     const story = picked
       ? `<div class="story" data-poi="${esc(s.poi_id || "")}"><div class="story-head">${playBtn}${voiceHint}<button type="button" class="story-more">${esc(tt("story"))}</button></div><p class="story-body" hidden>${esc(picked.text)}</p></div>`

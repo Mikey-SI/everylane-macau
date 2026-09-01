@@ -94,6 +94,8 @@ def test_static(browser):
         "pt": ("pt", "Planear Roteiro", "Dia tranquilo de património e gastronomia com os pais"),
         "ja": ("ja", "旅程を作る", "両親と巡るゆったり歴史・グルメ日帰り旅"),
     }
+    check(page.locator("#lang option[value='zh']").inner_text() == "简体中文（普通话）",
+          "简体中文选择器明确标注普通话")
     for lang, (html_lang, nav, title) in expected.items():
         page.select_option("#lang", lang)
         check(page.locator("html").get_attribute("lang") == html_lang, f"{lang} html lang")
@@ -107,6 +109,17 @@ def test_static(browser):
         check("undefined" not in body and "null" not in body, f"{lang} 无 undefined/null")
         check(not any(x in body for x in ("GitHub Pages", "FastAPI", "static demo", "靜態演示", "静态演示")),
               f"{lang} 用户结果不显示技术实现")
+        if lang == "zh":
+            check("千问普通话男声 · 龙安鲁风" in body,
+                  "简体中文站点明确标注普通话男声")
+            with page.expect_request(
+                lambda req: req.url.endswith("ruins_st_paul.zh.mp3"),
+                timeout=8_000,
+            ) as audio_request:
+                page.locator(".story-play").first.click()
+            check(".zh-HK.mp3" not in audio_request.value.url,
+                  "简体中文只请求普通话音频", audio_request.value.url)
+            page.locator(".story-play").first.click()
         if lang == "pt":
             check("Rota coerente" in body and "Chegue cedo" in body, "葡语结果完整本地化")
             check("Coherent district" not in body and "Arrive early" not in body, "葡语无英文固定文案")

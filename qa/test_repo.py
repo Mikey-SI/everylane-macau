@@ -50,6 +50,19 @@ def main():
     pack = json.loads((ROOT / "frontend/tts/manifest.json").read_text(encoding="utf-8"))
     check(pack.get("model") == "qwen-audio-3.0-tts-plus", "packed TTS is qwen-audio-3.0-tts-plus")
     check(pack.get("voice") == "longanlufeng", "packed TTS voice is longanlufeng")
+    check(pack.get("profile_version") == "20260901-mandarin-v2",
+          "packed TTS profile version is current")
+    mandarin = (pack.get("language_modes") or {}).get("zh") or {}
+    check(mandarin.get("speech") == "Mandarin"
+          and mandarin.get("locale") == "zh-CN"
+          and mandarin.get("cantonese_fallback") is False,
+          "Simplified Chinese audio contract is Mandarin-only", mandarin)
+    for poi_id, rec in (pack.get("files") or {}).items():
+        name = rec.get("zh")
+        audio = ROOT / "frontend/tts" / name if name else None
+        check(bool(name) and name.endswith(".zh.mp3")
+              and audio.is_file() and audio.stat().st_size > 10_000,
+              f"packed Mandarin audio {poi_id}")
     judge_pois = [
         "ruins_st_paul", "travessa_paixao", "rua_estalagens",
         "rua_cinco", "rua_felicidade", "lou_kau_mansion",

@@ -99,6 +99,13 @@ def health():
         "local_business": sum(1 for p in kb.all_pois() if p["local_business"]),
         "planning_modes": ["qwen-react", "verified-tools-fast"],
         "story_tts": tts.available(),
+        "story_tts_languages": {
+            "zh-HK": "Cantonese",
+            "zh": "Mandarin",
+            "en": "English",
+            "pt": "Portuguese",
+            "ja": "Japanese",
+        },
     }
 
 
