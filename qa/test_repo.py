@@ -116,16 +116,26 @@ def main():
     check(not secret_files, "repository has no Token Plan secret", secret_files)
     check(not stale_files, "repository has no stale identity/architecture claims", stale_files)
     check(not (ROOT / ".env").exists(), "local .env not present in repository workspace")
-    score_draft = "docs/專業評委評分與冠軍改進報告_街知巷聞.md"
+    unpublished = [
+        "docs/專業評委評分與冠軍改進報告_街知巷聞.md",
+        "docs/評審問答_冠軍版_街知巷聞.md",
+        "docs/決賽路演_10分鐘講稿_街知巷聞.md",
+        "docs/決賽路演_10分鐘_街知巷聞.pptx",
+        "docs/決賽路演_10分鐘_街知巷聞.pdf",
+        "docs/路演腳本_10分鐘.md",
+        "docs/make_final_pitch.py",
+        "docs/初賽提交清單.md",
+    ]
     try:
         import subprocess
-        tracked = subprocess.check_output(
-            ["git", "-c", f"safe.directory={ROOT}", "ls-files", "--", score_draft],
-            cwd=ROOT, text=True, stderr=subprocess.DEVNULL,
-        ).strip()
-    except Exception:
-        tracked = ""
-    check(not tracked, "self-score draft is not published in git")
+        for rel in unpublished:
+            tracked = subprocess.check_output(
+                ["git", "-c", f"safe.directory={ROOT}", "ls-files", "--", rel],
+                cwd=ROOT, text=True, stderr=subprocess.DEVNULL,
+            ).strip()
+            check(not tracked, f"internal draft is not published: {Path(rel).name}")
+    except Exception as exc:
+        check(False, "git available to verify unpublished drafts", str(exc))
 
     required = [
         "docs/概念計劃書_街知巷聞_EveryLaneMacau.docx",
@@ -147,11 +157,6 @@ def main():
         "frontend/api.html",
         "docs/複賽說明文檔_街知巷聞.docx",
         "docs/複賽說明文檔_街知巷聞.pdf",
-        "docs/make_final_pitch.py",
-        "docs/決賽路演_10分鐘_街知巷聞.pptx",
-        "docs/決賽路演_10分鐘_街知巷聞.pdf",
-        "docs/決賽路演_10分鐘講稿_街知巷聞.md",
-        "docs/評審問答_冠軍版_街知巷聞.md",
         "docs/assets/semifinal/00_home_proof.png",
     ]
     for rel in required:
@@ -195,9 +200,6 @@ def main():
             "docs/複賽說明文檔_街知巷聞.pdf": [
                 "愛拼才會贏", "施天益", "導流覆蓋率", "路線可行率", "商戶到訪率",
                 "一次性到店碼", "el-demo-2026", "47.79.228.128",
-            ],
-            "docs/決賽路演_10分鐘_街知巷聞.pdf": [
-                "愛拼才會贏", "街知巷聞", "QwenPaw", "到店碼", "641",
             ],
         }
         for rel, needles in pdf_expect.items():

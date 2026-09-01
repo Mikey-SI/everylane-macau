@@ -29,5 +29,12 @@ docs/_fixup_log.txt
 credentials.yaml
 **/credentials.yaml
 .qwenpaw.secret/
-# internal self-score drafts — never publish
+# internal drafts — never publish on GitHub
 docs/專業評委評分與冠軍改進報告_街知巷聞.md
+docs/評審問答_冠軍版_街知巷聞.md
+docs/決賽路演_10分鐘講稿_街知巷聞.md
+docs/決賽路演_10分鐘_街知巷聞.pptx
+docs/決賽路演_10分鐘_街知巷聞.pdf
+docs/路演腳本_10分鐘.md
+docs/make_final_pitch.py
+docs/初賽提交清單.md
