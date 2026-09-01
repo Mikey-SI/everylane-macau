@@ -237,6 +237,13 @@ def main():
         page.wait_for_timeout(500)
         shot(page, "07_judge_fast_mode.png")
 
+        page.select_option("#lang", "zh")
+        page.wait_for_selector(".story-voice", timeout=15_000)
+        page.wait_for_timeout(600)
+        page.locator(".tl-stop").first.scroll_into_view_if_needed()
+        page.wait_for_timeout(300)
+        shot_el(page, ".tl-stop", "09_story_mandarin.png")
+
         browser.close()
     print("ALL_SHOTS_DONE")
 

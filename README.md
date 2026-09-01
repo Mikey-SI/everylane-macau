@@ -34,7 +34,8 @@
 - 7 個細粒度旅遊工具 + 1 個完整流程工具通過真實 MCP 協議測試；
 - Token Plan / DashScope 雙供應商配置（Key 只讀本機 `.env`，不入 Git）；
 - 70 個澳門 POI，70 / 70 有圖片，25 個舊區點，20 間本地小店；
-- 繁中、簡中、英文、葡文、日文五語言；
+- 繁中、簡中（普通話）、英文、葡文、日文五語言；
+- 70 站 × 5 語阿濠講古男聲（簡體中文為普通話）；
 - 支援一日及 2–5 日分區行程；
 - 五輪 QA 生命周期與初賽開發過程證明已建立。
 
@@ -50,6 +51,7 @@
 - **即時天氣**：接入 Open-Meteo 實時預報（行程頁「實時天氣」徽章，異常自動回退估算模型）；
 - **無障礙資料**：70/70 POI 標註是否無梯級 + 具體提示（行程站點徽章）；
 - **90 秒評審快速演示**：同一知識庫與 7 項工具穩定重現休息日改線、舊區導流與條件核對；
+- **阿濠講古五語男聲**：70 個景點均有粵語／普通話／英語／葡語／日語預存千問男聲；簡體中文固定普通話，不回退粵語；
 - **Qwen 路演保護**：45 秒單次逾時、110 秒整體時間預算，受限時由工具鏈接管，介面明示實際引擎；
 - **可審計證據鏈**：`/api/system/status` 顯示真實運行狀態；`/api/impact/evidence` 匯出數據分類、公式、種子、來源與核驗端點；
 - 試點成效數據為示範數據並在頁面與 API 明確標註（符合賽規），不宣稱為真實田野研究；
@@ -139,12 +141,12 @@ python qa/test_api.py
 & "$env:USERPROFILE\.qwenpaw-venv\Scripts\python.exe" qa\test_qwenpaw_mcp.py
 ```
 
-当前结果（复赛，2026-08-26）：
+當前結果（複賽提交，2026-09-01）：
 
-- 后端：647 PASS / 0 FAIL / 0 WARN
-- 浏览器：119 PASS / 0 FAIL（含 90 秒评审模式、证据链与到店码闭环）
-- API / 安全：102 PASS / 0 FAIL（含 runtime / evidence / impact / codes+PIN / B 端 API）
-- 仓库交付：50 PASS / 0 FAIL（`python qa/test_repo.py`）
+- 後端：647 PASS / 0 FAIL / 0 WARN
+- 瀏覽器：127 PASS / 0 FAIL（含 90 秒評審模式、普通話講古路徑、證據鏈與到店碼閉環）
+- API / 安全：116 PASS / 0 FAIL（含 runtime / evidence / impact / codes+PIN / B 端 API / 普通話 TTS）
+- 倉庫交付：109 PASS / 0 FAIL（`python qa/test_repo.py`）
 - QwenPaw MCP：8 tools / protocol / failure recovery / route / planner PASS
 
 测试报告在 [`qa/reports/`](qa/reports/)。

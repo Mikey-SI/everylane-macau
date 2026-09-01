@@ -19,7 +19,7 @@ para(doc, "「千模百煉」AI 開發者系列之學生競賽 · 複賽實踐�
 para(doc, "街知巷聞 · EveryLane Macau", 24, TERRA, bold=True, align=CENTER, after=2)
 para(doc, "把 AI 由「問答」做成「做任務」——一個會將遊客導流入舊區老街的澳門深度遊智能體",
      12, INK, bold=True, align=CENTER, after=2)
-para(doc, "隊伍：愛拼才會贏　·　參賽者：施天益（SITINIEK，學號 dc227126）　·　2026-08-24",
+para(doc, "隊伍：愛拼才會贏　·　參賽者：施天益（SITINIEK，學號 dc227126）　·　2026-09-01",
      9.5, GREY, align=CENTER, after=10)
 
 # abstract
@@ -27,7 +27,8 @@ h2(doc, "摘要")
 para(doc, "本作品以 QwenPaw 2.0.0、qwen3.7-plus、專用 Skill 與 stdio MCP 實作可直接使用的"
      "「街知巷聞」澳門深度遊智能體。它以 ReAct 迴圈規劃、調用 7 種工具、多步執行並失敗恢復；"
      "核心創新是把遊客由熱門點導向舊區與本地商戶。複賽進一步把推薦做成可歸因閉環："
-     "加入實時天氣、70/70 POI 無障礙資料、一次性到店碼、酒店/旅行社 API、成效儀表板及可審計數據口徑。"
+     "加入實時天氣、70/70 POI 無障礙資料、一次性到店碼、酒店/旅行社 API、成效儀表板、"
+     "70 站五語講古男聲及可審計數據口徑。"
      "公網、工具軌跡、核銷流程與測試均可由評審親手驗證。")
 image(doc, os.path.join(ASSET_DIR, "product_hero.png"),
       "產品首頁：以澳門舊城色系建立文旅與舊區活化的視覺記憶", width=6.35, after=10)
@@ -126,7 +127,8 @@ h1(doc, "八、", "複賽閉環與工程驗證")
 bullet(doc, "行程頁領碼 → 商戶側核銷 → 第二次核銷被拒；流程真實、有狀態且不收集個人資料。", "到店碼　")
 bullet(doc, "POST /api/v1/itinerary 以 X-API-Key 鑑權，返回時間軸、預算、無障礙與舊區歸因，供酒店/旅行社嵌入。", "B 端 API　")
 bullet(doc, "成效頁把實時系統狀態與示範 KPI 分欄；/api/impact/evidence 匯出公式、數據類別、種子、來源與核驗端點。", "可審計　")
-bullet(doc, "後端 641 項、瀏覽器 119 項、API/安全 101 項及 8 個 MCP 協議測試全部通過；另以倉庫交付測試核對文檔與必需檔案。", "測試　")
+bullet(doc, "70 個景點均有粵語、普通話、英語、葡語、日語講古；簡體中文固定普通話男聲，不回退粵語。", "五語講古　")
+bullet(doc, "後端 647 項、瀏覽器 127 項、API/安全 116 項、倉庫交付 109 項及 8 個 MCP 協議測試全部通過。", "測試　")
 image(doc, os.path.join(ASSET_DIR, "semifinal", "04_dashboard_redeem.png"),
       "一次性到店碼：真實發碼與核銷；重複使用立即被拒", width=6.35, after=8)
 

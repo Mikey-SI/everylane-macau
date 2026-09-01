@@ -76,17 +76,20 @@ def main():
           and "zh-HK" not in app_js.split("zh: [\"zh-CN\"")[1].split("]")[0],
           "browser Mandarin prefs exclude Cantonese locales")
 
-    judge_pois = [
-        "ruins_st_paul", "travessa_paixao", "rua_estalagens",
-        "rua_cinco", "rua_felicidade", "lou_kau_mansion",
-    ]
     langs = ("zh-HK", "zh", "en", "pt", "ja")
-    for poi_id in judge_pois:
+    story_ids = set(stories)
+    packed_ids = set(pack.get("files") or {})
+    check(packed_ids == story_ids, "packed TTS covers every story POI",
+          {"missing": sorted(story_ids - packed_ids)[:12],
+           "extra": sorted(packed_ids - story_ids)[:12],
+           "packed": len(packed_ids)})
+    for poi_id in sorted(story_ids):
+        rec = (pack.get("files") or {}).get(poi_id) or {}
         for lang in langs:
-            name = ((pack.get("files") or {}).get(poi_id) or {}).get(lang)
+            name = rec.get(lang)
             audio = ROOT / "frontend/tts" / name if name else None
             check(bool(name) and audio.is_file() and audio.stat().st_size > 10_000,
-                  f"packed judge audio {poi_id} {lang}")
+                  f"packed {lang} audio {poi_id}")
 
     # No production credential (placeholder text is allowed).
     secret_re = re.compile(r"sk-sp-[A-Za-z0-9_./+=-]{20,}")

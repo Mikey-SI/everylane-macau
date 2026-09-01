@@ -3,6 +3,8 @@
   "voice": "longanlufeng",
   "voice_name_zh": "龙安鲁风",
   "profile_version": "20260901-mandarin-v2",
+  "poi_count": 70,
+  "language_count": 5,
   "language_modes": {
     "zh-HK": {
       "speech": "Cantonese",
@@ -152,6 +154,370 @@
       "en": "a_ma_temple.en.mp3",
       "pt": "a_ma_temple.pt.mp3",
       "ja": "a_ma_temple.ja.mp3"
+    },
+    "lilau_square": {
+      "zh-HK": "lilau_square.zh-HK.mp3",
+      "zh": "lilau_square.zh.mp3",
+      "en": "lilau_square.en.mp3",
+      "pt": "lilau_square.pt.mp3",
+      "ja": "lilau_square.ja.mp3"
+    },
+    "mandarin_house": {
+      "zh-HK": "mandarin_house.zh-HK.mp3",
+      "zh": "mandarin_house.zh.mp3",
+      "en": "mandarin_house.en.mp3",
+      "pt": "mandarin_house.pt.mp3",
+      "ja": "mandarin_house.ja.mp3"
+    },
+    "camoes_garden": {
+      "zh-HK": "camoes_garden.zh-HK.mp3",
+      "zh": "camoes_garden.zh.mp3",
+      "en": "camoes_garden.en.mp3",
+      "pt": "camoes_garden.pt.mp3",
+      "ja": "camoes_garden.ja.mp3"
+    },
+    "cathedral_macau": {
+      "zh-HK": "cathedral_macau.zh-HK.mp3",
+      "zh": "cathedral_macau.zh.mp3",
+      "en": "cathedral_macau.en.mp3",
+      "pt": "cathedral_macau.pt.mp3",
+      "ja": "cathedral_macau.ja.mp3"
+    },
+    "dom_pedro_theatre": {
+      "zh-HK": "dom_pedro_theatre.zh-HK.mp3",
+      "zh": "dom_pedro_theatre.zh.mp3",
+      "en": "dom_pedro_theatre.en.mp3",
+      "pt": "dom_pedro_theatre.pt.mp3",
+      "ja": "dom_pedro_theatre.ja.mp3"
+    },
+    "guan_qian": {
+      "zh-HK": "guan_qian.zh-HK.mp3",
+      "zh": "guan_qian.zh.mp3",
+      "en": "guan_qian.en.mp3",
+      "pt": "guan_qian.pt.mp3",
+      "ja": "guan_qian.ja.mp3"
+    },
+    "hang_yau_fishball": {
+      "zh-HK": "hang_yau_fishball.zh-HK.mp3",
+      "zh": "hang_yau_fishball.zh.mp3",
+      "en": "hang_yau_fishball.en.mp3",
+      "pt": "hang_yau_fishball.pt.mp3",
+      "ja": "hang_yau_fishball.ja.mp3"
+    },
+    "ho_tung_library": {
+      "zh-HK": "ho_tung_library.zh-HK.mp3",
+      "zh": "ho_tung_library.zh.mp3",
+      "en": "ho_tung_library.en.mp3",
+      "pt": "ho_tung_library.pt.mp3",
+      "ja": "ho_tung_library.ja.mp3"
+    },
+    "holy_house_mercy": {
+      "zh-HK": "holy_house_mercy.zh-HK.mp3",
+      "zh": "holy_house_mercy.zh.mp3",
+      "en": "holy_house_mercy.en.mp3",
+      "pt": "holy_house_mercy.pt.mp3",
+      "ja": "holy_house_mercy.ja.mp3"
+    },
+    "leal_senado": {
+      "zh-HK": "leal_senado.zh-HK.mp3",
+      "zh": "leal_senado.zh.mp3",
+      "en": "leal_senado.en.mp3",
+      "pt": "leal_senado.pt.mp3",
+      "ja": "leal_senado.ja.mp3"
+    },
+    "lin_fong_temple": {
+      "zh-HK": "lin_fong_temple.zh-HK.mp3",
+      "zh": "lin_fong_temple.zh.mp3",
+      "en": "lin_fong_temple.en.mp3",
+      "pt": "lin_fong_temple.pt.mp3",
+      "ja": "lin_fong_temple.ja.mp3"
+    },
+    "lou_lim_ioc_garden": {
+      "zh-HK": "lou_lim_ioc_garden.zh-HK.mp3",
+      "zh": "lou_lim_ioc_garden.zh.mp3",
+      "en": "lou_lim_ioc_garden.en.mp3",
+      "pt": "lou_lim_ioc_garden.pt.mp3",
+      "ja": "lou_lim_ioc_garden.ja.mp3"
+    },
+    "macau_museum": {
+      "zh-HK": "macau_museum.zh-HK.mp3",
+      "zh": "macau_museum.zh.mp3",
+      "en": "macau_museum.en.mp3",
+      "pt": "macau_museum.pt.mp3",
+      "ja": "macau_museum.ja.mp3"
+    },
+    "monte_fort": {
+      "zh-HK": "monte_fort.zh-HK.mp3",
+      "zh": "monte_fort.zh.mp3",
+      "en": "monte_fort.en.mp3",
+      "pt": "monte_fort.pt.mp3",
+      "ja": "monte_fort.ja.mp3"
+    },
+    "na_tcha_temple": {
+      "zh-HK": "na_tcha_temple.zh-HK.mp3",
+      "zh": "na_tcha_temple.zh.mp3",
+      "en": "na_tcha_temple.en.mp3",
+      "pt": "na_tcha_temple.pt.mp3",
+      "ja": "na_tcha_temple.ja.mp3"
+    },
+    "old_city_walls": {
+      "zh-HK": "old_city_walls.zh-HK.mp3",
+      "zh": "old_city_walls.zh.mp3",
+      "en": "old_city_walls.en.mp3",
+      "pt": "old_city_walls.pt.mp3",
+      "ja": "old_city_walls.ja.mp3"
+    },
+    "red_market": {
+      "zh-HK": "red_market.zh-HK.mp3",
+      "zh": "red_market.zh.mp3",
+      "en": "red_market.en.mp3",
+      "pt": "red_market.pt.mp3",
+      "ja": "red_market.ja.mp3"
+    },
+    "sam_kai_vui_kun": {
+      "zh-HK": "sam_kai_vui_kun.zh-HK.mp3",
+      "zh": "sam_kai_vui_kun.zh.mp3",
+      "en": "sam_kai_vui_kun.en.mp3",
+      "pt": "sam_kai_vui_kun.pt.mp3",
+      "ja": "sam_kai_vui_kun.ja.mp3"
+    },
+    "st_anthony_church": {
+      "zh-HK": "st_anthony_church.zh-HK.mp3",
+      "zh": "st_anthony_church.zh.mp3",
+      "en": "st_anthony_church.en.mp3",
+      "pt": "st_anthony_church.pt.mp3",
+      "ja": "st_anthony_church.ja.mp3"
+    },
+    "st_augustine": {
+      "zh-HK": "st_augustine.zh-HK.mp3",
+      "zh": "st_augustine.zh.mp3",
+      "en": "st_augustine.en.mp3",
+      "pt": "st_augustine.pt.mp3",
+      "ja": "st_augustine.ja.mp3"
+    },
+    "st_dominic": {
+      "zh-HK": "st_dominic.zh-HK.mp3",
+      "zh": "st_dominic.zh.mp3",
+      "en": "st_dominic.en.mp3",
+      "pt": "st_dominic.pt.mp3",
+      "ja": "st_dominic.ja.mp3"
+    },
+    "tap_seac_gallery": {
+      "zh-HK": "tap_seac_gallery.zh-HK.mp3",
+      "zh": "tap_seac_gallery.zh.mp3",
+      "en": "tap_seac_gallery.en.mp3",
+      "pt": "tap_seac_gallery.pt.mp3",
+      "ja": "tap_seac_gallery.ja.mp3"
+    },
+    "tap_seac_square": {
+      "zh-HK": "tap_seac_square.zh-HK.mp3",
+      "zh": "tap_seac_square.zh.mp3",
+      "en": "tap_seac_square.en.mp3",
+      "pt": "tap_seac_square.pt.mp3",
+      "ja": "tap_seac_square.ja.mp3"
+    },
+    "three_lamps": {
+      "zh-HK": "three_lamps.zh-HK.mp3",
+      "zh": "three_lamps.zh.mp3",
+      "en": "three_lamps.en.mp3",
+      "pt": "three_lamps.pt.mp3",
+      "ja": "three_lamps.ja.mp3"
+    },
+    "cheoc_van_beach": {
+      "zh-HK": "cheoc_van_beach.zh-HK.mp3",
+      "zh": "cheoc_van_beach.zh.mp3",
+      "en": "cheoc_van_beach.en.mp3",
+      "pt": "cheoc_van_beach.pt.mp3",
+      "ja": "cheoc_van_beach.ja.mp3"
+    },
+    "fernando_restaurant": {
+      "zh-HK": "fernando_restaurant.zh-HK.mp3",
+      "zh": "fernando_restaurant.zh.mp3",
+      "en": "fernando_restaurant.en.mp3",
+      "pt": "fernando_restaurant.pt.mp3",
+      "ja": "fernando_restaurant.ja.mp3"
+    },
+    "hac_sa_beach": {
+      "zh-HK": "hac_sa_beach.zh-HK.mp3",
+      "zh": "hac_sa_beach.zh.mp3",
+      "en": "hac_sa_beach.en.mp3",
+      "pt": "hac_sa_beach.pt.mp3",
+      "ja": "hac_sa_beach.ja.mp3"
+    },
+    "hac_sa_park": {
+      "zh-HK": "hac_sa_park.zh-HK.mp3",
+      "zh": "hac_sa_park.zh.mp3",
+      "en": "hac_sa_park.en.mp3",
+      "pt": "hac_sa_park.pt.mp3",
+      "ja": "hac_sa_park.ja.mp3"
+    },
+    "lai_chi_vun": {
+      "zh-HK": "lai_chi_vun.zh-HK.mp3",
+      "zh": "lai_chi_vun.zh.mp3",
+      "en": "lai_chi_vun.en.mp3",
+      "pt": "lai_chi_vun.pt.mp3",
+      "ja": "lai_chi_vun.ja.mp3"
+    },
+    "nga_tim_cafe": {
+      "zh-HK": "nga_tim_cafe.zh-HK.mp3",
+      "zh": "nga_tim_cafe.zh.mp3",
+      "en": "nga_tim_cafe.en.mp3",
+      "pt": "nga_tim_cafe.pt.mp3",
+      "ja": "nga_tim_cafe.ja.mp3"
+    },
+    "panda_pavilion": {
+      "zh-HK": "panda_pavilion.zh-HK.mp3",
+      "zh": "panda_pavilion.zh.mp3",
+      "en": "panda_pavilion.en.mp3",
+      "pt": "panda_pavilion.pt.mp3",
+      "ja": "panda_pavilion.ja.mp3"
+    },
+    "seac_pai_van_park": {
+      "zh-HK": "seac_pai_van_park.zh-HK.mp3",
+      "zh": "seac_pai_van_park.zh.mp3",
+      "en": "seac_pai_van_park.en.mp3",
+      "pt": "seac_pai_van_park.pt.mp3",
+      "ja": "seac_pai_van_park.ja.mp3"
+    },
+    "fishermans_wharf": {
+      "zh-HK": "fishermans_wharf.zh-HK.mp3",
+      "zh": "fishermans_wharf.zh.mp3",
+      "en": "fishermans_wharf.en.mp3",
+      "pt": "fishermans_wharf.pt.mp3",
+      "ja": "fishermans_wharf.ja.mp3"
+    },
+    "grand_prix_museum": {
+      "zh-HK": "grand_prix_museum.zh-HK.mp3",
+      "zh": "grand_prix_museum.zh.mp3",
+      "en": "grand_prix_museum.en.mp3",
+      "pt": "grand_prix_museum.pt.mp3",
+      "ja": "grand_prix_museum.ja.mp3"
+    },
+    "guia_fortress": {
+      "zh-HK": "guia_fortress.zh-HK.mp3",
+      "zh": "guia_fortress.zh.mp3",
+      "en": "guia_fortress.en.mp3",
+      "pt": "guia_fortress.pt.mp3",
+      "ja": "guia_fortress.ja.mp3"
+    },
+    "kun_iam_temple": {
+      "zh-HK": "kun_iam_temple.zh-HK.mp3",
+      "zh": "kun_iam_temple.zh.mp3",
+      "en": "kun_iam_temple.en.mp3",
+      "pt": "kun_iam_temple.pt.mp3",
+      "ja": "kun_iam_temple.ja.mp3"
+    },
+    "science_center": {
+      "zh-HK": "science_center.zh-HK.mp3",
+      "zh": "science_center.zh.mp3",
+      "en": "science_center.en.mp3",
+      "pt": "science_center.pt.mp3",
+      "ja": "science_center.ja.mp3"
+    },
+    "kun_iam_statue": {
+      "zh-HK": "kun_iam_statue.zh-HK.mp3",
+      "zh": "kun_iam_statue.zh.mp3",
+      "en": "kun_iam_statue.en.mp3",
+      "pt": "kun_iam_statue.pt.mp3",
+      "ja": "kun_iam_statue.ja.mp3"
+    },
+    "macau_tower": {
+      "zh-HK": "macau_tower.zh-HK.mp3",
+      "zh": "macau_tower.zh.mp3",
+      "en": "macau_tower.en.mp3",
+      "pt": "macau_tower.pt.mp3",
+      "ja": "macau_tower.ja.mp3"
+    },
+    "moorish_barracks": {
+      "zh-HK": "moorish_barracks.zh-HK.mp3",
+      "zh": "moorish_barracks.zh.mp3",
+      "en": "moorish_barracks.en.mp3",
+      "pt": "moorish_barracks.pt.mp3",
+      "ja": "moorish_barracks.ja.mp3"
+    },
+    "penha_church": {
+      "zh-HK": "penha_church.zh-HK.mp3",
+      "zh": "penha_church.zh.mp3",
+      "en": "penha_church.en.mp3",
+      "pt": "penha_church.pt.mp3",
+      "ja": "penha_church.ja.mp3"
+    },
+    "st_lawrence": {
+      "zh-HK": "st_lawrence.zh-HK.mp3",
+      "zh": "st_lawrence.zh.mp3",
+      "en": "st_lawrence.en.mp3",
+      "pt": "st_lawrence.pt.mp3",
+      "ja": "st_lawrence.ja.mp3"
+    },
+    "broadway_food_street": {
+      "zh-HK": "broadway_food_street.zh-HK.mp3",
+      "zh": "broadway_food_street.zh.mp3",
+      "en": "broadway_food_street.en.mp3",
+      "pt": "broadway_food_street.pt.mp3",
+      "ja": "broadway_food_street.ja.mp3"
+    },
+    "carmel_church": {
+      "zh-HK": "carmel_church.zh-HK.mp3",
+      "zh": "carmel_church.zh.mp3",
+      "en": "carmel_church.en.mp3",
+      "pt": "carmel_church.pt.mp3",
+      "ja": "carmel_church.ja.mp3"
+    },
+    "old_taipa_market": {
+      "zh-HK": "old_taipa_market.zh-HK.mp3",
+      "zh": "old_taipa_market.zh.mp3",
+      "en": "old_taipa_market.en.mp3",
+      "pt": "old_taipa_market.pt.mp3",
+      "ja": "old_taipa_market.ja.mp3"
+    },
+    "pak_tai_temple_taipa": {
+      "zh-HK": "pak_tai_temple_taipa.zh-HK.mp3",
+      "zh": "pak_tai_temple_taipa.zh.mp3",
+      "en": "pak_tai_temple_taipa.en.mp3",
+      "pt": "pak_tai_temple_taipa.pt.mp3",
+      "ja": "pak_tai_temple_taipa.ja.mp3"
+    },
+    "parisian_macau": {
+      "zh-HK": "parisian_macau.zh-HK.mp3",
+      "zh": "parisian_macau.zh.mp3",
+      "en": "parisian_macau.en.mp3",
+      "pt": "parisian_macau.pt.mp3",
+      "ja": "parisian_macau.ja.mp3"
+    },
+    "pou_tai_temple": {
+      "zh-HK": "pou_tai_temple.zh-HK.mp3",
+      "zh": "pou_tai_temple.zh.mp3",
+      "en": "pou_tai_temple.en.mp3",
+      "pt": "pou_tai_temple.pt.mp3",
+      "ja": "pou_tai_temple.ja.mp3"
+    },
+    "seng_cheong": {
+      "zh-HK": "seng_cheong.zh-HK.mp3",
+      "zh": "seng_cheong.zh.mp3",
+      "en": "seng_cheong.en.mp3",
+      "pt": "seng_cheong.pt.mp3",
+      "ja": "seng_cheong.ja.mp3"
+    },
+    "taipa_museum": {
+      "zh-HK": "taipa_museum.zh-HK.mp3",
+      "zh": "taipa_museum.zh.mp3",
+      "en": "taipa_museum.en.mp3",
+      "pt": "taipa_museum.pt.mp3",
+      "ja": "taipa_museum.ja.mp3"
+    },
+    "taipa_village": {
+      "zh-HK": "taipa_village.zh-HK.mp3",
+      "zh": "taipa_village.zh.mp3",
+      "en": "taipa_village.en.mp3",
+      "pt": "taipa_village.pt.mp3",
+      "ja": "taipa_village.ja.mp3"
+    },
+    "venetian_macau": {
+      "zh-HK": "venetian_macau.zh-HK.mp3",
+      "zh": "venetian_macau.zh.mp3",
+      "en": "venetian_macau.en.mp3",
+      "pt": "venetian_macau.pt.mp3",
+      "ja": "venetian_macau.ja.mp3"
     }
   }
 }
