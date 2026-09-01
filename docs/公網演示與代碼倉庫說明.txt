@@ -22,3 +22,4 @@ https://github.com/Mikey-SI/everylane-macau
 - 簡體中文為普通話，不會回退成粵語。
 - 倉庫不含 .env / API Key；請使用 .env.example 自行配置 Token Plan。
 - 商戶核銷演示 PIN：2580　·　B 端演示金鑰：el-demo-2026
+- 自動化測試：後端 647、瀏覽器 127、API/安全 116、倉庫交付 482 全部 PASS。

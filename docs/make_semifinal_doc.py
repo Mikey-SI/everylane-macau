@@ -120,7 +120,7 @@ bullet(doc, "真實 Qwen 單次逾時 45 秒、整體時間預算 110 秒；受�
 bullet(doc, "首頁新增「90 秒評審快速演示」，以同一 7 項工具穩定重現休息日改線、舊區導流與任務核對。")
 bullet(doc, "儀表板新增真實系統 uptime/規劃成功率，與示範 KPI 分欄；/api/impact/evidence 可下載公式、種子、來源與核驗端點。")
 bullet(doc, "步行估算升級為舊城巷道錨點折算（議事亭、福隆新街、官也街等），時間軸標明途經錨點、地圖畫折線；介面如實標註並非 OSM 逐路口導航。")
-bullet(doc, "回歸測試：647 後端、127 瀏覽器、116 API/安全、109 倉庫交付全部 PASS；8 個 MCP 工具協議測試通過。")
+bullet(doc, "回歸測試：647 後端、127 瀏覽器、116 API/安全、482 倉庫交付全部 PASS；8 個 MCP 工具協議測試通過。")
 h2(doc, "阿濠講古：70 站 × 5 語言男聲")
 bullet(doc, "70 個景點均有粵語、普通話、英語、葡語、日語講古文案；公網與 GitHub Pages 預存千問男聲 qwen-audio-3.0-tts-plus／龍安魯風。")
 bullet(doc, "簡體中文固定為普通話（Mandarin），禁止回退粵語錄音或粵語系統聲；粵語選項仍為粵語。")
@@ -189,7 +189,7 @@ h1(doc, "六、", "技術與部署摘要")
 bullet(doc, "架構不變：QwenPaw 2.0.0 Skill + stdio MCP（7+1 工具）＋ FastAPI/SSE ＋ 五語言前端；複賽新增 impact 模組（成效/熱度/商戶/到店碼/B 端 API）。", head="架構：")
 bullet(doc, "阿里雲新加坡實例 + Nginx + systemd；本次僅更新 /opt/everylane-macau 應用檔案並重啟 everylane 服務。", head="部署：")
 bullet(doc, "到店碼僅存於服務端（無個人資料）；核銷需商戶 PIN 2580（演示）；B 端 API 金鑰經環境變數配置；倉庫無任何憑證。", head="安全：")
-bullet(doc, "647 後端、127 瀏覽器、116 API/安全、109 倉庫交付、8 MCP 協議測試全部 PASS；另有倉庫交付一致性測試（qa/ 目錄可重現）。", head="質量：")
+bullet(doc, "647 後端、127 瀏覽器、116 API/安全、482 倉庫交付、8 MCP 協議測試全部 PASS；另有倉庫交付一致性測試（qa/ 目錄可重現）。", head="質量：")
 
 runs(doc, [("我們相信複賽要求的不只是「部署完成」，而是把計劃書的每一個承諾變成評審可以親手驗證的功能。", {"size": 10.5}),
            ("街知巷聞已準備好接受核驗。", {"bold": True, "size": 10.5, "color": TERRA})], after=4)

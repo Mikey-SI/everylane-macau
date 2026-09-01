@@ -128,7 +128,7 @@ bullet(doc, "行程頁領碼 → 商戶側核銷 → 第二次核銷被拒；流
 bullet(doc, "POST /api/v1/itinerary 以 X-API-Key 鑑權，返回時間軸、預算、無障礙與舊區歸因，供酒店/旅行社嵌入。", "B 端 API　")
 bullet(doc, "成效頁把實時系統狀態與示範 KPI 分欄；/api/impact/evidence 匯出公式、數據類別、種子、來源與核驗端點。", "可審計　")
 bullet(doc, "70 個景點均有粵語、普通話、英語、葡語、日語講古；簡體中文固定普通話男聲，不回退粵語。", "五語講古　")
-bullet(doc, "後端 647 項、瀏覽器 127 項、API/安全 116 項、倉庫交付 109 項及 8 個 MCP 協議測試全部通過。", "測試　")
+bullet(doc, "後端 647 項、瀏覽器 127 項、API/安全 116 項、倉庫交付 482 項及 8 個 MCP 協議測試全部通過。", "測試　")
 image(doc, os.path.join(ASSET_DIR, "semifinal", "04_dashboard_redeem.png"),
       "一次性到店碼：真實發碼與核銷；重複使用立即被拒", width=6.35, after=8)
 

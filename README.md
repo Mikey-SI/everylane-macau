@@ -146,7 +146,7 @@ python qa/test_api.py
 - 後端：647 PASS / 0 FAIL / 0 WARN
 - 瀏覽器：127 PASS / 0 FAIL（含 90 秒評審模式、普通話講古路徑、證據鏈與到店碼閉環）
 - API / 安全：116 PASS / 0 FAIL（含 runtime / evidence / impact / codes+PIN / B 端 API / 普通話 TTS）
-- 倉庫交付：109 PASS / 0 FAIL（`python qa/test_repo.py`）
+- 倉庫交付：482 PASS / 0 FAIL（`python qa/test_repo.py`，含 70×5 講古音頻存在檢查）
 - QwenPaw MCP：8 tools / protocol / failure recovery / route / planner PASS
 
 测试报告在 [`qa/reports/`](qa/reports/)。
