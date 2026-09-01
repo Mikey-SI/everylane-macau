@@ -155,9 +155,6 @@ python qa/test_api.py
 
 - `docs/複賽說明文檔_街知巷聞.pdf`（**复赛**：指标对照 + 评审动线 + 数据口径）
 - `docs/實踐文章_街知巷聞_EveryLaneMacau.pdf`（**复赛更新版**：设计、实作、证据、限制与 AI 伦理）
-- `docs/決賽路演_10分鐘_街知巷聞.pptx` / `.pdf`
-- `docs/決賽路演_10分鐘講稿_街知巷聞.md`
-- `docs/評審問答_冠軍版_街知巷聞.md`
 - `docs/概念計劃書_街知巷聞_EveryLaneMacau.pdf`
 - `docs/開發過程證明_QwenPaw_街知巷聞.pdf`
 - `docs/團隊介紹視頻_3分鐘.mp4`（2:48，1080p，旁白 + 字幕）
